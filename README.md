@@ -17,16 +17,7 @@ Proyecto Final de Empresa
 ### 1.1 Historias de Usuario Priorizadas (MoSCoW)
 
 #### Must Have
-- Como el usuario, quiero realizar una acción, para lograr un objetivo. Definimos el usuario, la acción y el objetivo.
-
-#### Should Have
-- Como el usuario, quiero realizar una acción, para lograr un objetivo. Definimos el usuario, la acción y el objetivo.
-
-#### Could Have
-- Como el usuario, quiero realizar una acción, para lograr un objetivo. Definimos el usuario, la acción y el objetivo.
-
-#### Won't Have
-- Como el usuario, quiero realizar una acción, para lograr un objetivo. Definimos el usuario, la acción y el objetivo.
+- Como médico, quiero realizar el registro de mis consultas de la manera más asequible, cómoda y eficiente, para dedicar más cantidad de tiempo a la observación del paciente y no a completar formularios.
 
 ### 1.2 Mockups
 
