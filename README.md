@@ -1,146 +1,150 @@
-# ProyectoFinal
-Proyecto Final de Empresa
+<div align="right">
+  <img src="https://getlogovector.com/wp-content/uploads/2020/11/holberton-school-logo-vector.png" alt="Holberton School Logo" width="200">
+</div>
+<hr style="border-top: 2px solid #000;">
 
-# Documentación Técnica del Proyecto ELIO
+# Final Proyect ELIO
 
-## Tabla de Contenidos
-1. Historias de Usuario y Mockups
-2. Arquitectura del Sistema
-3. Componentes, Clases y Diseño de Base de Datos
-4. Diagramas de Secuencia
-5. Especificaciones de API
-6. Estrategias de Source Control Managment (SCM) y Quality Assurance (QA)
-7. Justificaciones Técnicas
+# Centro Asistencial Médica de Maldonado
 
-## 1. Historias de Usuario y Mockups
+## Project Technical Documentation
 
-### 1.1 Historias de Usuario Priorizadas (MoSCoW)
+## Table of Contents
+
+1. User Stories and Mockups
+2. System Architecture
+3. Components, Classes, and Database Design
+4. Sequence Diagrams
+5. API Specifications
+6. Source Control Management (SCM) and Quality Assurance (QA) Strategies
+7. Technical Justifications
+
+
+## 1. User Stories and Mockups
+
+### 1.1 Prioritized User Stories (MoSCoW)
 
 #### Must Have
-- Como médico, quiero realizar el registro de mis consultas de la manera más asequible, cómoda y eficiente, para dedicar más cantidad de tiempo a la observación del paciente y no a completar formularios.
+
+- As a physician, I need record my consultations in the most accessible, comfortable, and efficient way possible, to dedicate more time to the patient observation, rather than filling out forms.
 
 ### 1.2 Mockups
 
 [Elio UI](https://www.figma.com/proto/GKUrCkbEFd4LLeZqOR6X9h/Elio?node-id=147-368&p=f&t=OtDCn1gyjt3f2z4H-0&scaling=min-zoom&content-scaling=fixed&page-id=147%3A368)
 
 
-## 2. Arquitectura del Sistema
+## 2. System Architecture
 
-
-
-### 2.1 Diagrama de Arquitectura
+### 2.1 Architecture Diagram
 
 Acá insertamos el diagrama de arquitectura de alto nivel que muestre los componentes principales de nuestro sistema
 
 ![Diagrama de Arquitectura] y la (ruta/a/la/imagen)
 
-### 2.2 Descripción de Componentes
+### 2.2 Component Description
 
-| Componente | Tecnología | Descripción |
-|------------|------------|-------------|
+**| Componente | Tecnología | Descripción |**
 | Frontend   | [programa que usamos] | [Breve descripción del componente y su rol] |
 | Backend    | [lenguaje usado] | [Breve descripción del componente y su rol] |
-| Base de Datos | [tipo de base de datos usada] | [Breve descripción del componente y su rol] |
-| Servicios Externos | [APIs usadas o todo lo externo usado] | [Breve descripción del componente y su rol] |
+| Database | [tipo de base de datos usada] | [Breve descripción del componente y su rol] |
+| External Services | [APIs usadas o todo lo externo usado] | [Breve descripción del componente y su rol] |
 
-### 2.3 Flujo de Datos
+### 2.3 Data Flow
 
 Tenemos que describir cómo fluyen los datos entre los diferentes componentes de nuestro sistema
 
-## 3. Componentes, Clases y Diseño de Base de Datos
 
-### 3.1 Componentes y Clases Principales
+## 3. Components, Classes, and Database Design
 
-#### Backend
+### 3.1 Main Components and Classes
+
+#### Back-end
 Listado y descripción de las clases principales, sus atributos y métodos
 
+#### Front-end
 
-#### Frontend
 Listado de los componentes principales de la interfaz de usuario y sus interacciones
 
+### 3.2 Database Design
 
-### 3.2 Diseño de Base de Datos
+Elegir uno según lo que necesitemos, A o B, borrar la A o la B y dejar solamente la opción
 
-#### [Elige uno según tu proyecto]
-
-#### Opción A: Diagrama ER (para bases de datos relacionales)
+#### Option A: ER Diagram (for relational databases)
 
 Aquí ponemos un diagrama ER que muestre tablas, atributos y relaciones si existen
 
 ![Diagrama ER](ruta/a/la/imagen)
 
-#### Opción B: Estructura de Colecciones (para bases de datos NoSQL)
+#### Option B: Collection Structure (for NoSQL databases)
 
-**Colección: usuarios**
+**Collection: users**
+
 ```json
 {
   "_id": "ObjectId",
-  "nombre": "String",
+  "name": "String",
   "email": "String",
-  "contraseña": "String (hashed)",
-  "fechaCreacion": "Date",
-  "ultimoAcceso": "Date"
+  "password": "String (hashed)",
+  "createdDate": "Date",
+  "lastAccess": "Date"
 }
 ```
+si necesitan mas colecciones las siguen poniendo aca abajo especificando que tipo de colección es
 
-**Colección: [otra colección]**
-```json
-{
-  "_id": "ObjectId",
-  "campo1": "Tipo",
-  "campo2": "Tipo",
-  "referencia": "ObjectId (referencia a otra colección)"
-}
-```
 
-## 4. Diagramas de Secuencia
+## 4. Sequence Diagrams
 
-### 4.1 [Caso de Uso Crítico 1: ej. Proceso de Autenticación]
+### 4.1 Critical Use Case 1: Authentication Process (es un ejemplo)
 
 Aquí ponemos un diagrama de secuencia para este caso de uso
 
 ![Diagrama de Secuencia: Autenticación](ruta/a/la/imagen)
 
-### 4.2 [Caso de Uso Crítico 2: ej. Creación de Nuevo Recurso]
+### 4.2 Critical Use Case 2: New Resource Creation (otro ejemplo)
 
 Aquí ponemos un diagrama de secuencia para este caso de uso
 
 ![Diagrama de Secuencia: Creación de Recurso](ruta/a/la/imagen)
 
-## 5. Especificaciones de API
 
-### 5.1 APIs Externas
+## 5. API Specifications
 
-| API | Propósito | Endpoints Utilizados | Justificación |
+### 5.1 External APIs
+
+**| API | Purpose | Endpoints Used | Justification |**
 |-----|-----------|----------------------|---------------|
 | [Nombre de API] | [Para qué se usa] | [Endpoints específicos] | [Por qué se eligió esta API] |
 
-### 5.2 API Interna
+### 5.2 Internal API
 
-#### Endpoints del Backend
+#### Backend Endpoints
 
-| Ruta | Método HTTP | Descripción | Parámetros de Entrada | Formato de Salida |
+**| Route | HTTP Method | Description | Input Parameters | Output Format |**
 |------|-------------|-------------|----------------------|-------------------|
 | `/api/usuarios` | GET | Obtener lista de usuarios | `?limite=10&pagina=1` | ```json { "usuarios": [...], "total": 100 }``` |
 | `/api/usuarios` | POST | Crear un nuevo usuario | ```json { "nombre": "...", "email": "...", "contraseña": "..." }``` | ```json { "id": "...", "nombre": "...", "email": "..." }``` |
 | `/api/usuarios/:id` | GET | Obtener detalle de usuario | `id` en URL | ```json { "id": "...", "nombre": "...", "email": "..." }``` |
 
 
-## 6. Estrategias de SCM y QA
+## 6. SCM and QA Strategies
 
-### 6.1 Gestión de Control de Versiones (SCM)
+### 6.1 Version Control Management (SCM)
 
-#### Herramienta
-- **Sistema**: Git
-- **Plataforma**: GitHub
+#### Tool
 
-#### Estrategia de Ramas
+- **System**: Git
+- **Platform**: GitHub
+- si tienen otras herramientas las van poniendo
+
+#### Branch Strategy
+
 - **main**: Código en producción
 - **develop**: Código integrado para la próxima versión
-- **feature/[nombre]**: Ramas para nuevas funcionalidades
-- **hotfix/[nombre]**: Ramas para correcciones urgentes
+- **feature/o el nombre**: Ramas para nuevas funcionalidades
+- **hotfix/o el nombre**: Ramas para correcciones urgentes
 
-#### Proceso de Desarrollo
+#### Development Process
+
 1. Crear una rama `feature/[nombre]` desde `develop`
 2. Desarrollar la funcionalidad
 3. Abrir Pull Request hacia `develop`
@@ -148,64 +152,73 @@ Aquí ponemos un diagrama de secuencia para este caso de uso
 5. Merge a `develop`
 6. Pruebas en ambiente de staging
 7. Merge a `main` para despliegue en producción
+Este fue un ejemplo, ustedes van a poner lo que tiene Bruno, pero la idea es que usen la estructura.
 
-### 6.2 Aseguramiento de Calidad (QA)
+### 6.2 Quality Assurance (QA)
 
-#### Tipos de Pruebas
-- **Pruebas Unitarias**: Para validar funciones y componentes individuales
-- **Pruebas de Integración**: Para validar interacciones entre componentes
-- **Pruebas de API**: Para validar endpoints y respuestas
-- **Pruebas de UI** (si aplica): Para validar la interfaz de usuario
-- **Pruebas de Aceptación**: Para validar historias de usuario
+#### Test Types
 
-#### Herramientas
-- **Pruebas Unitarias**: [Ej: Jest, Mocha]
-- **Pruebas de API**: [Ej: Postman, Supertest]
-- **Pruebas de UI**: [Ej: Cypress, Selenium]
-- **CI/CD**: [Ej: GitHub Actions, Jenkins]
+- **Unit Tests:** Para validar funciones y componentes individuales
+- **Integration Tests:** Para validar interacciones entre componentes
+- **API Tests:** Para validar endpoints y respuestas
+- **UI Tests:** (si aplica) Para validar la interfaz de usuario
+- **Acceptance Tests:** Para validar historias de usuario
 
-#### Cobertura de Código
-- Objetivo: >80% de cobertura en código crítico
-- Se utilizará [que herramientas] para medir la cobertura
+#### Tools
 
-#### Proceso de QA
-1. Ejecución de pruebas unitarias y de integración en cada commit
-2. Pruebas de API y UI antes de cada merge a `develop`
-3. Pruebas manuales críticas antes de despliegue a producción
-4. Revisión de rendimiento en ciclos regulares
+- **Unit Tests:** [Ej: Jest, Mocha]
+- **API Tests:** [Ej: Postman, Supertest]
+- **UI Tests:** [Ej: Cypress, Selenium]
+- **CI/CD:** [Ej: GitHub Actions, Jenkins]
 
-## 7. Justificaciones Técnicas
+#### Code Coverage
 
-### 7.1 Elección de Tecnologías
+- Goal: > 80 % coverage in critical code
+- [Which tools] will be used to measure coverage
 
-| Tecnología | Alternativas Consideradas | Justificación |
-|------------|---------------------------|---------------|
-| [Frontend] | [Alternativas] | [Razones para elegir esta tecnología] |
-| [Backend] | [Alternativas] | [Razones para elegir esta tecnología] |
-| [Base de Datos] | [Alternativas] | [Razones para elegir esta tecnología] |
+#### QA Process
 
-### 7.2 Decisiones de Diseño
+1. Execution of unit and integration tests on each commit
+2. API and UI tests before each merge to develop
+3. Critical manual tests before deployment to production
+4. Performance review in regular cycles
 
-| Decisión | Alternativas | Justificación |
+
+## 7. Technical Justifications
+
+### 7.1 Technology Choices
+
+**| Technology	| Alternatives Considered | Justification |**
 |----------|--------------|---------------|
-| [Ej: Arquitectura de microservicios] | [Ej: Monolito] | [Razones para esta decisión] |
-| [Ej: Autenticación con JWT] | [Ej: Sesiones, OAuth] | [Razones para esta decisión] |
-| ... | ... | ... |
+| Para [Frontend] | [Alternativas] | [Razones para esta decisión] |
+| Para [Backend] | [Alternativas] | [Razones para esta decisión] |
+| Para [Database] | [Alternativas] | [Razones para esta decisión] |
 
-### 7.3 Consideraciones de Escalabilidad y Mantenimiento
+
+### 7.2 Technology Choices
+
+**| Decision | Alternatives | Justification |**
+| [E.g.: Microservices architecture] | [E.g.: Monolith] | [Reasons for this decision] |
+| [E.g.: JWT Authentication] | [E.g.: Sessions, OAuth] | [Reasons for this decision] |
+Si tienen más van con esa estructura
+
+### 7.3 Scalability and Maintenance Considerations
 
 [Descripcion de como nuestr diseño técnico contempla el crecimiento futuro y facilita el mantenimiento de la aplicacióon]
 
----
 
-## Apéndices
+**---**
 
-### Glosario de Términos
 
-| Término | Definición |
+## Appendices
+
+### Glossary of Terms
+
+**| Term | Definition |**
 |---------|------------|
 | [Término técnico] | [Definición de lo que es] |
 
-### Referencias
+
+### References
 
 - [Lista de fuentes, documentación o estándares utilizados]
