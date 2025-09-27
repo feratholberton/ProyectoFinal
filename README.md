@@ -21,9 +21,7 @@ Proyecto Final de Empresa
 
 ### 1.2 Mockups
 
-Acá vamos a insertar las imágenes o enlaces a tus mockups creados con herramientas usadas
-
-![Mockup 1: Ponemos la descripción] y la (ruta/a/la/imagen)
+[Elio UI](https://www.figma.com/proto/GKUrCkbEFd4LLeZqOR6X9h/Elio?node-id=147-368&p=f&t=OtDCn1gyjt3f2z4H-0&scaling=min-zoom&content-scaling=fixed&page-id=147%3A368)
 
 
 ## 2. Arquitectura del Sistema
