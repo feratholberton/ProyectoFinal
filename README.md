@@ -26,6 +26,8 @@ Proyecto Final de Empresa
 
 ## 2. Arquitectura del Sistema
 
+
+
 ### 2.1 Diagrama de Arquitectura
 
 Acá insertamos el diagrama de arquitectura de alto nivel que muestre los componentes principales de nuestro sistema
