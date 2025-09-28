@@ -136,57 +136,60 @@ Aquí ponemos un diagrama de secuencia para este caso de uso
 ### 6.1 Version Control Management (SCM)
 
 #### Tool
-
-- **System**: Git
-- **Platform**: GitHub
-- si tienen otras herramientas las van poniendo
+- **System**: Git  
+- **Platform**: GitHub  
 
 #### Branch Strategy
-
-- **main**: Código en producción
-- **develop**: Código integrado para la próxima versión
-- **feature/o el nombre**: Ramas para nuevas funcionalidades
-- **hotfix/o el nombre**: Ramas para correcciones urgentes
+- **main (Ask):** Contiene únicamente código aprobado y listo para deploy.  
+- **develop (Ask):** Rama de integración donde se revisa el sistema completo antes de pasar a producción.  
+- **test (Show):** Rama de pruebas donde se integran backend y frontend para validar que funcionen en conjunto.  
+- **backend (Show):** Rama de trabajo del backend, donde se muestran avances de la API.  
+- **frontend (Show):** Rama de trabajo del frontend, donde se muestran avances de la interfaz.  
+- **feature/[nombre] (Ship):** Sub-branches temporales para implementar funcionalidades específicas (ejemplo: `feature/login-backend`, `feature/dashboard-frontend`).  
 
 #### Development Process
+1. Crear una rama `feature/[nombre]` desde `backend` o `frontend`.  
+2. Desarrollar la funcionalidad y hacer commits descriptivos.  
+3. Merge a `backend` o `frontend` (Show).  
+4. Integración en `test` (Show) para validar backend + frontend juntos.  
+5. Merge a `develop` (Ask), sujeto a code review.  
+6. QA manual y validaciones críticas en `develop`.  
+7. Merge final a `main` (Ask) para despliegue en producción.  
 
-1. Crear una rama `feature/[nombre]` desde `develop`
-2. Desarrollar la funcionalidad
-3. Abrir Pull Request hacia `develop`
-4. Revisión de código por al menos un miembro del equipo
-5. Merge a `develop`
-6. Pruebas en ambiente de staging
-7. Merge a `main` para despliegue en producción
-Este fue un ejemplo, ustedes van a poner lo que tiene Bruno, pero la idea es que usen la estructura.
+#### Rules
+- Nunca mergear ramas Show directo a `main`.  
+- Todos los merges hacia `develop` y `main` deben hacerse mediante Pull Requests en GitHub con revisión por pares.  
+- Commits deben ser descriptivos y seguir un formato consistente.  
+- `main` siempre debe estar estable y listo para deploy inmediato.  
+
+---
 
 ### 6.2 Quality Assurance (QA)
 
 #### Test Types
-
-- **Unit Tests:** Para validar funciones y componentes individuales
-- **Integration Tests:** Para validar interacciones entre componentes
-- **API Tests:** Para validar endpoints y respuestas
-- **UI Tests:** (si aplica) Para validar la interfaz de usuario
-- **Acceptance Tests:** Para validar historias de usuario
+- **Unit Tests:** Validar funciones y clases críticas de backend y frontend.  
+- **Integration Tests:** Validar interacción entre backend y frontend en la rama `test`.  
+- **API Tests:** Validar endpoints con herramientas dedicadas.  
+- **UI Tests:** Validar flujos en la interfaz de usuario.  
+- **Manual QA:** Revisión de casos de uso críticos en `develop`.  
+- **Code Reviews:** Todos los Pull Requests hacia ramas Ask (`develop` y `main`) deben ser aprobados por al menos otro integrante del equipo.  
 
 #### Tools
-
-- **Unit Tests:** [Ej: Jest, Mocha]
-- **API Tests:** [Ej: Postman, Supertest]
-- **UI Tests:** [Ej: Cypress, Selenium]
-- **CI/CD:** [Ej: GitHub Actions, Jenkins]
+- **Backend (Unit Tests):** Jest / Mocha  
+- **Frontend (UI/Integration):** React Testing Library / Cypress  
+- **API Testing:** Postman / Thunder Client  
+- **CI/CD:** GitHub Actions para correr tests automáticos en cada Pull Request  
 
 #### Code Coverage
-
-- Goal: > 80 % coverage in critical code
-- [Which tools] will be used to measure coverage
+- **Meta:** Cobertura >80% en código crítico.  
+- **Herramientas:** Jest (coverage report) y Cypress (para e2e).  
 
 #### QA Process
-
-1. Execution of unit and integration tests on each commit
-2. API and UI tests before each merge to develop
-3. Critical manual tests before deployment to production
-4. Performance review in regular cycles
+1. Ejecución de unit tests automáticos en cada push a sub-branch (Ship).  
+2. Integration tests al mergear a `backend`/`frontend` (Show).  
+3. API y UI tests en `test` antes de mergear a `develop`.  
+4. QA manual y code review obligatorio en `develop`.  
+5. Merge a `main` dispara deploy automático a producción si pasa todas las validaciones.  
 
 
 ## 7. Technical Justifications
