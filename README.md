@@ -2,9 +2,9 @@
 
 # Elio
 
-Elio es una herramienta que permite que las consultas médicas sean registradas de una manera más asequible, cómoda y eficiente. Automatiza la creación de los informes de diagnóstico clínico para que los médicos no tengan que escribir todo desde cero.
+Elio is a tool that allows medical consultations to be recorded in a more accessible, convenient, and efficient way. It automates the creation of clinical diagnostic reports so that doctors don’t have to write everything from scratch.
 
-Esto ahorrará tiempo, generará un registro más ordenado y con la posibilidad a posteriori de tener la capacidad de realizar muestras estadísticas de casos, patologías y procedimientos clínicos.
+This will save time, produce a more organized record, and later provide the ability to generate statistical samples of cases, pathologies, and clinical procedures.
 
 ## Table of Contents
 
