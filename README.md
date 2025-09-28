@@ -87,10 +87,10 @@ flowchart LR
 
 | Componente | Tecnología | Descripción |
 |-----|-----------|----------------------|
-| Frontend   | [programa que usamos] | [Breve descripción del componente y su rol] |
-| Backend    | [lenguaje usado] | [Breve descripción del componente y su rol] |
-| Database | [tipo de base de datos usada] | [Breve descripción del componente y su rol] |
-| External Services | [APIs usadas o todo lo externo usado] | [Breve descripción del componente y su rol] |
+| Frontend   | [Angular (Web - Framework)] | [SPA - Single Page Application] |
+| Backend    | [Node.js] | [Server Technology] |
+| Database | [MongoDB] | [Database para cargar datos de SNOMED CT & VADEMECUM] |
+| External Services | [Gemini 2.5 & MongoDB] | [Api para redaccion y generacion de opciones & MongoDB para consultar datos] |
 
 ### 2.3 Data Flow
 
