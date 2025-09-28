@@ -128,17 +128,51 @@ si necesitan mas colecciones las siguen poniendo aca abajo especificando que tip
 
 ## 4. Sequence Diagrams
 
-### 4.1 Critical Use Case 1: Authentication Process (es un ejemplo)
+### 4.1 Create medical note
 
-Aquí ponemos un diagrama de secuencia para este caso de uso
+```mermaid
+sequenceDiagram
+  participant AppEon as AppEon
+  participant WebUI as WebUI
+  participant API as API
+  participant Core as Core
+  participant Rules as Rules
+  participant SessionStore as SessionStore
+  participant LLMAdapter as LLMAdapter
 
-![Diagrama de Secuencia: Autenticación](ruta/a/la/imagen)
-
-### 4.2 Critical Use Case 2: New Resource Creation (otro ejemplo)
-
-Aquí ponemos un diagrama de secuencia para este caso de uso
-
-![Diagrama de Secuencia: Creación de Recurso](ruta/a/la/imagen)
+  AppEon ->> WebUI: Abrir con token + edad/sexo
+  WebUI ->> API: StartSession (edad, sexo, motivo)
+  API ->> Core: StartSession
+  Core ->> LLMAdapter: Crear sesión (collecting)
+  Core ->> LLMAdapter: NextQuestions(contexto inicial)
+  LLMAdapter -->> Core: Preguntas iniciales
+  Core -->> API: Payload inicial
+  API -->> WebUI: Mostrar preguntas
+  loop Recolección por secciones (una por vez)
+    WebUI ->> API: RecordStep (respuestas de sección)
+    API ->> Core: RecordStep
+    Core ->> SessionStore: Actualizar contexto
+    Core ->> LLMAdapter: Enviar sección + contexto (incremental)
+    LLMAdapter -->> Core: Sugerencias/ajustes de próxima sección
+    Core ->> Rules: NextQuestions(contexto actualizado)
+    Rules -->> Core: Siguientes preguntas o completo
+    Core -->> API: Payload paso a paso
+    API -->> WebUI: Siguientes pasos o completo
+  end
+  WebUI ->> API: GenerateDraft
+  API ->> Core: GenerateDraft
+  Core ->> SessionStore: Cargar contexto consolidado
+  Core ->> LLMAdapter: Prompt con contexto total
+  LLMAdapter -->> Core: Texto de borrador
+  Core ->> SessionStore: Guardar borrador (RAM)
+  Core -->> API: Draft
+  API -->> WebUI: Borrador editable
+  WebUI ->> API: Finalize (texto final)
+  API ->> Core: Finalize
+  Core ->> SessionStore: Marcar finalizada (RAM, sin persistir)
+  Core -->> API: OK
+  API -->> WebUI: 200 Success
+```
 
 
 ## 5. API Specifications
