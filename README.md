@@ -1,9 +1,10 @@
-<div align="right">
-  <img src="https://getlogovector.com/wp-content/uploads/2020/11/holberton-school-logo-vector.png" alt="Holberton School Logo" width="200">
-</div>
-<hr style="border-top: 2px solid #000;">
+![Banner with stakeholders logos](./banner.png)
 
-# Final Proyect ELIO
+# Elio
+
+Elio es una herramienta que permite que las consultas médicas sean registradas de una manera más asequible, cómoda y eficiente. Automatiza la creación de los informes de diagnóstico clínico para que los médicos no tengan que escribir todo desde cero.
+
+Esto ahorrará tiempo, generará un registro más ordenado y con la posibilidad a posteriori de tener la capacidad de realizar muestras estadísticas de casos, patologías y procedimientos clínicos.
 
 ## Table of Contents
 
