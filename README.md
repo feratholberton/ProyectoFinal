@@ -37,9 +37,7 @@
 
 ### 2.1 Architecture Diagram
 
-Acá insertamos el diagrama de arquitectura de alto nivel que muestre los componentes principales de nuestro sistema
-
-![Diagrama de Arquitectura] y la (ruta/a/la/imagen)
+![Fig. 1 Architecture Diagram] (https://github.com/alearecuest/ProyectoFinal/blob/main/mermaid-diagram-2025-09-27-205839.png)
 
 ### 2.2 Component Description
 
