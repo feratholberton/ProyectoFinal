@@ -304,7 +304,9 @@ sequenceDiagram
 
 | Term | Definition |
 |---------|------------|
-| [Término técnico] | [Definición de lo que es] |
+| [RAG] | [Technique that enables large language models to retrieve and incorporate new info] |
+| [MCP] | [(Master Control Program) architecture is a system design where a central program manages and controls all resources and processes in a computer] |
+| [show/ship/ask] | [Structured way to share work in GitHub] |
 
 
 ### References
