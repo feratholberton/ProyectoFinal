@@ -83,13 +83,6 @@ flowchart LR
   UI <--> CTRL
 ```
 
-
-<div align="center">
-  <img src="mermaid-diagram-2025-09-27-205839.png" alt="Architecture Diagram" width="1080">
-  <p><em>Fig 2: Architecture Diagram.</em></p>
-</div>
-
-
 ### 2.2 Component Description
 
 | Componente | Tecnología | Descripción |
