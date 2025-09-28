@@ -192,19 +192,26 @@ sequenceDiagram
 
 ### 5.1 External APIs
 
-| API | Purpose | Endpoints Used | Justification |
+| API | Purpose | Justification |
 |-----|-----------|----------------------|---------------|
-| [Nombre de API] | [Para qué se usa] | [Endpoints específicos] | [Por qué se eligió esta API] |
-
+| [Google Gemini 2.5] | [Content generation & Text embedding] | [It's the industry's standard to generate text together with OpenAI and it's free to use] |
+| [MongoDB] | [To allocate and search for VADEMECUM & SNOMED CT data] | [We know how to use it] |
 ### 5.2 Internal API
 
 #### Backend Endpoints
 
 | Route | HTTP Method | Description | Input Parameters | Output Format |
 |------|-------------|-------------|----------------------|-------------------|
-| `/api/usuarios` | GET | Obtener lista de usuarios | `?limite=10&pagina=1` | ```json { "usuarios": [...], "total": 100 }``` |
-| `/api/usuarios` | POST | Crear un nuevo usuario | ```json { "nombre": "...", "email": "...", "contraseña": "..." }``` | ```json { "id": "...", "nombre": "...", "email": "..." }``` |
-| `/api/usuarios/:id` | GET | Obtener detalle de usuario | `id` en URL | ```json { "id": "...", "nombre": "...", "email": "..." }``` |
+| `/api/init` | GET | Age, Gender | `String, Number` | ```json { "Age": x, "Gender": "x" }``` |
+| `/api/init` | POST | Age, Gender, Motivo_consulta | `String, Number,` | ```json { "Age": x, "Gender": "x", "Motivo_consulta": "x" }``` |
+| `/api/collect` | GET | Read state? | `json` | ```json``` |
+| `/api/collect` | POST | Submit step answers | `json` | ```json``` |
+| `/api/crear_nota` | GET | Read draft? | `json` | ```json``` |
+| `/api/crear_nota` | POST | Generate draft | `json` | ```json``` |
+| `/api/edit` | GET | Read draft? | `json` | ```json``` |
+| `/api/edit` | PUT | Save edited draft | `json` | ```json``` |
+| `/api/end` | POST | Finalize session | `json` | ```json``` |
+
 
 
 ## 6. SCM and QA Strategies
