@@ -82,7 +82,7 @@ flowchart LR
 
 ### 2.2 Component Description
 
-| Componente | Tecnología | Descripción |
+| Components | Tecnology | Description |
 |-----|-----------|----------------------|
 | Frontend   | [Angular (Web - Framework)] | [SPA - Single Page Application] |
 | Backend    | [Node.js] | [Server Technology] |
