@@ -30,14 +30,14 @@
 
 ### 1.2 Mockups
 
-[Elio UI](https://www.figma.com/proto/GKUrCkbEFd4LLeZqOR6X9h/Elio?node-id=147-368&p=f&t=OtDCn1gyjt3f2z4H-0&scaling=min-zoom&content-scaling=fixed&page-id=147%3A368)
+![Fig. 1 Elio UI](https://www.figma.com/proto/GKUrCkbEFd4LLeZqOR6X9h/Elio?node-id=147-368&p=f&t=OtDCn1gyjt3f2z4H-0&scaling=min-zoom&content-scaling=fixed&page-id=147%3A368)
 
 
 ## 2. System Architecture
 
 ### 2.1 Architecture Diagram
 
-![Fig. 1 Architecture Diagram] (https://github.com/alearecuest/ProyectoFinal/blob/main/mermaid-diagram-2025-09-27-205839.png)
+![Fig. 2 Architecture Diagram] (mermaid-diagram-2025-09-27-205839.png)
 
 ### 2.2 Component Description
 
