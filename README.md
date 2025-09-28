@@ -7,13 +7,13 @@
 
 ## Table of Contents
 
-1. User Stories and Mockups
-2. System Architecture
-3. Components, Classes, and Database Design
-4. Sequence Diagrams
-5. API Specifications
-6. Source Control Management (SCM) and Quality Assurance (QA) Strategies
-7. Technical Justifications
+1. [User Stories and Mockups](#1-user-stories-and-mockups)
+2. [System Architecture](#2-system-architecture)
+3. [Components, Classes, and Database Design](#3-components-classes-and-database-design)
+4. [Sequence Diagrams](#4-sequence-diagrams)
+5. [API Specifications](#5-api-specifications)
+6. [Source Control Management (SCM) and Quality Assurance (QA) Strategies](#6-scm-and-qa-strategies)
+7. [Technical Justifications](#7-technical-justifications)
 
 
 ## 1. User Stories and Mockups
