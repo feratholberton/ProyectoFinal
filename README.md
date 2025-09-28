@@ -234,14 +234,13 @@ Aquí ponemos un diagrama de secuencia para este caso de uso
 
 | Decision | Alternatives | Justification |
 |-----|-----------|----------------------|
-| [MCP Architecture] | [Monolith Architecture] | [] |
-| [E.g.: JWT Authentication] | [E.g.: Sessions, OAuth] | [Separation of flow control, state and persistence for more scalability] |
-Si tienen más van con esa estructura
+| [MCP Architecture] | [Monolith Architecture] | [Separation of flow control, state and persistence for more scalability] |
+| [Jwt Authentication] | [None] | [Technology that we know how to handle] |
 
 ### 7.3 Scalability and Maintenance Considerations
 
-[Descripcion de como nuestr diseño técnico contempla el crecimiento futuro y facilita el mantenimiento de la aplicacióon]
-
+[Interface - Angular: Their premise is to be scalable and maintainable]
+[Backend - Node.js: Having all the codebase in JS - TS makes the code easier to work with, given that it's on a single language]
 
 **---**
 
