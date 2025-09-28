@@ -41,7 +41,8 @@
 
 ### 2.2 Component Description
 
-**| Componente | Tecnología | Descripción |**
+| Componente | Tecnología | Descripción |
+|-----|-----------|----------------------|
 | Frontend   | [programa que usamos] | [Breve descripción del componente y su rol] |
 | Backend    | [lenguaje usado] | [Breve descripción del componente y su rol] |
 | Database | [tipo de base de datos usada] | [Breve descripción del componente y su rol] |
@@ -109,7 +110,7 @@ Aquí ponemos un diagrama de secuencia para este caso de uso
 
 ### 5.1 External APIs
 
-**| API | Purpose | Endpoints Used | Justification |**
+| API | Purpose | Endpoints Used | Justification |
 |-----|-----------|----------------------|---------------|
 | [Nombre de API] | [Para qué se usa] | [Endpoints específicos] | [Por qué se eligió esta API] |
 
@@ -117,7 +118,7 @@ Aquí ponemos un diagrama de secuencia para este caso de uso
 
 #### Backend Endpoints
 
-**| Route | HTTP Method | Description | Input Parameters | Output Format |**
+| Route | HTTP Method | Description | Input Parameters | Output Format |
 |------|-------------|-------------|----------------------|-------------------|
 | `/api/usuarios` | GET | Obtener lista de usuarios | `?limite=10&pagina=1` | ```json { "usuarios": [...], "total": 100 }``` |
 | `/api/usuarios` | POST | Crear un nuevo usuario | ```json { "nombre": "...", "email": "...", "contraseña": "..." }``` | ```json { "id": "...", "nombre": "...", "email": "..." }``` |
@@ -186,7 +187,7 @@ Este fue un ejemplo, ustedes van a poner lo que tiene Bruno, pero la idea es que
 
 ### 7.1 Technology Choices
 
-**| Technology	| Alternatives Considered | Justification |**
+| Technology	| Alternatives Considered | Justification |
 |----------|--------------|---------------|
 | Para [Frontend] | [Alternativas] | [Razones para esta decisión] |
 | Para [Backend] | [Alternativas] | [Razones para esta decisión] |
@@ -195,7 +196,8 @@ Este fue un ejemplo, ustedes van a poner lo que tiene Bruno, pero la idea es que
 
 ### 7.2 Technology Choices
 
-**| Decision | Alternatives | Justification |**
+| Decision | Alternatives | Justification |
+|-----|-----------|----------------------|
 | [E.g.: Microservices architecture] | [E.g.: Monolith] | [Reasons for this decision] |
 | [E.g.: JWT Authentication] | [E.g.: Sessions, OAuth] | [Reasons for this decision] |
 Si tienen más van con esa estructura
@@ -212,7 +214,7 @@ Si tienen más van con esa estructura
 
 ### Glossary of Terms
 
-**| Term | Definition |**
+| Term | Definition |
 |---------|------------|
 | [Término técnico] | [Definición de lo que es] |
 
