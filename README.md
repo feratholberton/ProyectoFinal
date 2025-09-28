@@ -273,20 +273,20 @@ sequenceDiagram
 
 | Technology	| Alternatives Considered | Justification |
 |----------|--------------|---------------|
-| Para [Angular] | [React] | [Angular provides more scalability] |
-| Para [Node.js] | [Python & Fastapi] | [Frontend and backend are created in a single languaje] |
+| Para Angular | React | Angular provides more scalability |
+| Para Node.js | Python & Fastapi | Frontend and backend are created in a single languaje |
 
 ### 7.2 Technology Choices
 
 | Decision | Alternatives | Justification |
 |-----|-----------|----------------------|
-| [MCP Architecture] | [Monolith Architecture] | [Separation of flow control, state and persistence for more scalability] |
-| [Jwt Authentication] | [None] | [Technology that we know how to handle] |
+| MCP Architecture | Monolith Architecture | Separation of flow control, state and persistence for more scalability |
+| Jwt Authentication | None | Technology that we know how to handle |
 
 ### 7.3 Scalability and Maintenance Considerations
 
-[Interface - Angular: Their premise is to be scalable and maintainable]
-[Backend - Node.js: Having all the codebase in JS - TS makes the code easier to work with, given that it's on a single language]
+- Interface - Angular: Their premise is to be scalable and maintainable
+- Backend - Node.js: Having all the codebase in JS - TS makes the code easier to work with, given that it's on a single language
 
 **---**
 
