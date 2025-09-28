@@ -193,9 +193,10 @@ sequenceDiagram
 ### 5.1 External APIs
 
 | API | Purpose | Justification |
-|-----|-----------|----------------------|---------------|
+|-----|-----------|---------------|
 | [Google Gemini 2.5] | [Content generation & Text embedding] | [It's the industry's standard to generate text together with OpenAI and it's free to use] |
 | [MongoDB] | [To allocate and search for VADEMECUM & SNOMED CT data] | [We know how to use it] |
+
 ### 5.2 Internal API
 
 #### Backend Endpoints
