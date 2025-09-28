@@ -40,6 +40,11 @@
 ##### Fig. 2 Architecture Diagram
 ![Fig. 2 Architecture Diagram](mermaid-diagram-2025-09-27-205839.png)
 
+<div align="center">
+  <img src="mermaid-diagram-2025-09-27-205839.png" alt="Architecture Diagram" width="500">
+  <p><em>Fig 2: Architecture Diagram.</em></p>
+</div>
+
 
 ### 2.2 Component Description
 
