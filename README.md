@@ -38,6 +38,7 @@
 ### 2.1 Architecture Diagram
 
 ![Fig. 2 Architecture Diagram](mermaid-diagram-2025-09-27-205839.png)
+#### Fig. 2 Architecture Diagram
 
 ### 2.2 Component Description
 
