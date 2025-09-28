@@ -1,23 +1,20 @@
-<div align="right">
-  <img src="https://getlogovector.com/wp-content/uploads/2020/11/holberton-school-logo-vector.png" alt="Holberton School Logo" width="200">
-</div>
-<hr style="border-top: 2px solid #000;">
+![Banner with stakeholders logos](./banner.png)
 
-# Final Proyect ELIO
+# Elio
 
-# Centro Asistencial Médica de Maldonado
+Elio is a tool that allows medical consultations to be recorded in a more accessible, convenient, and efficient way. It automates the creation of clinical diagnostic reports so that doctors don’t have to write everything from scratch.
 
-## Project Technical Documentation
+This will save time, produce a more organized record, and later provide the ability to generate statistical samples of cases, pathologies, and clinical procedures.
 
 ## Table of Contents
 
-1. User Stories and Mockups
-2. System Architecture
-3. Components, Classes, and Database Design
-4. Sequence Diagrams
-5. API Specifications
-6. Source Control Management (SCM) and Quality Assurance (QA) Strategies
-7. Technical Justifications
+1. [User Stories and Mockups](#1-user-stories-and-mockups)
+2. [System Architecture](#2-system-architecture)
+3. [Components, Classes, and Database Design](#3-components-classes-and-database-design)
+4. [Sequence Diagrams](#4-sequence-diagrams)
+5. [API Specifications](#5-api-specifications)
+6. [Source Control Management (SCM) and Quality Assurance (QA) Strategies](#6-scm-and-qa-strategies)
+7. [Technical Justifications](#7-technical-justifications)
 
 
 ## 1. User Stories and Mockups
@@ -39,77 +36,156 @@
 
 ##### Fig. 2 Architecture Diagram
 
-<div align="center">
-  <img src="mermaid-diagram-2025-09-27-205839.png" alt="Architecture Diagram" width="1080">
-  <p><em>Fig 2: Architecture Diagram.</em></p>
-</div>
+```mermaid
+flowchart LR
+  %% CONTEXTO
+  subgraph Ext["`Contexto externo`"]
+    AppEon["`AppEon<br/>SSO upstream (token/claims)`"]
+  end
 
+  %% CLIENTE
+  subgraph Client["`Cliente Web (SPA)`"]
+    UI["`Elio Web UI (React)<br/>Pantalla 1: Motivo<br/>Pantalla 2: Recolección<br/>Pantalla 3: Borrador`"]
+  end
+
+  %% API
+  subgraph API["`API Layer`"]
+    CTRL["`HTTP API / Controllers`"]
+    VAL["`Validación de entrada<br/>(DTOs / Schemas)`"]
+  end
+
+  %% CORE
+  subgraph CORE["`Application Core`"]
+    USE["`Use Cases / Services<br/>StartSession • RecordStep • GenerateDraft • Finalize`"]
+    ORCH["`Orchestrator de pasos`"]
+    RULES["`Rules / Policies`"]
+    PORTS["`Ports (Interfaces)<br/>SessionStore • LLMService`"]
+  end
+
+  %% INFRA
+  subgraph INFRA["`Infrastructure (Adapters)`"]
+    SESS["`SessionStore efímero<br/>RAM/TTL (sin disco)`"]
+    LLM["`LLM Adapter`"]
+    AUTH["`SSO Verifier`"]
+  end
+
+  %% FLUJOS PRINCIPALES (sin etiquetas en aristas)
+  AppEon --> UI
+  UI --> CTRL
+  CTRL --> AUTH --> CTRL
+  CTRL --> VAL --> USE
+  USE --> ORCH --> RULES --> ORCH
+  USE --> SESS
+  USE --> LLM
+  UI <--> CTRL
+```
 
 ### 2.2 Component Description
 
 | Componente | Tecnología | Descripción |
 |-----|-----------|----------------------|
-| Frontend   | [programa que usamos] | [Breve descripción del componente y su rol] |
-| Backend    | [lenguaje usado] | [Breve descripción del componente y su rol] |
-| Database | [tipo de base de datos usada] | [Breve descripción del componente y su rol] |
-| External Services | [APIs usadas o todo lo externo usado] | [Breve descripción del componente y su rol] |
-
-### 2.3 Data Flow
-
-Tenemos que describir cómo fluyen los datos entre los diferentes componentes de nuestro sistema
-
+| Frontend   | [Angular (Web - Framework)] | [SPA - Single Page Application] |
+| Backend    | [Node.js] | [Server Technology] |
+| Database | [MongoDB] | [Database para cargar datos de SNOMED CT & VADEMECUM] |
+| External Services | [Gemini 2.5 & MongoDB] | [Api para redaccion y generacion de opciones & MongoDB para consultar datos] |
 
 ## 3. Components, Classes, and Database Design
 
 ### 3.1 Main Components and Classes
 
 #### Back-end
-Listado y descripción de las clases principales, sus atributos y métodos
 
-#### Front-end
+**1. Controller (flow handler)**  
+Acts as the central orchestrator: decides which sub-endpoint to call, updates the in-memory model, and coordinates the interaction with the AI before returning a response to the frontend. It is the core of the loop.
 
-Listado de los componentes principales de la interfaz de usuario y sus interacciones
+- **Attributes:**
+  - `PasoActual`: string (`"consulta"`, `"antecedentes"`, etc.)  
+  - `PatientID`: ID of the session/patient received from AppEon  
+  - `PartialState`: JSON object storing the incremental state (instance of `ClinicalSummary`)  
 
-### 3.2 Database Design
+- **Methods:**
+  - `nextStep(input)`: receives the response from the frontend and decides which section to move to.  
+  - `savePartialState(data)`: stores info in temporary memory (not persisted in DB).  
+  - `getSuggestions(step)`: queries Gemini for contextualized options.  
+  - `buildSummary()`: builds the final JSON (`clinicalSummarySchema`).  
 
-Elegir uno según lo que necesitemos, A o B, borrar la A o la B y dejar solamente la opción
+---
 
-#### Option A: ER Diagram (for relational databases)
+**2. AIService (Gemini service)**  
+Handles communication with Gemini Flash 2.5.
 
-Aquí ponemos un diagrama ER que muestre tablas, atributos y relaciones si existen
+- **Attributes:**
+  - `model`: Gemini Flash 2.5  
+  - `context`: partial patient state (JSON or Markdown)  
 
-![Diagrama ER](ruta/a/la/imagen)
+- **Methods:**
+  - `generateOptions(step, context)`: returns suggested responses for a given section.  
+  - `summarizeCase(context)`: generates the complete clinical draft (editable).  
 
-#### Option B: Collection Structure (for NoSQL databases)
+---
 
-**Collection: users**
+**3. Model (central structure)**  
+Represents the clinical state of the consultation during the session.
 
 ```json
 {
-  "_id": "ObjectId",
-  "name": "String",
-  "email": "String",
-  "password": "String (hashed)",
-  "createdDate": "Date",
-  "lastAccess": "Date"
+  "consulta": "Dolor en primer dedo pie derecho...",
+  "antecedentes": ["HTA", "Diabetes"],
+  "alergias": ["Penicilina"],
+  "farmacos": ["Metformina"],
+  "anamnesis": "Paciente refiere dolor progresivo...",
+  "examenes_fisicos": "Eritema e impotencia funcional en 1° dedo...",
+  "resumen": "Paciente masculino de 50 años con cuadro compatible con..."
 }
 ```
-si necesitan mas colecciones las siguen poniendo aca abajo especificando que tipo de colección es
-
 
 ## 4. Sequence Diagrams
 
-### 4.1 Critical Use Case 1: Authentication Process (es un ejemplo)
+### 4.1 Create medical note
 
-Aquí ponemos un diagrama de secuencia para este caso de uso
+```mermaid
+sequenceDiagram
+  participant AppEon as AppEon
+  participant WebUI as WebUI
+  participant API as API
+  participant Core as Core
+  participant Rules as Rules
+  participant SessionStore as SessionStore
+  participant LLMAdapter as LLMAdapter
 
-![Diagrama de Secuencia: Autenticación](ruta/a/la/imagen)
-
-### 4.2 Critical Use Case 2: New Resource Creation (otro ejemplo)
-
-Aquí ponemos un diagrama de secuencia para este caso de uso
-
-![Diagrama de Secuencia: Creación de Recurso](ruta/a/la/imagen)
+  AppEon ->> WebUI: Abrir con token + edad/sexo
+  WebUI ->> API: StartSession (edad, sexo, motivo)
+  API ->> Core: StartSession
+  Core ->> LLMAdapter: Crear sesión (collecting)
+  Core ->> LLMAdapter: NextQuestions(contexto inicial)
+  LLMAdapter -->> Core: Preguntas iniciales
+  Core -->> API: Payload inicial
+  API -->> WebUI: Mostrar preguntas
+  loop Recolección por secciones (una por vez)
+    WebUI ->> API: RecordStep (respuestas de sección)
+    API ->> Core: RecordStep
+    Core ->> SessionStore: Actualizar contexto
+    Core ->> LLMAdapter: Enviar sección + contexto (incremental)
+    LLMAdapter -->> Core: Sugerencias/ajustes de próxima sección
+    Core ->> Rules: NextQuestions(contexto actualizado)
+    Rules -->> Core: Siguientes preguntas o completo
+    Core -->> API: Payload paso a paso
+    API -->> WebUI: Siguientes pasos o completo
+  end
+  WebUI ->> API: GenerateDraft
+  API ->> Core: GenerateDraft
+  Core ->> SessionStore: Cargar contexto consolidado
+  Core ->> LLMAdapter: Prompt con contexto total
+  LLMAdapter -->> Core: Texto de borrador
+  Core ->> SessionStore: Guardar borrador (RAM)
+  Core -->> API: Draft
+  API -->> WebUI: Borrador editable
+  WebUI ->> API: Finalize (texto final)
+  API ->> Core: Finalize
+  Core ->> SessionStore: Marcar finalizada (RAM, sin persistir)
+  Core -->> API: OK
+  API -->> WebUI: 200 Success
+```
 
 
 ## 5. API Specifications
@@ -140,57 +216,56 @@ Aquí ponemos un diagrama de secuencia para este caso de uso
 - **Platform**: GitHub  
 
 #### Branch Strategy
-- **main (Ask):** Contiene únicamente código aprobado y listo para deploy.  
-- **develop (Ask):** Rama de integración donde se revisa el sistema completo antes de pasar a producción.  
-- **test (Show):** Rama de pruebas donde se integran backend y frontend para validar que funcionen en conjunto.  
-- **backend (Show):** Rama de trabajo del backend, donde se muestran avances de la API.  
-- **frontend (Show):** Rama de trabajo del frontend, donde se muestran avances de la interfaz.  
-- **feature/[nombre] (Ship):** Sub-branches temporales para implementar funcionalidades específicas (ejemplo: `feature/login-backend`, `feature/dashboard-frontend`).  
+- **main (Ask):** Contains only approved code ready for deployment.  
+- **develop (Ask):** Integration branch where the complete system is reviewed before moving to production.  
+- **test (Show):** Testing branch where backend and frontend are integrated to validate joint functionality.  
+- **backend (Show):** Backend working branch where API progress is shown.  
+- **frontend (Show):** Frontend working branch where interface progress is shown.  
+- **feature/[name] (Ship):** Temporary sub-branches to implement specific features (e.g., `feature/login-backend`, `feature/dashboard-frontend`).  
 
 #### Development Process
-1. Crear una rama `feature/[nombre]` desde `backend` o `frontend`.  
-2. Desarrollar la funcionalidad y hacer commits descriptivos.  
-3. Merge a `backend` o `frontend` (Show).  
-4. Integración en `test` (Show) para validar backend + frontend juntos.  
-5. Merge a `develop` (Ask), sujeto a code review.  
-6. QA manual y validaciones críticas en `develop`.  
-7. Merge final a `main` (Ask) para despliegue en producción.  
+1. Create a `feature/[name]` branch from `backend` or `frontend`.  
+2. Develop the feature and make descriptive commits.  
+3. Merge into `backend` or `frontend` (Show).  
+4. Integrate into `test` (Show) to validate backend + frontend together.  
+5. Merge into `develop` (Ask), subject to code review.  
+6. Manual QA and critical validations in `develop`.  
+7. Final merge into `main` (Ask) for production deployment.  
 
 #### Rules
-- Nunca mergear ramas Show directo a `main`.  
-- Todos los merges hacia `develop` y `main` deben hacerse mediante Pull Requests en GitHub con revisión por pares.  
-- Commits deben ser descriptivos y seguir un formato consistente.  
-- `main` siempre debe estar estable y listo para deploy inmediato.  
+- Never merge Show branches directly into `main`.  
+- All merges into `develop` and `main` must be done via Pull Requests on GitHub with peer review.  
+- Commits must be descriptive and follow a consistent format.  
+- `main` must always be stable and ready for immediate deployment.  
 
 ---
 
 ### 6.2 Quality Assurance (QA)
 
 #### Test Types
-- **Unit Tests:** Validar funciones y clases críticas de backend y frontend.  
-- **Integration Tests:** Validar interacción entre backend y frontend en la rama `test`.  
-- **API Tests:** Validar endpoints con herramientas dedicadas.  
-- **UI Tests:** Validar flujos en la interfaz de usuario.  
-- **Manual QA:** Revisión de casos de uso críticos en `develop`.  
-- **Code Reviews:** Todos los Pull Requests hacia ramas Ask (`develop` y `main`) deben ser aprobados por al menos otro integrante del equipo.  
+- **Unit Tests:** Validate critical backend and frontend functions and classes.  
+- **Integration Tests:** Validate interaction between backend and frontend in the `test` branch.  
+- **API Tests:** Validate endpoints using dedicated tools.  
+- **UI Tests:** Validate user interface flows.  
+- **Manual QA:** Review of critical use cases in `develop`.  
+- **Code Reviews:** All Pull Requests into Ask branches (`develop` and `main`) must be approved by at least one other team member.  
 
 #### Tools
 - **Backend (Unit Tests):** Jest / Mocha  
 - **Frontend (UI/Integration):** React Testing Library / Cypress  
 - **API Testing:** Postman / Thunder Client  
-- **CI/CD:** GitHub Actions para correr tests automáticos en cada Pull Request  
+- **CI/CD:** GitHub Actions to run automated tests on every Pull Request  
 
 #### Code Coverage
-- **Meta:** Cobertura >80% en código crítico.  
-- **Herramientas:** Jest (coverage report) y Cypress (para e2e).  
+- **Goal:** >80% coverage in critical code.  
+- **Tools:** Jest (coverage report) and Cypress (for e2e).  
 
 #### QA Process
-1. Ejecución de unit tests automáticos en cada push a sub-branch (Ship).  
-2. Integration tests al mergear a `backend`/`frontend` (Show).  
-3. API y UI tests en `test` antes de mergear a `develop`.  
-4. QA manual y code review obligatorio en `develop`.  
-5. Merge a `main` dispara deploy automático a producción si pasa todas las validaciones.  
-
+1. Automatic execution of unit tests on every push to a sub-branch (Ship).  
+2. Integration tests when merging into `backend`/`frontend` (Show).  
+3. API and UI tests in `test` before merging into `develop`.  
+4. Manual QA and mandatory code review in `develop`.  
+5. Merging into `main` triggers automatic deployment to production if all validations pass.  
 
 ## 7. Technical Justifications
 
@@ -198,23 +273,20 @@ Aquí ponemos un diagrama de secuencia para este caso de uso
 
 | Technology	| Alternatives Considered | Justification |
 |----------|--------------|---------------|
-| Para [Frontend] | [Alternativas] | [Razones para esta decisión] |
-| Para [Backend] | [Alternativas] | [Razones para esta decisión] |
-| Para [Database] | [Alternativas] | [Razones para esta decisión] |
-
+| Para Angular | React | Angular provides more scalability |
+| Para Node.js | Python & Fastapi | Frontend and backend are created in a single languaje |
 
 ### 7.2 Technology Choices
 
 | Decision | Alternatives | Justification |
 |-----|-----------|----------------------|
-| [E.g.: Microservices architecture] | [E.g.: Monolith] | [Reasons for this decision] |
-| [E.g.: JWT Authentication] | [E.g.: Sessions, OAuth] | [Reasons for this decision] |
-Si tienen más van con esa estructura
+| MCP Architecture | Monolith Architecture | Separation of flow control, state and persistence for more scalability |
+| Jwt Authentication | None | Technology that we know how to handle |
 
 ### 7.3 Scalability and Maintenance Considerations
 
-[Descripcion de como nuestr diseño técnico contempla el crecimiento futuro y facilita el mantenimiento de la aplicacióon]
-
+- Interface - Angular: Their premise is to be scalable and maintainable
+- Backend - Node.js: Having all the codebase in JS - TS makes the code easier to work with, given that it's on a single language
 
 **---**
 
