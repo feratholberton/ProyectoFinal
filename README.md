@@ -88,11 +88,6 @@ flowchart LR
 | Database | [MongoDB] | [Database para cargar datos de SNOMED CT & VADEMECUM] |
 | External Services | [Gemini 2.5 & MongoDB] | [Api para redaccion y generacion de opciones & MongoDB para consultar datos] |
 
-### 2.3 Data Flow
-
-Tenemos que describir cómo fluyen los datos entre los diferentes componentes de nuestro sistema
-
-
 ## 3. Components, Classes, and Database Design
 
 ### 3.1 Main Components and Classes
