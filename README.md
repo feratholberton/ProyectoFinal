@@ -93,38 +93,50 @@ flowchart LR
 ### 3.1 Main Components and Classes
 
 #### Back-end
-Listado y descripción de las clases principales, sus atributos y métodos
 
-#### Front-end
+**1. Controller (flow handler)**  
+Acts as the central orchestrator: decides which sub-endpoint to call, updates the in-memory model, and coordinates the interaction with the AI before returning a response to the frontend. It is the core of the loop.
 
-Listado de los componentes principales de la interfaz de usuario y sus interacciones
+- **Attributes:**
+  - `PasoActual`: string (`"consulta"`, `"antecedentes"`, etc.)  
+  - `PatientID`: ID of the session/patient received from AppEon  
+  - `PartialState`: JSON object storing the incremental state (instance of `ClinicalSummary`)  
 
-### 3.2 Database Design
+- **Methods:**
+  - `nextStep(input)`: receives the response from the frontend and decides which section to move to.  
+  - `savePartialState(data)`: stores info in temporary memory (not persisted in DB).  
+  - `getSuggestions(step)`: queries Gemini for contextualized options.  
+  - `buildSummary()`: builds the final JSON (`clinicalSummarySchema`).  
 
-Elegir uno según lo que necesitemos, A o B, borrar la A o la B y dejar solamente la opción
+---
 
-#### Option A: ER Diagram (for relational databases)
+**2. AIService (Gemini service)**  
+Handles communication with Gemini Flash 2.5.
 
-Aquí ponemos un diagrama ER que muestre tablas, atributos y relaciones si existen
+- **Attributes:**
+  - `model`: Gemini Flash 2.5  
+  - `context`: partial patient state (JSON or Markdown)  
 
-![Diagrama ER](ruta/a/la/imagen)
+- **Methods:**
+  - `generateOptions(step, context)`: returns suggested responses for a given section.  
+  - `summarizeCase(context)`: generates the complete clinical draft (editable).  
 
-#### Option B: Collection Structure (for NoSQL databases)
+---
 
-**Collection: users**
+**3. Model (central structure)**  
+Represents the clinical state of the consultation during the session.
 
 ```json
 {
-  "_id": "ObjectId",
-  "name": "String",
-  "email": "String",
-  "password": "String (hashed)",
-  "createdDate": "Date",
-  "lastAccess": "Date"
+  "consulta": "Dolor en primer dedo pie derecho...",
+  "antecedentes": ["HTA", "Diabetes"],
+  "alergias": ["Penicilina"],
+  "farmacos": ["Metformina"],
+  "anamnesis": "Paciente refiere dolor progresivo...",
+  "examenes_fisicos": "Eritema e impotencia funcional en 1° dedo...",
+  "resumen": "Paciente masculino de 50 años con cuadro compatible con..."
 }
 ```
-si necesitan mas colecciones las siguen poniendo aca abajo especificando que tipo de colección es
-
 
 ## 4. Sequence Diagrams
 
