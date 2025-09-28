@@ -39,6 +39,51 @@
 
 ##### Fig. 2 Architecture Diagram
 
+```mermaid
+flowchart LR
+  %% CONTEXTO
+  subgraph Ext["`Contexto externo`"]
+    AppEon["`AppEon<br/>SSO upstream (token/claims)`"]
+  end
+
+  %% CLIENTE
+  subgraph Client["`Cliente Web (SPA)`"]
+    UI["`Elio Web UI (React)<br/>Pantalla 1: Motivo<br/>Pantalla 2: Recolección<br/>Pantalla 3: Borrador`"]
+  end
+
+  %% API
+  subgraph API["`API Layer`"]
+    CTRL["`HTTP API / Controllers`"]
+    VAL["`Validación de entrada<br/>(DTOs / Schemas)`"]
+  end
+
+  %% CORE
+  subgraph CORE["`Application Core`"]
+    USE["`Use Cases / Services<br/>StartSession • RecordStep • GenerateDraft • Finalize`"]
+    ORCH["`Orchestrator de pasos`"]
+    RULES["`Rules / Policies`"]
+    PORTS["`Ports (Interfaces)<br/>SessionStore • LLMService`"]
+  end
+
+  %% INFRA
+  subgraph INFRA["`Infrastructure (Adapters)`"]
+    SESS["`SessionStore efímero<br/>RAM/TTL (sin disco)`"]
+    LLM["`LLM Adapter`"]
+    AUTH["`SSO Verifier`"]
+  end
+
+  %% FLUJOS PRINCIPALES (sin etiquetas en aristas)
+  AppEon --> UI
+  UI --> CTRL
+  CTRL --> AUTH --> CTRL
+  CTRL --> VAL --> USE
+  USE --> ORCH --> RULES --> ORCH
+  USE --> SESS
+  USE --> LLM
+  UI <--> CTRL
+```
+
+
 <div align="center">
   <img src="mermaid-diagram-2025-09-27-205839.png" alt="Architecture Diagram" width="1080">
   <p><em>Fig 2: Architecture Diagram.</em></p>
