@@ -5,10 +5,6 @@
 
 # Final Proyect ELIO
 
-# Centro Asistencial Médica de Maldonado
-
-## Project Technical Documentation
-
 ## Table of Contents
 
 1. User Stories and Mockups
