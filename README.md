@@ -301,5 +301,7 @@ sequenceDiagram
 
 
 ### References
-
-- [Lista de fuentes, documentación o estándares utilizados]
+- [Node.js](https://nodejs.org/) | Node.js® is a free, open-source, cross-platform JavaScript runtime environment that lets developers create servers, web apps, command line tools and scripts.
+- [Angular](https://angular.dev/) | Angular is a development platform for building mobile and desktop web applications using TypeScript/JavaScript.
+- [MongoDB Atlas](https://www.mongodb.com/products/platform) | Angular is a development platform for building mobile and desktop web applications using TypeScript/JavaScript.
+- [TypeScript](https://www.typescriptlang.org/) | TypeScript is a strongly typed superset of JavaScript that adds optional static type checking to the language. It was developed to address the shortcomings of JavaScript, particularly in large-scale application development.
