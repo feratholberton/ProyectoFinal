@@ -169,57 +169,56 @@ Aquí ponemos un diagrama de secuencia para este caso de uso
 - **Platform**: GitHub  
 
 #### Branch Strategy
-- **main (Ask):** Contiene únicamente código aprobado y listo para deploy.  
-- **develop (Ask):** Rama de integración donde se revisa el sistema completo antes de pasar a producción.  
-- **test (Show):** Rama de pruebas donde se integran backend y frontend para validar que funcionen en conjunto.  
-- **backend (Show):** Rama de trabajo del backend, donde se muestran avances de la API.  
-- **frontend (Show):** Rama de trabajo del frontend, donde se muestran avances de la interfaz.  
-- **feature/[nombre] (Ship):** Sub-branches temporales para implementar funcionalidades específicas (ejemplo: `feature/login-backend`, `feature/dashboard-frontend`).  
+- **main (Ask):** Contains only approved code ready for deployment.  
+- **develop (Ask):** Integration branch where the complete system is reviewed before moving to production.  
+- **test (Show):** Testing branch where backend and frontend are integrated to validate joint functionality.  
+- **backend (Show):** Backend working branch where API progress is shown.  
+- **frontend (Show):** Frontend working branch where interface progress is shown.  
+- **feature/[name] (Ship):** Temporary sub-branches to implement specific features (e.g., `feature/login-backend`, `feature/dashboard-frontend`).  
 
 #### Development Process
-1. Crear una rama `feature/[nombre]` desde `backend` o `frontend`.  
-2. Desarrollar la funcionalidad y hacer commits descriptivos.  
-3. Merge a `backend` o `frontend` (Show).  
-4. Integración en `test` (Show) para validar backend + frontend juntos.  
-5. Merge a `develop` (Ask), sujeto a code review.  
-6. QA manual y validaciones críticas en `develop`.  
-7. Merge final a `main` (Ask) para despliegue en producción.  
+1. Create a `feature/[name]` branch from `backend` or `frontend`.  
+2. Develop the feature and make descriptive commits.  
+3. Merge into `backend` or `frontend` (Show).  
+4. Integrate into `test` (Show) to validate backend + frontend together.  
+5. Merge into `develop` (Ask), subject to code review.  
+6. Manual QA and critical validations in `develop`.  
+7. Final merge into `main` (Ask) for production deployment.  
 
 #### Rules
-- Nunca mergear ramas Show directo a `main`.  
-- Todos los merges hacia `develop` y `main` deben hacerse mediante Pull Requests en GitHub con revisión por pares.  
-- Commits deben ser descriptivos y seguir un formato consistente.  
-- `main` siempre debe estar estable y listo para deploy inmediato.  
+- Never merge Show branches directly into `main`.  
+- All merges into `develop` and `main` must be done via Pull Requests on GitHub with peer review.  
+- Commits must be descriptive and follow a consistent format.  
+- `main` must always be stable and ready for immediate deployment.  
 
 ---
 
 ### 6.2 Quality Assurance (QA)
 
 #### Test Types
-- **Unit Tests:** Validar funciones y clases críticas de backend y frontend.  
-- **Integration Tests:** Validar interacción entre backend y frontend en la rama `test`.  
-- **API Tests:** Validar endpoints con herramientas dedicadas.  
-- **UI Tests:** Validar flujos en la interfaz de usuario.  
-- **Manual QA:** Revisión de casos de uso críticos en `develop`.  
-- **Code Reviews:** Todos los Pull Requests hacia ramas Ask (`develop` y `main`) deben ser aprobados por al menos otro integrante del equipo.  
+- **Unit Tests:** Validate critical backend and frontend functions and classes.  
+- **Integration Tests:** Validate interaction between backend and frontend in the `test` branch.  
+- **API Tests:** Validate endpoints using dedicated tools.  
+- **UI Tests:** Validate user interface flows.  
+- **Manual QA:** Review of critical use cases in `develop`.  
+- **Code Reviews:** All Pull Requests into Ask branches (`develop` and `main`) must be approved by at least one other team member.  
 
 #### Tools
 - **Backend (Unit Tests):** Jest / Mocha  
 - **Frontend (UI/Integration):** React Testing Library / Cypress  
 - **API Testing:** Postman / Thunder Client  
-- **CI/CD:** GitHub Actions para correr tests automáticos en cada Pull Request  
+- **CI/CD:** GitHub Actions to run automated tests on every Pull Request  
 
 #### Code Coverage
-- **Meta:** Cobertura >80% en código crítico.  
-- **Herramientas:** Jest (coverage report) y Cypress (para e2e).  
+- **Goal:** >80% coverage in critical code.  
+- **Tools:** Jest (coverage report) and Cypress (for e2e).  
 
 #### QA Process
-1. Ejecución de unit tests automáticos en cada push a sub-branch (Ship).  
-2. Integration tests al mergear a `backend`/`frontend` (Show).  
-3. API y UI tests en `test` antes de mergear a `develop`.  
-4. QA manual y code review obligatorio en `develop`.  
-5. Merge a `main` dispara deploy automático a producción si pasa todas las validaciones.  
-
+1. Automatic execution of unit tests on every push to a sub-branch (Ship).  
+2. Integration tests when merging into `backend`/`frontend` (Show).  
+3. API and UI tests in `test` before merging into `develop`.  
+4. Manual QA and mandatory code review in `develop`.  
+5. Merging into `main` triggers automatic deployment to production if all validations pass.  
 
 ## 7. Technical Justifications
 
