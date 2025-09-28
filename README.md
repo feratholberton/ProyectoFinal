@@ -227,17 +227,15 @@ Aquí ponemos un diagrama de secuencia para este caso de uso
 
 | Technology	| Alternatives Considered | Justification |
 |----------|--------------|---------------|
-| Para [Frontend] | [Alternativas] | [Razones para esta decisión] |
-| Para [Backend] | [Alternativas] | [Razones para esta decisión] |
-| Para [Database] | [Alternativas] | [Razones para esta decisión] |
-
+| Para [Angular] | [React] | [Angular provides more scalability] |
+| Para [Node.js] | [Python & Fastapi] | [Frontend and backend are created in a single languaje] |
 
 ### 7.2 Technology Choices
 
 | Decision | Alternatives | Justification |
 |-----|-----------|----------------------|
-| [E.g.: Microservices architecture] | [E.g.: Monolith] | [Reasons for this decision] |
-| [E.g.: JWT Authentication] | [E.g.: Sessions, OAuth] | [Reasons for this decision] |
+| [MCP Architecture] | [Monolith Architecture] | [] |
+| [E.g.: JWT Authentication] | [E.g.: Sessions, OAuth] | [Separation of flow control, state and persistence for more scalability] |
 Si tienen más van con esa estructura
 
 ### 7.3 Scalability and Maintenance Considerations
