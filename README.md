@@ -4,7 +4,7 @@
 
 Elio is a tool that allows medical consultations to be recorded in a more accessible, convenient, and efficient way. It automates the creation of clinical diagnostic reports so that doctors don’t have to write everything from scratch.
 
-This will save time, produce a more organized record, and later provide the ability to generate statistical samples of cases, pathologies, and clinical procedures.
+This will save time, produce a more organized record, and later provide the ability to generate statistical samples of cases, disease, and clinical diagnostic.
 
 ## Table of Contents
 
@@ -27,7 +27,7 @@ This will save time, produce a more organized record, and later provide the abil
 
 ### 1.2 Mockups
 
-[Fig. 1 Elio UI](https://www.figma.com/proto/GKUrCkbEFd4LLeZqOR6X9h/Elio?node-id=147-368&p=f&t=OtDCn1gyjt3f2z4H-0&scaling=min-zoom&content-scaling=fixed&page-id=147%3A368)
+[Elio User Interface](https://www.figma.com/proto/GKUrCkbEFd4LLeZqOR6X9h/Elio?node-id=147-368&p=f&t=OtDCn1gyjt3f2z4H-0&scaling=min-zoom&content-scaling=fixed&page-id=147%3A368)
 
 
 ## 2. System Architecture
@@ -39,12 +39,12 @@ This will save time, produce a more organized record, and later provide the abil
 ```mermaid
 flowchart LR
   %% CONTEXTO
-  subgraph Ext["`Contexto externo`"]
+  subgraph Ext["`External context`"]
     AppEon["`AppEon<br/>SSO upstream (token/claims)`"]
   end
 
   %% CLIENTE
-  subgraph Client["`Cliente Web (SPA)`"]
+  subgraph Client["`Web Client(SPA)`"]
     UI["`Elio Web UI (React)<br/>Pantalla 1: Motivo<br/>Pantalla 2: Recolección<br/>Pantalla 3: Borrador`"]
   end
 
@@ -84,10 +84,10 @@ flowchart LR
 
 | Components | Tecnology | Description |
 |-----|-----------|----------------------|
-| Frontend   | [Angular (Web - Framework)] | [SPA - Single Page Application] |
-| Backend    | [Node.js] | [Server Technology] |
-| Database | [MongoDB] | [Database para cargar datos de SNOMED CT & VADEMECUM] |
-| External Services | [Gemini 2.5 & MongoDB] | [Api para redaccion y generacion de opciones & MongoDB para consultar datos] |
+| Frontend   | Angular (Web - Framework) | SPA - Single Page Application |
+| Backend    | Node.js | Server Technology |
+| Database | MongoDB | Storing, managing, and retrieving data such as SNOMED CT codes & VADEMECUM names |
+| External Services | Gemini 2.5 & MongoDB | Gemini API for content generation and text embedding. MongoDB for storing, managing, and retrieving data |
 
 ## 3. Components, Classes, and Database Design
 
@@ -187,15 +187,14 @@ sequenceDiagram
   API -->> WebUI: 200 Success
 ```
 
-
 ## 5. API Specifications
 
 ### 5.1 External APIs
 
 | API | Purpose | Justification |
 |-----|-----------|---------------|
-| [Google Gemini 2.5] | [Content generation & Text embedding] | [It's the industry's standard to generate text together with OpenAI and it's free to use] |
-| [MongoDB] | [To allocate and search for VADEMECUM & SNOMED CT data] | [We know how to use it] |
+| Google Gemini 2.5 | Content generation & Text embedding | It's the industry's standard to generate text together with OpenAI and it's free to use |
+| MongoDB | To allocate and search for VADEMECUM & SNOMED CT data | We know how to use it |
 
 ### 5.2 Internal API
 
@@ -212,8 +211,6 @@ sequenceDiagram
 | `/api/edit` | GET | Read draft? | `json` | ```json``` |
 | `/api/edit` | PUT | Save edited draft | `json` | ```json``` |
 | `/api/end` | POST | Finalize session | `json` | ```json``` |
-
-
 
 ## 6. SCM and QA Strategies
 
@@ -281,8 +278,8 @@ sequenceDiagram
 
 | Technology	| Alternatives Considered | Justification |
 |----------|--------------|---------------|
-| Para Angular | React | Angular provides more scalability |
-| Para Node.js | Python & Fastapi | Frontend and backend are created in a single languaje |
+| Angular | React | Angular provides more scalability |
+| Node.js | Python & Fastapi | Frontend and backend are created in a single languaje |
 
 ### 7.2 Technology Choices
 
@@ -296,18 +293,15 @@ sequenceDiagram
 - Interface - Angular: Their premise is to be scalable and maintainable
 - Backend - Node.js: Having all the codebase in JS - TS makes the code easier to work with, given that it's on a single language
 
-**---**
-
-
 ## Appendices
 
 ### Glossary of Terms
 
 | Term | Definition |
 |---------|------------|
-| [RAG] | [Technique that enables large language models to retrieve and incorporate new info] |
-| [MCP] | [(Master Control Program) architecture is a system design where a central program manages and controls all resources and processes in a computer] |
-| [show/ship/ask] | [Structured way to share work in GitHub] |
+| RAG | Technique that enables large language models to retrieve and incorporate new info |
+| MCP | (Master Control Program) architecture is a system design where a central program manages and controls all resources and processes in a computer |
+| show/ship/ask | Structured way to share work in GitHub |
 
 
 ### References
