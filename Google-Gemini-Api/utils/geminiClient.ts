@@ -40,14 +40,17 @@ class GeminiClient {
     }
     
     this.genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
-    // Configure for Gemini 1.5 Flash (change to 2.5 when available)
+    // Using the stable Gemini 2.5 Flash model
     this.model = this.genAI.getGenerativeModel({
-      model: 'gemini-1.5-flash'
+      model: 'gemini-2.5-flash'
     });
   }
 
   async generateText(prompt: string, options: GenerationOptions = {}): Promise<GenerationResponse> {
     try {
+      console.log('generateText called with prompt:', prompt);
+      console.log('generateText options:', options);
+      
       const {
         temperature = 0.3,
         maxOutputTokens = 1000,
@@ -62,18 +65,34 @@ class GeminiClient {
         maxOutputTokens,
       };
 
+      console.log('Generation config:', generationConfig);
+
       const result: GenerateContentResult = await this.model.generateContent({
         contents: [{ role: 'user', parts: [{ text: prompt }] }],
         generationConfig,
       });
 
       const response = await result.response;
+      console.log('Raw response received');
+      console.log('Response text:', response.text());
+      console.log('Response candidates:', result.response.candidates);
+      console.log('Usage metadata:', response.usageMetadata);
+      
+      // Handle thinking models that might not produce visible text
+      let responseText = response.text();
+      if (!responseText && result.response.candidates && result.response.candidates.length > 0) {
+        const candidate = result.response.candidates[0];
+        if (candidate.content && candidate.content.parts && candidate.content.parts.length > 0) {
+          responseText = candidate.content.parts[0].text || '';
+        }
+      }
+      
       return {
         success: true,
-        text: response.text(),
+        text: responseText,
         usage: {
           promptTokens: response.usageMetadata?.promptTokenCount || 0,
-          completionTokens: response.usageMetadata?.candidatesTokenCount || 0,
+          completionTokens: response.usageMetadata?.candidatesTokenCount || (response.usageMetadata as any)?.thoughtsTokenCount || 0,
           totalTokens: response.usageMetadata?.totalTokenCount || 0
         }
       };
@@ -88,6 +107,16 @@ class GeminiClient {
 
   async generateChat(messages: ChatMessage[], options: GenerationOptions = {}): Promise<GenerationResponse> {
     try {
+      console.log('Chat request received with messages:', messages.length);
+      console.log('First message:', messages[0]);
+      
+      // For single message, use generateContent instead of chat
+      if (messages.length === 1) {
+        console.log('Using generateText for single message');
+        return await this.generateText(messages[0].content, options);
+      }
+
+      console.log('Using chat API for multiple messages');
       const chat = this.model.startChat({
         history: messages.slice(0, -1).map(msg => ({
           role: msg.role === 'assistant' ? 'model' : 'user',
@@ -110,7 +139,7 @@ class GeminiClient {
         text: response.text(),
         usage: {
           promptTokens: response.usageMetadata?.promptTokenCount || 0,
-          completionTokens: response.usageMetadata?.candidatesTokenCount || 0,
+          completionTokens: response.usageMetadata?.candidatesTokenCount || (response.usageMetadata as any)?.thoughtsTokenCount || 0,
           totalTokens: response.usageMetadata?.totalTokenCount || 0
         }
       };
