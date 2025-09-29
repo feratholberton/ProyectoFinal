@@ -190,13 +190,13 @@ After the data is sent, Elio will close and the PU will return to the EHR from w
 | ----- | ----- | ----- |
 | ***Stage 1: Idea Development*** | 31/08/2025 | **Completed** |
 | ***Etapa 2: Stage 2: Project Charter Development*** | 14/09/2025 | **Completed** |
-| ***Stage 3: Technical Documentation*** |  | **In process** |
-| ***Stage 4: MVP Development*** |  | **To be delivered** |
+| ***Stage 3: Technical Documentation*** | 28/09/2025 | **Completed** |
+| ***Stage 4: MVP Development*** |  | **In proccess** |
 | ***Stage 5: Project Closure*** |  | **To be delivered** |
 
 
 
-## Fecha: 11/09/2025
+## Fecha: 29/09/2025
 
 ## Equipo: 
 
