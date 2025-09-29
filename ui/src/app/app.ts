@@ -1,7 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
-const name:string = 'Elio'
+const name:string = 'Elio Segundo'
 
 @Component({
   selector: 'app-root',
