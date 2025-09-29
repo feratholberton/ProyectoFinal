@@ -4,7 +4,7 @@
 
 Elio is a tool that allows medical consultations to be recorded in a more accessible, convenient, and efficient way. It automates the creation of clinical diagnostic reports so that doctors don’t have to write everything from scratch.
 
-This will save time, produce a more organized record, and later provide the ability to generate statistical samples of cases, pathologies, and clinical procedures.
+This will save time, produce a more organized record, and later provide the ability to generate statistical samples of cases, disease, and clinical diagnostic.
 
 ## Table of Contents
 
@@ -27,7 +27,7 @@ This will save time, produce a more organized record, and later provide the abil
 
 ### 1.2 Mockups
 
-[Fig. 1 Elio UI](https://www.figma.com/proto/GKUrCkbEFd4LLeZqOR6X9h/Elio?node-id=147-368&p=f&t=OtDCn1gyjt3f2z4H-0&scaling=min-zoom&content-scaling=fixed&page-id=147%3A368)
+[Elio User Interface](https://www.figma.com/proto/GKUrCkbEFd4LLeZqOR6X9h/Elio?node-id=147-368&p=f&t=OtDCn1gyjt3f2z4H-0&scaling=min-zoom&content-scaling=fixed&page-id=147%3A368)
 
 
 ## 2. System Architecture
@@ -39,19 +39,19 @@ This will save time, produce a more organized record, and later provide the abil
 ```mermaid
 flowchart LR
   %% CONTEXTO
-  subgraph Ext["`Contexto externo`"]
+  subgraph Ext["`External context`"]
     AppEon["`AppEon<br/>SSO upstream (token/claims)`"]
   end
 
   %% CLIENTE
-  subgraph Client["`Cliente Web (SPA)`"]
-    UI["`Elio Web UI (React)<br/>Pantalla 1: Motivo<br/>Pantalla 2: Recolección<br/>Pantalla 3: Borrador`"]
+  subgraph Client["`Web Client(SPA)`"]
+    UI["`Elio Web UI<br/>Screen 1: Motivo<br/>Screen 2: Recolección<br/>Screen 3: Borrador`"]
   end
 
   %% API
   subgraph API["`API Layer`"]
     CTRL["`HTTP API / Controllers`"]
-    VAL["`Validación de entrada<br/>(DTOs / Schemas)`"]
+    VAL["`Input validation<br/>(DTOs / Schemas)`"]
   end
 
   %% CORE
@@ -64,7 +64,7 @@ flowchart LR
 
   %% INFRA
   subgraph INFRA["`Infrastructure (Adapters)`"]
-    SESS["`SessionStore efímero<br/>RAM/TTL (sin disco)`"]
+    SESS["`SessionStore RAM/TTL`"]
     LLM["`LLM Adapter`"]
     AUTH["`SSO Verifier`"]
   end
@@ -82,12 +82,12 @@ flowchart LR
 
 ### 2.2 Component Description
 
-| Componente | Tecnología | Descripción |
+| Components | Tecnology | Description |
 |-----|-----------|----------------------|
-| Frontend   | [Angular (Web - Framework)] | [SPA - Single Page Application] |
-| Backend    | [Node.js] | [Server Technology] |
-| Database | [MongoDB] | [Database para cargar datos de SNOMED CT & VADEMECUM] |
-| External Services | [Gemini 2.5 & MongoDB] | [Api para redaccion y generacion de opciones & MongoDB para consultar datos] |
+| Frontend   | Angular (Web - Framework) | SPA - Single Page Application |
+| Backend    | Node.js | Server Technology |
+| Database | MongoDB | Storing, managing, and retrieving data such as SNOMED CT codes & VADEMECUM names |
+| External Services | Gemini 2.5 & MongoDB | Gemini API for content generation and text embedding. MongoDB for storing, managing, and retrieving data |
 
 ## 3. Components, Classes, and Database Design
 
@@ -187,14 +187,14 @@ sequenceDiagram
   API -->> WebUI: 200 Success
 ```
 
-
 ## 5. API Specifications
 
 ### 5.1 External APIs
 
-| API | Purpose | Endpoints Used | Justification |
-|-----|-----------|----------------------|---------------|
-| [Nombre de API] | [Para qué se usa] | [Endpoints específicos] | [Por qué se eligió esta API] |
+| API | Purpose | Justification |
+|-----|-----------|---------------|
+| Google Gemini 2.5 | Content generation & Text embedding | It's the industry's standard to generate text together with OpenAI and it's free to use |
+| MongoDB | To allocate and search for VADEMECUM & SNOMED CT data | We know how to use it |
 
 ### 5.2 Internal API
 
@@ -202,10 +202,15 @@ sequenceDiagram
 
 | Route | HTTP Method | Description | Input Parameters | Output Format |
 |------|-------------|-------------|----------------------|-------------------|
-| `/api/usuarios` | GET | Obtener lista de usuarios | `?limite=10&pagina=1` | ```json { "usuarios": [...], "total": 100 }``` |
-| `/api/usuarios` | POST | Crear un nuevo usuario | ```json { "nombre": "...", "email": "...", "contraseña": "..." }``` | ```json { "id": "...", "nombre": "...", "email": "..." }``` |
-| `/api/usuarios/:id` | GET | Obtener detalle de usuario | `id` en URL | ```json { "id": "...", "nombre": "...", "email": "..." }``` |
-
+| `/api/init` | GET | Age, Gender | `String, Number` | ```json { "Age": x, "Gender": "x" }``` |
+| `/api/init` | POST | Age, Gender, Motivo_consulta | `String, Number,` | ```json { "Age": x, "Gender": "x", "Motivo_consulta": "x" }``` |
+| `/api/collect` | GET | Read state? | `json` | ```json``` |
+| `/api/collect` | POST | Submit step answers | `json` | ```json``` |
+| `/api/crear_nota` | GET | Read draft? | `json` | ```json``` |
+| `/api/crear_nota` | POST | Generate draft | `json` | ```json``` |
+| `/api/edit` | GET | Read draft? | `json` | ```json``` |
+| `/api/edit` | PUT | Save edited draft | `json` | ```json``` |
+| `/api/end` | POST | Finalize session | `json` | ```json``` |
 
 ## 6. SCM and QA Strategies
 
@@ -252,7 +257,7 @@ sequenceDiagram
 
 #### Tools
 - **Backend (Unit Tests):** Jest / Mocha  
-- **Frontend (UI/Integration):** React Testing Library / Cypress  
+- **Frontend (UI/Integration):** Jasmine testing framework
 - **API Testing:** Postman / Thunder Client  
 - **CI/CD:** GitHub Actions to run automated tests on every Pull Request  
 
@@ -273,8 +278,8 @@ sequenceDiagram
 
 | Technology	| Alternatives Considered | Justification |
 |----------|--------------|---------------|
-| Para Angular | React | Angular provides more scalability |
-| Para Node.js | Python & Fastapi | Frontend and backend are created in a single languaje |
+| Angular | React | Angular provides more scalability |
+| Node.js | Python & Fastapi | Frontend and backend are created in a single languaje |
 
 ### 7.2 Technology Choices
 
@@ -288,18 +293,19 @@ sequenceDiagram
 - Interface - Angular: Their premise is to be scalable and maintainable
 - Backend - Node.js: Having all the codebase in JS - TS makes the code easier to work with, given that it's on a single language
 
-**---**
-
-
 ## Appendices
 
 ### Glossary of Terms
 
 | Term | Definition |
 |---------|------------|
-| [Término técnico] | [Definición de lo que es] |
+| RAG | Technique that enables large language models to retrieve and incorporate new info |
+| MCP | (Master Control Program) architecture is a system design where a central program manages and controls all resources and processes in a computer |
+| show/ship/ask | Structured way to share work in GitHub |
 
 
 ### References
-
-- [Lista de fuentes, documentación o estándares utilizados]
+- [Node.js](https://nodejs.org/): Node.js® is a free, open-source, cross-platform JavaScript runtime environment that lets developers create servers, web apps, command line tools and scripts.
+- [Angular](https://angular.dev/): Angular is a development platform for building mobile and desktop web applications using TypeScript/JavaScript.
+- [MongoDB Atlas](https://www.mongodb.com/products/platform): MongoDB Atlas is a fully managed, multi-cloud database-as-a-service (DBaaS) built on MongoDB's flexible document model that simplifies the deployment, operation, and scaling of global applications.
+- [TypeScript](https://www.typescriptlang.org/): TypeScript is a strongly typed superset of JavaScript that adds optional static type checking to the language. It was developed to address the shortcomings of JavaScript, particularly in large-scale application development.
