@@ -45,13 +45,13 @@ flowchart LR
 
   %% CLIENTE
   subgraph Client["`Web Client(SPA)`"]
-    UI["`Elio Web UI (React)<br/>Pantalla 1: Motivo<br/>Pantalla 2: Recolección<br/>Pantalla 3: Borrador`"]
+    UI["`Elio Web UI<br/>Screen 1: Motivo<br/>Screen 2: Recolección<br/>Screen 3: Borrador`"]
   end
 
   %% API
   subgraph API["`API Layer`"]
     CTRL["`HTTP API / Controllers`"]
-    VAL["`Validación de entrada<br/>(DTOs / Schemas)`"]
+    VAL["`Input validation<br/>(DTOs / Schemas)`"]
   end
 
   %% CORE
@@ -64,7 +64,7 @@ flowchart LR
 
   %% INFRA
   subgraph INFRA["`Infrastructure (Adapters)`"]
-    SESS["`SessionStore efímero<br/>RAM/TTL (sin disco)`"]
+    SESS["`SessionStore RAM/TTL`"]
     LLM["`LLM Adapter`"]
     AUTH["`SSO Verifier`"]
   end
@@ -257,7 +257,7 @@ sequenceDiagram
 
 #### Tools
 - **Backend (Unit Tests):** Jest / Mocha  
-- **Frontend (UI/Integration):** React Testing Library / Cypress  
+- **Frontend (UI/Integration):** Jasmine testing framework
 - **API Testing:** Postman / Thunder Client  
 - **CI/CD:** GitHub Actions to run automated tests on every Pull Request  
 
