@@ -1,27 +1,55 @@
-const fastify = require('fastify')({ 
+import Fastify, { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import cors from '@fastify/cors';
+import helmet from '@fastify/helmet';
+import * as dotenv from 'dotenv';
+import GeminiClient, { GenerationOptions, ChatMessage } from './utils/geminiClient';
+
+dotenv.config();
+
+// Interfaces para las requests
+interface GenerateRequest {
+  Body: {
+    prompt: string;
+    options?: GenerationOptions;
+  };
+}
+
+interface ChatRequest {
+  Body: {
+    messages: ChatMessage[];
+    options?: GenerationOptions;
+  };
+}
+
+interface HealthResponse {
+  status: string;
+  timestamp: string;
+  version: string;
+}
+
+// Crear instancia de Fastify
+const fastify: FastifyInstance = Fastify({ 
   logger: true,
   bodyLimit: 10485760 // 10MB
 });
-require('dotenv').config();
 
-const GeminiClient = require('./utils/geminiClient');
 const geminiClient = new GeminiClient();
 
 // Registrar plugins
-async function registerPlugins() {
+async function registerPlugins(): Promise<void> {
   // CORS
-  await fastify.register(require('@fastify/cors'), {
+  await fastify.register(cors, {
     origin: true
   });
 
   // Helmet para seguridad
-  await fastify.register(require('@fastify/helmet'));
+  await fastify.register(helmet);
 }
 
 // Registrar rutas
-async function registerRoutes() {
+async function registerRoutes(): Promise<void> {
   // Health check
-  fastify.get('/health', async (request, reply) => {
+  fastify.get<{ Reply: HealthResponse }>('/health', async (request: FastifyRequest, reply: FastifyReply): Promise<HealthResponse> => {
     return {
       status: 'OK',
       timestamp: new Date().toISOString(),
@@ -30,7 +58,7 @@ async function registerRoutes() {
   });
 
   // POST /api/gemini/generate - Generar texto simple
-  fastify.post('/api/gemini/generate', {
+  fastify.post<GenerateRequest>('/api/gemini/generate', {
     schema: {
       body: {
         type: 'object',
@@ -49,13 +77,13 @@ async function registerRoutes() {
         }
       }
     }
-  }, async (request, reply) => {
+  }, async (request: FastifyRequest<GenerateRequest>, reply: FastifyReply) => {
     const { prompt, options = {} } = request.body;
 
     try {
       const result = await geminiClient.generateText(prompt, options);
       return result;
-    } catch (error) {
+    } catch (error: any) {
       reply.status(500);
       return {
         success: false,
@@ -65,7 +93,7 @@ async function registerRoutes() {
   });
 
   // POST /api/gemini/chat - Chat conversacional
-  fastify.post('/api/gemini/chat', {
+  fastify.post<ChatRequest>('/api/gemini/chat', {
     schema: {
       body: {
         type: 'object',
@@ -94,7 +122,7 @@ async function registerRoutes() {
         }
       }
     }
-  }, async (request, reply) => {
+  }, async (request: FastifyRequest<ChatRequest>, reply: FastifyReply) => {
     const { messages, options = {} } = request.body;
 
     if (!messages || messages.length === 0) {
@@ -108,7 +136,7 @@ async function registerRoutes() {
     try {
       const result = await geminiClient.generateChat(messages, options);
       return result;
-    } catch (error) {
+    } catch (error: any) {
       reply.status(500);
       return {
         success: false,
@@ -119,12 +147,12 @@ async function registerRoutes() {
 }
 
 // Inicializar servidor
-async function start() {
+async function start(): Promise<void> {
   try {
     await registerPlugins();
     await registerRoutes();
 
-    const PORT = process.env.PORT || 3000;
+    const PORT = process.env.PORT ? parseInt(process.env.PORT) : 3000;
     await fastify.listen({ port: PORT, host: '0.0.0.0' });
     
     console.log(`Fastify server running on port ${PORT}`);
@@ -137,7 +165,7 @@ async function start() {
 
 // Manejo de cierre graceful
 process.on('SIGINT', async () => {
-  console.log('\nShutting down CALVO Y GAY...');
+  console.log('\nShutting down...');
   await fastify.close();
   process.exit(0);
 });
