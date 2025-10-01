@@ -21,8 +21,8 @@ export async function getGeminiOptions(motivo: string) : Promise<string[]> {
     // procesar la respuesta para devolver un array de opciones
     const opciones = response
     .split('\n')
-    .map(line => line.replace(/^\d+\.\s*/, '').trim()) // quitar números y espacios
-    .filter(line => line.length > 0); // quitar lineas vacias
+    .map((line: string) => line.replace(/^\d+\.\s*/, '').trim()) // quitar números y espacios
+    .filter((line: string) => line.length > 0); // quitar lineas vacias
 
     // devolver solo 8 opciones
     return opciones.slice(0, 8);
