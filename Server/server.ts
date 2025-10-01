@@ -1,6 +1,6 @@
 
 import Fastify from 'fastify';
-import registerEndpoints from './endpoints.js';
+import registerEndpoints from './endpoints/index.js';
 import swagger from "@fastify/swagger";
 import swaggerUI from "@fastify/swagger-ui";
 
