@@ -3,6 +3,7 @@ import registerStartEndpoint from "./start.js";
 import registerCollectEndpoint from "./collect.js";
 import registerConsultaEndpoint from "./consulta.js";
 import registerEndEndpoint from "./end.js";
+import registerConsultaTestEndpoint from "./consulta.js";
 import swagger from "@fastify/swagger";
 import swaggerUI from "@fastify/swagger-ui";
 
@@ -23,4 +24,5 @@ export default async function registerEndpoints(fastify: FastifyInstance) {
   registerCollectEndpoint(fastify);
   registerConsultaEndpoint(fastify);
   registerEndEndpoint(fastify);
+  registerConsultaTestEndpoint(fastify); // endpoint de testing
 }
