@@ -1,0 +1,15 @@
+<section>
+  <h2>Datos del paciente</h2>
+
+  @if (patient$ | async; as patient) {
+    <ul>
+      @for (item of patient; track item.id) {
+        <li>
+          {{ item.age }} — {{ item.gender }}
+        </li>
+      }
+    </ul>
+  } @else {
+    <div>Loading…</div>
+  }
+</section>
