@@ -7,14 +7,7 @@ import { getGeminiOptions } from "../ai/aiService.ts";
 export const sessions = new Map<string, ConsultationController>();
 
 export default function registerStartEndpoint(fastify: FastifyInstance) {
-  // Endpoint GET /start para navegadores
-  fastify.get("/start", async (req, reply) => {
-    return {
-      message: "Usa POST /start para crear una nueva consulta. Este endpoint solo acepta POST para crear recursos.",
-      status: "ok"
-    };
-  });
-
+ 
   fastify.post<{ Body: { motivo_consulta: string } }>(
     "/start",
     {
