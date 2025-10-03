@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@fastify/cors": "^11.1.0",
+    "@google/generative-ai": "^0.24.1"
+  }
+}

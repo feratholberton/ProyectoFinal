@@ -1,29 +1,41 @@
-// importar el sdk de gemini
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import dotenv from "dotenv";
+dotenv.config();
 
-// leer api key desde las variables de entorno
 const apiKey = process.env.GEMINI_API_KEY;
+if (!apiKey) {
+    throw new Error("GEMINI_API_KEY no definida en .env");
+}
 
-// inicializar cliente de gemini
-export const gemini = new GoogleGenerativeAI(apiKey!);
+export const gemini = new GoogleGenerativeAI(apiKey);
 
-// con esto voy a usar gemini para llamar a los métodos de la api de gemini
-
-export async function getGeminiOptions(motivo: string) : Promise<string[]> {
-    // transformar lo que viene en json a md
+// Obtener opciones sugeridas por Gemini
+export async function getGeminiOptions(motivo: string): Promise<string[]> {
     const prompt = `## Motivo de consulta\n${motivo}\n\nGenera 8 opciones relevantes para continuar la consulta médica. Devuelve solo una lista en texto plano.`;
+    try {
+        const model = gemini.getGenerativeModel({ model: "gemini-pro" });
+        const result = await model.generateContent(prompt);
+        const response = await result.response.text();
+        const opciones = response
+            .split("\n")
+            .map((line: string) => line.replace(/^\d+\.\s*/, "").trim())
+            .filter((line: string) => line.length > 0);
+        return opciones.slice(0, 8);
+    } catch (error) {
+        console.error("Error llamando a Gemini:", error);
+        return ["Error al obtener opciones de Gemini."];
+    }
+}
 
-    // llamo a gemini
-    const model = gemini.getGenerativeModel({ model: "gemini-pro" });
-    const result = await model.generateContent(prompt);
-    const response = await result.response.txt();
-
-    // procesar la respuesta para devolver un array de opciones
-    const opciones = response
-    .split('\n')
-    .map((line: string) => line.replace(/^\d+\.\s*/, '').trim()) // quitar números y espacios
-    .filter((line: string) => line.length > 0); // quitar lineas vacias
-
-    // devolver solo 8 opciones
-    return opciones.slice(0, 8);
+// Obtener un borrador clínico completo
+export async function getGeminiDraft(contexto: string): Promise<string> {
+    const prompt = `## Contexto clínico\n${contexto}\n\nGenera un borrador clínico estructurado en secciones (antecedentes, alergias, fármacos, anamnesis, examen físico, resumen). Devuelve solo el texto del borrador.`;
+    try {
+        const model = gemini.getGenerativeModel({ model: "gemini-pro" });
+        const result = await model.generateContent(prompt);
+        return await result.response.text();
+    } catch (error) {
+        console.error("Error generando borrador con Gemini:", error);
+        return "Error al generar borrador clínico.";
+    }
 }
