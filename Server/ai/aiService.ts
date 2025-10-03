@@ -11,7 +11,7 @@ export const gemini = new GoogleGenerativeAI(apiKey);
 
 // Obtener opciones sugeridas por Gemini
 export async function getGeminiOptions(motivo: string): Promise<string[]> {
-    const prompt = `## Motivo de consulta\n${motivo}\n\nGenera 8 opciones relevantes para continuar la consulta médica. Devuelve solo una lista en texto plano.`;
+    const prompt = `## Motivo de consulta\n${motivo}\n\nGenera 8 opciones relevantes de posibles antecedentes basandote en el motivo de consulta para continuar la consulta médica. Devuelve solo una lista en texto plano.`;
     try {
         const model = gemini.getGenerativeModel({ model: "gemini-2.5-flash" });
         const result = await model.generateContent(prompt);

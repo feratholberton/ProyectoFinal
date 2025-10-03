@@ -99,4 +99,12 @@ export default function registerConsultaEndpoint(fastify: FastifyInstance) {
       };
     }
   );
+
+  // Endpoint GET /consulta-test para probar el backend
+  fastify.get("/consulta-test", async (req, reply) => {
+    return {
+      message: "ENDPOINT PARA PELADOS.",
+      status: "ok",
+    };
+  });
 }
