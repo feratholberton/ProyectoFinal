@@ -24,5 +24,4 @@ export default async function registerEndpoints(fastify: FastifyInstance) {
   registerCollectEndpoint(fastify);
   registerConsultaEndpoint(fastify);
   registerEndEndpoint(fastify);
-  registerConsultaTestEndpoint(fastify); // endpoint de testing
 }
