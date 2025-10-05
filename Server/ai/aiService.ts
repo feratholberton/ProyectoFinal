@@ -10,8 +10,44 @@ if (!apiKey) {
 export const gemini = new GoogleGenerativeAI(apiKey);
 
 // Obtener opciones sugeridas por Gemini
-export async function getGeminiOptions(motivo: string): Promise<string[]> {
-    const prompt = `## Motivo de consulta\n${motivo}\n\nGenera 8 opciones relevantes de posibles antecedentes basandote en el motivo de consulta para continuar la consulta médica. Devuelve solo una lista en texto plano.`;
+export async function getGeminiOptions(input: string, tipo: string): Promise<string[]> {
+    let prompt = "";
+    switch (tipo) {
+        case "antecedentes":
+            prompt = `Motivo de consulta: ${input}.
+      Genera 8 posibles antecedentes relevantes para este motivo.
+      Solo lista los antecedentes (2–5 palabras cada uno), sin texto adicional.`;
+            break;
+      
+      case "alergias":
+        prompt = `Antecedentes del paciente: ${input}.
+      Genera posibles alergias farmacológicas o ambientales relevantes.
+      Devuelve solo texto plano.`;
+        break;
+
+      case "farmacos":
+        prompt = `Antecedentes: ${input}.
+      Genera una lista de posibles fármacos habituales que podría usar este paciente.
+      Devuelve solo texto plano.`;
+        break;
+
+        case "anamnesis":
+      prompt = `Motivo de consulta: ${input}.
+      Genera preguntas de anamnesis médica breves y relevantes para continuar la historia clínica.
+      Devuelve solo texto plano.`;
+      break;
+
+        case "examen_fisico":
+        prompt = `Contexto clínico: ${input}.
+      Genera una lista de hallazgos posibles para el examen físico por sistemas.
+      Devuelve solo texto plano.`;
+        break;
+
+        default:
+            prompt = input;
+            break;
+    
+    }
     try {
         const model = gemini.getGenerativeModel({ model: "gemini-2.5-flash" });
         const result = await model.generateContent(prompt);

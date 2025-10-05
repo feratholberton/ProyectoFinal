@@ -2,6 +2,7 @@ import type { FastifyInstance } from "fastify";
 import { PartialState, simulateGeminiOptions, Option } from "../session.ts";
 import { ConsultationController } from "../controller.ts";
 import { getGeminiOptions } from "../ai/aiService.ts";
+import { stringify } from "querystring";
 
 // Compartir el mismo sessions map entre todos los endpoints
 export const sessions = new Map<string, ConsultationController>();
@@ -51,7 +52,7 @@ export default function registerStartEndpoint(fastify: FastifyInstance) {
       const controller = new ConsultationController(patientID);
 
       // llamo a gemini
-      const opcionesGemini = await getGeminiOptions(motivo_consulta);
+      const opcionesGemini = await getGeminiOptions(motivo_consulta, "antecedentes");
       // formateo las opciones para que tengan formato label checked
       const opciones = opcionesGemini.map(label => ({ label, checked: false }));
 
