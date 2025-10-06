@@ -1,5 +1,6 @@
 import type { FastifyInstance } from "fastify";
 import { sessions } from "./start.ts";
+import { getGeminiResumen } from "../ai/aiService.ts"
 
 export default function registerEndEndpoint(fastify: FastifyInstance) {
   fastify.post<{ Body: { id: string } }>(
@@ -34,7 +35,7 @@ export default function registerEndEndpoint(fastify: FastifyInstance) {
       const controller = sessions.get(id);
       if (!controller) return reply.status(404).send({ error: "No existe la sesión" });
       const partialState = controller.getPartialState();
-      const resumen = `Resumen clínico para el motivo: ${partialState.motivo_consulta || "-"}.\nDatos: ${JSON.stringify(partialState)}`;
+      const resumen = await getGeminiResumen(partialState);
       return { resumen, partialState };
     }
   );

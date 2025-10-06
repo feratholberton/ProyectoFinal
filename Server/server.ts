@@ -1,6 +1,6 @@
 import Fastify from 'fastify';
 import cors from '@fastify/cors';
-import registerEndpoints from './endpoints/index.js';
+import registerEndpoints from './endpoints/index.ts';
 import swagger from "@fastify/swagger";
 import swaggerUI from "@fastify/swagger-ui";
 import 'dotenv/config';

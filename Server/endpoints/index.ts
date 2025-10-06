@@ -1,9 +1,8 @@
 import type { FastifyInstance } from "fastify";
-import registerStartEndpoint from "./start.js";
-import registerCollectEndpoint from "./collect.js";
-import registerConsultaEndpoint from "./consulta.js";
-import registerEndEndpoint from "./end.js";
-import registerConsultaTestEndpoint from "./consulta.js";
+import registerStartEndpoint from "./start.ts";
+import registerCollectEndpoint from "./collect.ts";
+import registerConsultaEndpoint from "./consulta.ts";
+import registerEndEndpoint from "./end.ts";
 import swagger from "@fastify/swagger";
 import swaggerUI from "@fastify/swagger-ui";
 

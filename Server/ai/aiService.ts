@@ -1,5 +1,10 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { anamnesisPrompt } from "./anamnesisPrompt.ts";
+import { prompts } from "./prompts.ts"
+import { buildClinicalPrompt } from "./resumenPrompt.ts"
 import dotenv from "dotenv";
+import { PartialState } from "../session.ts";
+
 dotenv.config();
 
 const apiKey = process.env.GEMINI_API_KEY;
@@ -14,33 +19,23 @@ export async function getGeminiOptions(input: string, tipo: string): Promise<str
     let prompt = "";
     switch (tipo) {
         case "antecedentes":
-            prompt = `Motivo de consulta: ${input}.
-      Genera 8 posibles antecedentes relevantes para este motivo.
-      Solo lista los antecedentes (2–5 palabras cada uno), sin texto adicional.`;
+          prompt = prompts.antecedentes(input)
             break;
-      
-      case "alergias":
-        prompt = `Antecedentes del paciente: ${input}.
-      Genera posibles alergias farmacológicas o ambientales relevantes.
-      Devuelve solo texto plano.`;
-        break;
 
+      case "alergias":
+        prompt = prompts.alergias(input)
+        break;
+        
       case "farmacos":
-        prompt = `Antecedentes: ${input}.
-      Genera una lista de posibles fármacos habituales que podría usar este paciente.
-      Devuelve solo texto plano.`;
+        prompt = prompts.farmacos(input)
         break;
 
         case "anamnesis":
-      prompt = `Motivo de consulta: ${input}.
-      Genera preguntas de anamnesis médica breves y relevantes para continuar la historia clínica.
-      Devuelve solo texto plano.`;
+      prompt = prompts.anamnesis(input, anamnesisPrompt);
       break;
 
         case "examen_fisico":
-        prompt = `Contexto clínico: ${input}.
-      Genera una lista de hallazgos posibles para el examen físico por sistemas.
-      Devuelve solo texto plano.`;
+        prompt = prompts.examen_fisico(input);
         break;
 
         default:
@@ -56,7 +51,13 @@ export async function getGeminiOptions(input: string, tipo: string): Promise<str
             .split("\n")
             .map((line: string) => line.replace(/^\d+\.\s*/, "").trim())
             .filter((line: string) => line.length > 0);
-        return opciones.slice(0, 8);
+
+        // limitar 8 opciones pero si es anamnesis mandar formulario hardcodeado
+        if (tipo === "anamnesis") {
+          return opciones;
+        } else {
+            return opciones.slice(0, 8);
+        }       
     } catch (error) {
         console.error("Error llamando a Gemini:", error);
         return ["Error al obtener opciones de Gemini."];
@@ -64,14 +65,14 @@ export async function getGeminiOptions(input: string, tipo: string): Promise<str
 }
 
 // Obtener un borrador clínico completo
-export async function getGeminiDraft(contexto: string): Promise<string> {
-    const prompt = `## Contexto clínico\n${contexto}\n\nGenera un borrador clínico estructurado en secciones (antecedentes, alergias, fármacos, anamnesis, examen físico, resumen). Devuelve solo el texto del borrador.`;
+export async function getGeminiResumen(state: PartialState): Promise<string> {
+    const prompt = buildClinicalPrompt(state);
     try {
-        const model = gemini.getGenerativeModel({ model: "gemini-pro" });
-        const result = await model.generateContent(prompt);
-        return await result.response.text();
+      const model = gemini.getGenerativeModel({ model: "gemini-2.5-flash" });
+      const result = await model.generateContent(prompt);
+      return await result.response.text();
     } catch (error) {
-        console.error("Error generando borrador con Gemini:", error);
-        return "Error al generar borrador clínico.";
+      console.error("Error generando resumen clinico con Gemini:", error);
+      return "Error al generar el resumen clinico.";
     }
 }
