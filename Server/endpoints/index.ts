@@ -3,6 +3,7 @@ import registerStartEndpoint from "./start.ts";
 import registerCollectEndpoint from "./collect.ts";
 import registerConsultaEndpoint from "./consulta.ts";
 import registerEndEndpoint from "./end.ts";
+import registerGeneratorEndpoint from "./generator.ts";
 import swagger from "@fastify/swagger";
 import swaggerUI from "@fastify/swagger-ui";
 
@@ -23,4 +24,5 @@ export default async function registerEndpoints(fastify: FastifyInstance) {
   registerCollectEndpoint(fastify);
   registerConsultaEndpoint(fastify);
   registerEndEndpoint(fastify);
+  registerGeneratorEndpoint(fastify);
 }

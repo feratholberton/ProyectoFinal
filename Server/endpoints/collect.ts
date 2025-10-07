@@ -1,47 +1,34 @@
 import type { FastifyInstance } from "fastify";
-import { PartialState, Option } from "../session.ts";
-import { getGeminiOptions } from "../ai/aiService.ts"
+import { PartialState } from "../session.ts";
 import { ConsultationController } from "../controller.ts";
 import { sessions } from "./start.ts";
 
 export default function registerCollectEndpoint(fastify: FastifyInstance) {
-  fastify.post<{ Body: { id: string; opciones: Option[] } }>(
+  fastify.post<{ Body: { id: string; opciones1: string[]; opciones2: string[]; opciones3: string[]; opciones4: string[]; opciones5: string[]; opciones6: string[]; opciones7: string[]; opciones8: string[] } }>(
     "/api/collect",
     {
       schema: {
-        description: "Recibe opciones seleccionadas, actualiza el estado y devuelve nuevas opciones",
+        description: "Recibe opciones seleccionadas (8 campos separados) y las guarda en partialState",
         body: {
           type: "object",
-          required: ["id", "opciones"],
+          required: ["id"],
           properties: {
             id: { type: "string", description: "ID de la sesión" },
-            opciones: {
-              type: "array",
-              items: {
-                type: "object",
-                properties: {
-                  label: { type: "string" },
-                  checked: { type: "boolean" },
-                },
-              },
-            },
+            opciones1: { type: "array", items: { type: "string" }, description: "Opción 1 seleccionada" },
+            opciones2: { type: "array", items: { type: "string" }, description: "Opción 2 seleccionada" },
+            opciones3: { type: "array", items: { type: "string" }, description: "Opción 3 seleccionada" },
+            opciones4: { type: "array", items: { type: "string" }, description: "Opción 4 seleccionada" },
+            opciones5: { type: "array", items: { type: "string" }, description: "Opción 5 seleccionada" },
+            opciones6: { type: "array", items: { type: "string" }, description: "Opción 6 seleccionada" },
+            opciones7: { type: "array", items: { type: "string" }, description: "Opción 7 seleccionada" },
+            opciones8: { type: "array", items: { type: "string" }, description: "Opción 8 seleccionada" },
           },
         },
         response: {
           200: {
             type: "object",
             properties: {
-              pasoActual: { type: "string" },
-              opciones: {
-                type: "array",
-                items: {
-                  type: "object",
-                  properties: {
-                    label: { type: "string" },
-                    checked: { type: "boolean" },
-                  },
-                },
-              },
+              partialState: { type: "object", description: "Estado parcial actualizado" },
             },
           },
           404: {
@@ -52,28 +39,23 @@ export default function registerCollectEndpoint(fastify: FastifyInstance) {
       },
     },
     async (req, reply) => {
-      const { id, opciones } = req.body;
+      const { id, opciones1, opciones2, opciones3, opciones4, opciones5, opciones6, opciones7, opciones8 } = req.body;
       const controller = sessions.get(id);
       if (!controller) return reply.status(404).send({ error: "No existe la sesión" });
+
+      // Recolectar opciones seleccionadas (solo las que tienen contenido y no son placeholders)
+      const opciones: { label: string; checked: boolean }[] = [];
+      [opciones1, opciones2, opciones3, opciones4, opciones5, opciones6, opciones7, opciones8].forEach((opt, index) => {
+        if (opt && opt.length > 0 && opt[0] !== 'string') {
+          opciones.push({ label: opt[0], checked: true });
+        }
+      });
+
+      // Solo guardar las opciones seleccionadas en partialState
       controller.savePartialState({ opciones });
 
-      // Avanzar al siguiente paso
-      controller.nextStep();
-
-      // determino el prompt dinamicamente segun el paso
-      const tipo = controller.getCurrentStep(); // devuelve antecedentes, alergias etc
-      // construir el input para gemini a partir de las opciones seleccionadas
-      const seleccionadas = opciones.filter( o => o.checked).map( o => o.label).join(", ");
-      // obtener nuevas opciones desde gemini
-      const nuevasOpcionesRaw = await getGeminiOptions(controller.getPartialState(), tipo);
-
-      // formatear nuevas opciones para que sean del tipo label/checked/false
-      const nuevasOpciones = nuevasOpcionesRaw.map(label => ({ label, checked: false }));
-      controller.savePartialState({ opciones: nuevasOpciones});
-
       return {
-        pasoActual: tipo,
-        opciones: nuevasOpciones,
+        partialState: controller.getPartialState(),
       };
     }
   );
