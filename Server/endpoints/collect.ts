@@ -57,12 +57,15 @@ export default function registerCollectEndpoint(fastify: FastifyInstance) {
       if (!controller) return reply.status(404).send({ error: "No existe la sesión" });
       controller.savePartialState({ opciones });
 
+      // Avanzar al siguiente paso
+      controller.nextStep();
+
       // determino el prompt dinamicamente segun el paso
       const tipo = controller.getCurrentStep(); // devuelve antecedentes, alergias etc
       // construir el input para gemini a partir de las opciones seleccionadas
       const seleccionadas = opciones.filter( o => o.checked).map( o => o.label).join(", ");
       // obtener nuevas opciones desde gemini
-      const nuevasOpcionesRaw = await getGeminiOptions(seleccionadas, tipo);
+      const nuevasOpcionesRaw = await getGeminiOptions(controller.getPartialState(), tipo);
 
       // formatear nuevas opciones para que sean del tipo label/checked/false
       const nuevasOpciones = nuevasOpcionesRaw.map(label => ({ label, checked: false }));
