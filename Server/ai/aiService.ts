@@ -15,31 +15,31 @@ if (!apiKey) {
 export const gemini = new GoogleGenerativeAI(apiKey);
 
 // Obtener opciones sugeridas por Gemini
-export async function getGeminiOptions(input: string, tipo: string): Promise<string[]> {
+export async function getGeminiOptions(state: PartialState, tipo: string): Promise<string[]> {
     let prompt = "";
     switch (tipo) {
         case "antecedentes":
-          prompt = prompts.antecedentes(input)
+          prompt = prompts.antecedentes(state)
             break;
 
       case "alergias":
-        prompt = prompts.alergias(input)
+        prompt = prompts.alergias(state)
         break;
         
       case "farmacos":
-        prompt = prompts.farmacos(input)
+        prompt = prompts.farmacos(state)
         break;
 
         case "anamnesis":
-      prompt = prompts.anamnesis(input, anamnesisPrompt);
+      prompt = prompts.anamnesis(state, anamnesisPrompt);
       break;
 
         case "examen_fisico":
-        prompt = prompts.examen_fisico(input);
+        prompt = prompts.examen_fisico(state);
         break;
 
         default:
-            prompt = input;
+            prompt = JSON.stringify(state);
             break;
     
     }
@@ -47,10 +47,22 @@ export async function getGeminiOptions(input: string, tipo: string): Promise<str
         const model = gemini.getGenerativeModel({ model: "gemini-2.5-flash" });
         const result = await model.generateContent(prompt);
         const response = await result.response.text();
-        const opciones = response
-            .split("\n")
-            .map((line: string) => line.replace(/^\d+\.\s*/, "").trim())
-            .filter((line: string) => line.length > 0);
+        let cleanedResponse = response.replace(/```json\s*/g, '').replace(/```\s*/g, '').trim();
+        let opciones: string[] = [];
+        try {
+            const parsed = JSON.parse(cleanedResponse);
+            if (Array.isArray(parsed)) {
+                opciones = parsed;
+            } else {
+                throw new Error("Not array");
+            }
+        } catch {
+            // Fallback to splitting
+            opciones = cleanedResponse
+                .split("\n")
+                .map((line: string) => line.replace(/^\d+\.\s*/, "").trim())
+                .filter((line: string) => line.length > 0);
+        }
 
         // limitar 8 opciones pero si es anamnesis mandar formulario hardcodeado
         if (tipo === "anamnesis") {

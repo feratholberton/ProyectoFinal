@@ -30,7 +30,9 @@ export class ConsultationController {
   }
 
   savePartialState(update: Partial<PartialState>): void {
+    console.log('Saving partial state:', update);
     this.partialState = { ...this.partialState, ...update };
+    console.log('New partial state:', this.partialState);
   }
 
   getPartialState(): PartialState {

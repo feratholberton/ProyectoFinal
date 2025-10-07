@@ -23,12 +23,3 @@ export interface PartialState {
   resumen_clinico?: string;
   opciones?: Option[]; 
 }
-
-
-// Funcion para simular las opciones que tira gemini
-export function simulateGeminiOptions(context: string): Option[] {
-  return Array.from({ length: 8 }, (_, i) => ({
-    label: `Opción ${i + 1} para ${context}`,
-    checked: false,
-  }));
-}

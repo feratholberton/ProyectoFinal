@@ -1,19 +1,21 @@
+import { PartialState } from "../session.ts";
+
 export const prompts = {
-  antecedentes: (input: string) => `Motivo de consulta: ${input}.
+  antecedentes: (state: PartialState) => `Motivo de consulta: ${state.motivo_consulta || 'no especificado'}.
 Genera 8 posibles antecedentes relevantes para este motivo.
-Solo lista los antecedentes (2–5 palabras cada uno), sin texto adicional.`,
+Responde únicamente con un array JSON válido de strings, sin texto adicional ni explicaciones. Por ejemplo: ["antecedente1", "antecedente2", ...]`,
 
-  alergias: (input: string) => `Antecedentes del paciente: ${input}.
+  alergias: (state: PartialState) => `Antecedentes del paciente: ${state.antecedentes_personales?.join(', ') || 'no especificados'}.
 Genera 8 posibles alergias farmacológicas o ambientales relevantes.
-Cada una debe tener solo 2 o 3 palabras. Devuelve solo texto plano.`,
+Responde únicamente con un array JSON válido de strings, sin texto adicional ni explicaciones.`,
 
-  farmacos: (input: string) => `Antecedentes: ${input}.
+  farmacos: (state: PartialState) => `Antecedentes: ${state.antecedentes_personales?.join(', ') || 'no especificados'}.
 Genera una lista de 8 posibles fármacos habituales que podría usar este paciente.
-Devuelve solo el nombre del farmaco y no texto adicional. Devuelve solo texto plano.`,
+Responde únicamente con un array JSON válido de strings, sin texto adicional ni explicaciones.`,
 
-  anamnesis: (input: string, anamnesisPrompt: string) => `Motivo de consulta: ${input}.\n${anamnesisPrompt}`,
+  anamnesis: (state: PartialState, anamnesisPrompt: string) => `Motivo de consulta: ${state.motivo_consulta || 'no especificado'}.\n${anamnesisPrompt}\n\nResponde únicamente con un array JSON válido de strings (las preguntas), sin texto adicional ni explicaciones.`,
 
-  examen_fisico: (input: string) => `Contexto clínico: ${input}.
+  examen_fisico: (state: PartialState) => `Contexto clínico: ${JSON.stringify(state)}.
 Genera una lista de hallazgos posibles para el examen físico por sistemas.
-Devuelve solo texto plano.`,
+Responde únicamente con un array JSON válido de strings, sin texto adicional ni explicaciones.`,
 };
