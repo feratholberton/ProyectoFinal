@@ -1,4 +1,4 @@
-# Node.js dependencies
+cd ..# Node.js dependencies
 Server/node_modules/
 Google-Gemini-Api/node_modules/
 
@@ -32,3 +32,32 @@ build/
 # Logs
 logs
 *.log
+
+# Coverage
+coverage/
+lcov-report/
+coverage-final.json
+.nyc_output/
+
+# Test caches / temp
+.vitest/
+.vitest-cache/
+.test-cache/
+
+# Cache / temp directories
+.cache/
+.parcel-cache/
+.tmp/
+.next/
+.turbo/
+
+# Server logs
+server.log
+
+# Runtime logs produced by the Server/ process
+/Server/server.log
+/Server/*.log
+
+# Misc
+*.tgz
+*.local

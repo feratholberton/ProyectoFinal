@@ -4,9 +4,9 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "start": "node --loader ts-node/esm server.ts",
-    "dev": "node --loader ts-node/esm --watch server.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "start": "node --loader ts-node/esm src/server.ts",
+  "dev": "node --loader ts-node/esm --watch src/server.ts",
+    "test": "vitest"
   },
   "keywords": [],
   "author": "",
@@ -24,6 +24,7 @@
   "devDependencies": {
     "@types/node": "^24.6.0",
     "ts-node": "^10.9.2",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.2",
+    "vitest": "^1.0.0"
   }
 }

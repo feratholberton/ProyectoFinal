@@ -12,7 +12,7 @@
     "noEmit": true
   },
   "include": [
-    "./**/*ts" // incluir todos los archivos TypeScript en el proyecto 
+    "./**/*.ts" // incluir todos los archivos TypeScript en el proyecto 
   ],
   "ts-node": {
     "esm": true
