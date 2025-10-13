@@ -11,8 +11,8 @@ export default function registerConsultaEndpoint(fastify: FastifyInstance, repo:
     async (req, reply) => {
       try {
         const { id } = req.params;
-        const useCase = advanceUseCase ?? new (await import('../../../../application/use-cases/AdvanceStepUseCase.ts')).AdvanceStepUseCase(repo);
-        const { AdvanceStepRequest } = await import('../../../../application/dtos/AdvanceStepRequest.ts');
+  const useCase = advanceUseCase ?? new (await import('../../../application/use-cases/AdvanceStepUseCase.ts')).AdvanceStepUseCase(repo);
+  const { AdvanceStepRequest } = await import('../../../application/dtos/AdvanceStepRequest.ts');
         const dto = AdvanceStepRequest.fromHttp(req.body);
         const result = await useCase.execute(id, dto.partial as PartialState);
         return reply.status(200).send(result);
@@ -31,9 +31,9 @@ export default function registerConsultaEndpoint(fastify: FastifyInstance, repo:
     async (req, reply) => {
       try {
         const { id } = req.params;
-        const useCase = getUseCase ?? new (await import('../../../../application/use-cases/GetConsultationUseCase.ts')).GetConsultationUseCase(repo);
-        const result = await useCase.execute(id);
-        const { ConsultationResponse } = await import('../../../../application/dtos/ConsultationResponse.ts');
+  const useCase = getUseCase ?? new (await import('../../../application/use-cases/GetConsultationUseCase.ts')).GetConsultationUseCase(repo);
+  const result = await useCase.execute(id);
+  const { ConsultationResponse } = await import('../../../application/dtos/ConsultationResponse.ts');
         return reply.status(200).send(ConsultationResponse.toHttp(result));
       } catch (err: any) {
   const { mapDomainErrorToHttp } = await import('../errorMapper.ts');

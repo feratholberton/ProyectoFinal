@@ -1,2 +1,2 @@
-export { DomainError } from './DomainError.ts';
-export { NotFoundError } from './NotFoundError.ts';
+export { DomainError } from '../../src/domain/errors/DomainError.ts';
+export { NotFoundError } from '../../src/domain/errors/NotFoundError.ts';
