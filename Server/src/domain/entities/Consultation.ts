@@ -41,7 +41,7 @@ export class Consultation {
   }
 
   getPartialState(): PartialState {
-    // Return a plain deep-cloned object to avoid prototype/serialization issues
+
     return JSON.parse(JSON.stringify(this.partialState ?? {}));
   }
 

@@ -12,9 +12,8 @@ export class AdvanceStepUseCase {
       throw new NotFoundError('No existe la sesión');
     }
 
-    // Validate provided fields using domain VOs
     if (update.antecedentes_personales) {
-      // ensure it's an array
+
       const arr = Array.isArray(update.antecedentes_personales) ? update.antecedentes_personales : [];
       arr.forEach((a) => new AntecedentePersonal(a));
     }

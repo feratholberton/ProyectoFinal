@@ -3,10 +3,8 @@ import cors from '@fastify/cors';
 import registerRoutes from './infrastructure/http/routes/index.ts';
 import 'dotenv/config';
 
-// inicializar instancia de Fastify
 const fastify = Fastify({ logger: true });
 
-// Configurar el swagger and register routes
 (async () => {
   try {
 	await fastify.register(cors, { origin: 'https://proyectofinal-87zc.onrender.com' });
