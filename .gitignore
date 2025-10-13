@@ -78,3 +78,13 @@ Server/test/
 **/test/
 
 /.github/workflows/
+
+/test-gemini.ts
+
+*.pid
+
+test.pid
+
+# test jsons
+test-*.json
+*.test.json
