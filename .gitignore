@@ -68,3 +68,11 @@ Google-Gemini-Api/keys.json
 Google-Gemini-Api/node_modules/
 # ignore node_modules at the root level
 /node_modules/
+
+# Ignore node_modules anywhere (safe catch-all)
+node_modules/
+
+# Ignore test directories
+test/
+Server/test/
+**/test/
