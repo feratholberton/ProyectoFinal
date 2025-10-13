@@ -61,3 +61,10 @@ server.log
 # Misc
 *.tgz
 *.local
+
+# Ignore Google Gemini API keys file
+Google-Gemini-Api/keys.json
+# Ignore Node.js dependencies in the Google Gemini API directory
+Google-Gemini-Api/node_modules/
+# ignore node_modules at the root level
+/node_modules/
