@@ -9,12 +9,18 @@ import swaggerUI from '@fastify/swagger-ui';
 import { createContainer } from '../../config/di-container.ts';
 
 export default async function registerRoutes(fastify: FastifyInstance) {
-  await fastify.register(swagger, {
-    openapi: {
-      info: { title: 'Elio', version: '1.0.0', description: 'API de testing' },
-      servers: [{ url: 'http://localhost:10000', description: 'Servidor local' }],
-    },
-  });
+  const swaggerBase = process.env.SWAGGER_BASE_URL;
+  const openapi: any = {
+    info: { title: 'Elio', version: '1.0.0', description: 'API de testing' },
+  };
+  if (swaggerBase) {
+    openapi.servers = [{ url: swaggerBase, description: 'Base URL (env: SWAGGER_BASE_URL)' }];
+    fastify.log.info({ swaggerBase }, 'Swagger base URL configured');
+  } else {
+    fastify.log.info('No SWAGGER_BASE_URL set — Swagger UI will use request origin');
+  }
+
+  await fastify.register(swagger, { openapi });
 
   await fastify.register(swaggerUI, {
     routePrefix: '/docs',
