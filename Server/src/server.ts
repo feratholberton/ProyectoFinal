@@ -6,8 +6,10 @@ import 'dotenv/config';
 const fastify = Fastify({ logger: true });
 
 (async () => {
-  try {
-	await fastify.register(cors, { origin: 'https://proyectofinal-87zc.onrender.com' });
+	try {
+	const corsOrigin = process.env.CORS_ORIGIN ?? true; // set to a string or true to allow all
+	await fastify.register(cors, { origin: corsOrigin });
+	fastify.log.info({ corsOrigin }, 'CORS origin configured');
 	await registerRoutes(fastify);
 
 	const port = process.env.PORT ? Number(process.env.PORT) : 10000;
