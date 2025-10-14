@@ -1,4 +1,4 @@
-cd ..# Node.js dependencies
+# Node.js dependencies
 Server/node_modules/
 Google-Gemini-Api/node_modules/
 
@@ -88,3 +88,9 @@ test.pid
 # test jsons
 test-*.json
 *.test.json
+
+# Allow deployment files to be committed (if present)
+!Dockerfile
+!Procfile
+!render.yaml
+!tsconfig.json
