@@ -49,11 +49,11 @@ This document outlines the database schema used in the backend of the **Proyecto
 
 ## Relationships
 
-- **`users` ➡ `orders`:**
+- **`users` -> `orders`:**
   - One user can place multiple orders, but each order belongs to only one user.
-- **`orders` ➡ `order_items`:**
+- **`orders` -> `order_items`:**
   - One order can have multiple items, but each item belongs to only one order.
-- **`products` ➡ `order_items`:**
+- **`products` -> `order_items`:**
   - One product can appear in multiple orders, but each order item refers to only one product.
 
 ---
