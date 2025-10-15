@@ -1,0 +1,43 @@
+<div class="consultation-form">
+  <h2>Iniciar Consulta</h2>
+  
+  <form (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="motivoConsulta">Motivo de Consulta:</label>
+      <textarea
+        id="motivoConsulta"
+        [value]="motivoConsulta()"
+        (input)="updateMotivoConsulta($any($event.target).value)"
+        placeholder="Ejemplo: Dolor primer dedo pie"
+        rows="4"
+        [disabled]="isLoading()"
+        required
+      ></textarea>
+    </div>
+
+    @if (error()) {
+      <div class="error-message">
+        {{ error() }}
+      </div>
+    }
+
+    @if (response()) {
+      <div class="success-message">
+        <h3>Consulta iniciada exitosamente</h3>
+        <pre>{{ response() | json }}</pre>
+      </div>
+    }
+
+    <button 
+      type="submit" 
+      [disabled]="isLoading() || !motivoConsulta().trim()"
+      class="submit-button"
+    >
+      @if (isLoading()) {
+        <span>Enviando...</span>
+      } @else {
+        <span>Iniciar Consulta</span>
+      }
+    </button>
+  </form>
+</div>
