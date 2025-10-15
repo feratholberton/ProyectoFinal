@@ -3,5 +3,5 @@ export type StepType =
   | 'antecedentes'
   | 'alergias'
   | 'farmacos'
-  | 'examenFisico'
+  // 'examenFisico' removed (archived) - use examen_fisico_sections in session partial state instead
   | 'resumen';

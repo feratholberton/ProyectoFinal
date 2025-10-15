@@ -8,7 +8,7 @@ export class Consultation {
     'antecedentes',
     'alergias',
     'farmacos',
-    'examenFisico',
+  // 'examenFisico' removed (archived)
     'resumen',
   ];
   private pasoActual: ConsultationStep;

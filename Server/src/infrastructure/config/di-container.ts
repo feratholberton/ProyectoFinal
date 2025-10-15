@@ -7,8 +7,6 @@ import { GenerateOptionsUseCase } from '../../application/use-cases/GenerateOpti
 import { GenerateSummaryUseCase } from '../../application/use-cases/GenerateSummaryUseCase.ts';
 import { AdvanceStepUseCase } from '../../application/use-cases/AdvanceStepUseCase.ts';
 import { GetConsultationUseCase } from '../../application/use-cases/GetConsultationUseCase.ts';
-import { SaveExamenFisicoUseCase } from '../../application/use-cases/SaveExamenFisicoUseCase.ts';
-import { GetExamenFisicoUseCase } from '../../application/use-cases/GetExamenFisicoUseCase.ts';
 
 export function createContainer() {
   const aiService = new GeminiAIService(process.env.GEMINI_API_KEY);
@@ -21,8 +19,7 @@ export function createContainer() {
   const generateSummaryUseCase = new GenerateSummaryUseCase(repo, aiService);
   const advanceStepUseCase = new AdvanceStepUseCase(repo);
   const getConsultationUseCase = new GetConsultationUseCase(repo);
-  const saveExamenFisicoUseCase = new SaveExamenFisicoUseCase(repo as any);
-  const getExamenFisicoUseCase = new GetExamenFisicoUseCase(repo as any);
+  // ExamenFisico use-cases were archived as part of cleanup
 
   return {
     aiService,
@@ -34,7 +31,6 @@ export function createContainer() {
     generateSummaryUseCase,
     advanceStepUseCase,
     getConsultationUseCase,
-    saveExamenFisicoUseCase,
-    getExamenFisicoUseCase,
+  // saveExamenFisicoUseCase and getExamenFisicoUseCase removed (archived)
   } as const;
 }

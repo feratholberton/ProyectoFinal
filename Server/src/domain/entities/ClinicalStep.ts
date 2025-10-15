@@ -3,5 +3,5 @@ export type ClinicalStep =
   | 'antecedentes'
   | 'alergias'
   | 'farmacos'
-  | 'examenFisico'
+  // 'examenFisico' removed (archived)
   | 'resumen';

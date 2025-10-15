@@ -25,12 +25,15 @@ export class PromptBuilder {
   }
 
   farmacos(state: PartialState) {
-  const antecedentes = state.antecedentes_personales?.join(', ') || 'no especificados';
-  const edad = (state as any).edad ?? 'edad no especificada';
+    const antecedentes = state.antecedentes_personales?.join(', ') || 'no especificados';
+    const edad = (state as any).edad ?? 'edad no especificada';
+    const motivo = state.motivo_consulta || 'motivo no especificado';
 
-      const motivo = state.motivo_consulta || 'motivo no especificado';
-
-    const context = `Eres un médico clínico. Datos: Edad: ${edad} años. Antecedentes patológicos: ${antecedentes}. Motivo: "${motivo}".\nGenera hasta 8 medicamentos o clases farmacológicas que podrían ser razonablemente considerados para este caso. Prioriza nombres genéricos cuando sea posible. NO incluyas dosis, pautas ni recomendaciones de uso. Si la información clínica es insuficiente para proponer fármacos específicos, devuelve sugerencias generales de clases (por ejemplo: "AINEs", "Antibiótico tópico para conjuntivitis") o responde con []. No inventes fármacos, dosis ni fechas.`;
+    const context = `Eres un médico clínico. Datos: Edad: ${edad} años. Antecedentes patológicos: ${antecedentes}. Motivo: "${motivo}".` +
+      ' Genera hasta 8 medicamentos o clases farmacológicas que podrían ser razonablemente considerados para este caso.' +
+      ' Incluye NOMBRE GENÉRICO. Prioriza nombres genéricos cuando sea posible.' +
+      ' Si la información clínica es insuficiente para proponer fármacos específicos, devuelve sugerencias generales de clases (por ejemplo: "AINEs", "Antibiótico tópico para conjuntivitis") o responde con [].' +
+      ' No inventes fármacos, dosis ni fechas.';
 
     return this.header(context) + `\n\nEjemplo: ["Ibuprofeno", "Cloranfenicol", "AINEs"]`;
   }

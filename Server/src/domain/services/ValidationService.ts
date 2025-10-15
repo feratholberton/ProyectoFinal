@@ -1,4 +1,4 @@
-import { AntecedentePersonal, Alergia, FarmacoHabitual, ExamenFisico } from '../value-objects/index.ts';
+import { AntecedentePersonal, Alergia, FarmacoHabitual } from '../value-objects/index.ts';
 
 export class ValidationService {
   validateAntecedentes(list: any[]) {
@@ -11,6 +11,6 @@ export class ValidationService {
     (list ?? []).forEach(f => new FarmacoHabitual(f));
   }
   validateExamen(text: any) {
-    if (text) new ExamenFisico(text);
+  // legacy examen_fisico textual validation removed (archived). Use structured examen_fisico_sections validation if needed.
   }
 }

@@ -1,6 +1,6 @@
 import type { IConsultationRepository } from "../../infrastructure/adapters/persistence/IConsultationRepository.ts";
 import type { PartialState } from '../../session.ts';
-import { AntecedentePersonal, Alergia, FarmacoHabitual, ExamenFisico } from '../../domain/value-objects/index.ts';
+import { AntecedentePersonal, Alergia, FarmacoHabitual } from '../../domain/value-objects/index.ts';
 
 export class AdvanceStepUseCase {
   constructor(private repo: IConsultationRepository) {}
@@ -28,9 +28,8 @@ export class AdvanceStepUseCase {
       arr.forEach((f) => new FarmacoHabitual(f));
     }
 
-    if (update.examen_fisico) {
-      new ExamenFisico(update.examen_fisico);
-    }
+    // examen_fisico (legacy textual field) was removed/archived. New structured sections are handled by SaveExamenFisicoUseCase.
+    // If an update carries legacy 'examen_fisico' text, we intentionally ignore it here.
 
     consultation.savePartialState(update);
     consultation.nextStep();

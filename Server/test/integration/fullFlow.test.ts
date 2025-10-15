@@ -1,6 +1,6 @@
 import Fastify from 'fastify';
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import registerEndpoints from '../../endpoints/index.ts';
+import registerRoutes from '../../src/infrastructure/http/routes/index';
 import { createContainer as createRealContainer } from '../../infrastructure/config/di-container.ts';
 import type { IAIService } from '../../infrastructure/adapters/ai/IAIService.ts';
 class MockAIService implements IAIService {
@@ -43,12 +43,12 @@ describe('integration - full flow', () => {
     const advanceStepUseCase = new AdvanceStepUseCase(repo);
     const getConsultationUseCase = new GetConsultationUseCase(repo);
 
-    // register endpoints with our test use-cases
-    await import('../../endpoints/start.ts').then(m => m.default(fastify, startUseCase));
-    await import('../../endpoints/generator.ts').then(m => m.default(fastify, generateOptionsUseCase));
-    await import('../../endpoints/collect.ts').then(m => m.default(fastify, collectUseCase));
-    await import('../../endpoints/consulta.ts').then(m => m.default(fastify, repo, advanceStepUseCase, getConsultationUseCase));
-    await import('../../endpoints/end.ts').then(m => m.default(fastify, generateSummaryUseCase));
+  // register routes with our test use-cases
+  await import('../../src/infrastructure/http/routes/start.ts').then(m => m.default(fastify, startUseCase));
+  await import('../../src/infrastructure/http/routes/generator.ts').then(m => m.default(fastify, generateOptionsUseCase));
+  await import('../../src/infrastructure/http/routes/collect.ts').then(m => m.default(fastify, collectUseCase));
+  await import('../../src/infrastructure/http/routes/consulta.ts').then(m => m.default(fastify, repo, advanceStepUseCase, getConsultationUseCase));
+  await import('../../src/infrastructure/http/routes/end.ts').then(m => m.default(fastify, generateSummaryUseCase));
 
     await fastify.ready();
   });
