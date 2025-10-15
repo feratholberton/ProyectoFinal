@@ -1,6 +1,6 @@
 # Backend Architecture
 
-This document describes the architecture of the backend for **proyectoFinalELIO**, including code organization, main components, and their interaction.
+This document describes the architecture of the backend for **proyecto Final ELIO**, including code organization, main components, and their interaction.
 
 ---
 

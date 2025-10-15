@@ -1,7 +1,7 @@
 # Backend Documentation
 
 ## Description
-This is the backend for **proyectoFinalELIO**, responsible for handling server logic, database communication, and exposing the API for the frontend.
+This is the backend for **proyecto Final ELIO**, responsible for handling server logic, database communication, and exposing the API for the frontend.
 
 ## Project Structure
 The main structure of the backend is as follows:
@@ -26,7 +26,7 @@ Follow these steps to install and run the backend:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/ferholberton/proyectoFinal.git
+   git clone https://github.com/your-username/proyectoFinal.git
    cd proyectoFinal
    ```
 
@@ -68,4 +68,4 @@ Contributions are welcome. Please follow the steps outlined in `CONTRIBUTING.md`
 For more information, contact the lead developer:
 - **Name:** (Fill in your name)
 - **Email:** (Fill in your email)
-- **GitHub:** [ferholberton](https://github.com/ferholberton)
+- **GitHub:** [your-username](https://github.com/your-username)

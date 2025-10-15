@@ -70,7 +70,6 @@ We welcome pull requests for bug fixes, new features, or other improvements. Fol
 
 - Be respectful and considerate to other contributors.
 - Provide constructive feedback during code reviews.
-- Follow the [Code of Conduct](CODE_OF_CONDUCT.md) (if applicable).
 
 ---
 
@@ -82,4 +81,4 @@ If you have any questions or need further assistance, feel free to:
 
 ---
 
-Thank you for contributing to **proyecto Final ELIO**! Your efforts make this project better for everyone.
+Thank you for contributing to **proyecto Final ELIO**!

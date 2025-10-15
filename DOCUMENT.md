@@ -1,6 +1,6 @@
 ![Banner with stakeholders logos](./banner.png)
 
-# Elio
+# ELIO
 
 Elio is a tool that allows medical consultations to be recorded in a more accessible, convenient, and efficient way. It automates the creation of clinical diagnostic reports so that doctors don’t have to write everything from scratch.
 
@@ -38,23 +38,19 @@ This will save time, produce a more organized record, and later provide the abil
 
 ```mermaid
 flowchart LR
-  %% CONTEXTO
   subgraph Ext["`External context`"]
     AppEon["`AppEon<br/>SSO upstream (token/claims)`"]
   end
 
-  %% CLIENTE
   subgraph Client["`Web Client(SPA)`"]
     UI["`Elio Web UI<br/>Screen 1: Motivo<br/>Screen 2: Recolección<br/>Screen 3: Borrador`"]
   end
 
-  %% API
   subgraph API["`API Layer`"]
     CTRL["`HTTP API / Controllers`"]
     VAL["`Input validation<br/>(DTOs / Schemas)`"]
   end
 
-  %% CORE
   subgraph CORE["`Application Core`"]
     USE["`Use Cases / Services<br/>StartSession • RecordStep • GenerateDraft • Finalize`"]
     ORCH["`Orchestrator de pasos`"]
@@ -62,14 +58,12 @@ flowchart LR
     PORTS["`Ports (Interfaces)<br/>SessionStore • LLMService`"]
   end
 
-  %% INFRA
   subgraph INFRA["`Infrastructure (Adapters)`"]
     SESS["`SessionStore RAM/TTL`"]
     LLM["`LLM Adapter`"]
     AUTH["`SSO Verifier`"]
   end
 
-  %% FLUJOS PRINCIPALES (sin etiquetas en aristas)
   AppEon --> UI
   UI --> CTRL
   CTRL --> AUTH --> CTRL

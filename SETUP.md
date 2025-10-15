@@ -1,6 +1,6 @@
 # Development Environment Setup
 
-This document explains the steps required to set up the backend development environment for **proyectoFinalELIO**.
+This document explains the steps required to set up the backend development environment for **proyecto Final ELIO**.
 
 ---
 
@@ -22,7 +22,7 @@ Before starting, make sure you have the following installed on your machine:
 
 First, clone the project repository to your local machine:
 ```bash
-git clone https://github.com/ferholberton/proyectoFinal.git
+git clone https://github.com/new-user/proyectoFinal.git
 cd proyectoFinal
 ```
 
@@ -80,7 +80,7 @@ Start the backend server by running:
 npm start
 ```
 
-The server will be available at [http://localhost:3000](http://localhost:3000) by default.
+The server will be available at [http://localhost:10000](http://localhost:10000) by default.
 
 ---
 
@@ -107,3 +107,5 @@ The server will be available at [http://localhost:3000](http://localhost:3000) b
   ```
 
 ---
+
+If you have questions or need support, please contact the development team.

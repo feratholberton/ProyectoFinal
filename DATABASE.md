@@ -60,11 +60,6 @@ This document outlines the database schema used in the backend of the **Proyecto
 
 ## ER Diagram
 
-## ER Diagram
-
-```plaintext
-## ER Diagram
-
 ```plaintext
 +-----------+        +-----------+        +--------------+        +---------------+
 |   users   |        |  orders   |        |  order_items |        |   products    |
@@ -78,7 +73,6 @@ This document outlines the database schema used in the backend of the **Proyecto
 +-----------+        +-----------+        +--------------+        +---------------+
 
 ```
-
 ---
 
 ## Additional Notes
