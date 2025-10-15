@@ -49,7 +49,7 @@ To start the server, use:
 ```bash
 npm start
 ```
-The server will run at [http://localhost:3000](http://localhost:3000) by default (you can change the port in the `.env` file).
+The server will run at [http://localhost:10000](http://localhost:10000) by default (you can change the port in the `.env` file).
 
 ## Main Endpoints
 Check the full API documentation in the `API_DOCUMENTATION.md` file (coming soon).

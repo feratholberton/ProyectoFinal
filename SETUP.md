@@ -45,7 +45,7 @@ Create a `.env` file at the root of the project and define the following variabl
 
 ```env
 # Port for the server
-PORT=3000
+PORT=10000
 
 # Database Configuration
 DB_HOST=localhost

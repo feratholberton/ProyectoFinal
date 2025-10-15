@@ -8,7 +8,7 @@ This document describes the available endpoints in the backend of the **proyecto
 
 The API is available at:
 ```
-http://localhost:3000/api
+http://localhost:10000/api
 ```
 
 ---
