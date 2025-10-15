@@ -58,3 +58,15 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+
+curl -X 'POST'
+'https://backend-w6ii.onrender.com/start'
+-H 'accept: application/json'
+-H 'Content-Type: application/json'
+-d '{
+"motivo_consulta": "Dolor primer dedo pie"
+}'
+
+https://www.geeksforgeeks.org/angular-js/how-to-use-httpclient-in-angular/
+
