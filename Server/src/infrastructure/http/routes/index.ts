@@ -4,7 +4,6 @@ import registerCollectEndpoint from './collect.ts';
 import registerConsultaEndpoint from './consulta.ts';
 import registerEndEndpoint from './end.ts';
 import registerGeneratorEndpoint from './generator.ts';
-import registerExamenFisicoRoutes from './examenFisico.ts';
 import swagger from '@fastify/swagger';
 import swaggerUI from '@fastify/swagger-ui';
 import { createContainer } from '../../config/di-container.ts';
@@ -39,5 +38,4 @@ export default async function registerRoutes(fastify: FastifyInstance) {
   registerConsultaEndpoint(fastify, container.repo, container.advanceStepUseCase, container.getConsultationUseCase);
   registerEndEndpoint(fastify, container.generateSummaryUseCase);
   registerGeneratorEndpoint(fastify, container.generateOptionsUseCase);
-  registerExamenFisicoRoutes(fastify, container.saveExamenFisicoUseCase, container.getExamenFisicoUseCase);
 }
