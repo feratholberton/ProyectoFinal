@@ -27,7 +27,7 @@ Follow these steps to install and run the backend:
 1. Clone the repository:
    ```bash
    git clone https://github.com/ferholberton/proyectoFinal.git
-   cd proyectoFinalELIO
+   cd proyectoFinal
    ```
 
 2. Navigate to the backend directory (if separate) and run:
