@@ -30,7 +30,9 @@ export class CollectDataUseCase {
     // If additional is provided and allowed in current step, add it as checked
     if (additional && allowedForAdditional.has(currentStep)) {
       const label = String(additional).trim();
-      if (label.length > 0) mergedMap.set(label, { label, checked: true });
+      const low = label.toLowerCase();
+      const PLACEHOLDERS = new Set(['string', 'placeholder', 'n/a', 'na', 'x', '-', '_', 'test', 'abc', 'lorem', 'todo']);
+      if (label.length > 1 && !PLACEHOLDERS.has(low)) mergedMap.set(label, { label, checked: true });
     }
 
     const opcionesObj = Array.from(mergedMap.values());

@@ -29,8 +29,9 @@ export class GeminiAIService implements IAIService {
 
 	async generateOptions(state: PartialState, tipo: string): Promise<string[]> {
 		// use PromptBuilder service to construct compact, controlled prompts
-		const builder: any = (promptBuilder as any)[tipo];
-		const prompt = typeof builder === 'function' ? builder(state) : JSON.stringify(state);
+			const builder: any = (promptBuilder as any)[tipo];
+			const prompt =
+				typeof builder === 'function' ? builder.call(promptBuilder, state) : JSON.stringify(state);
 		console.log('[GeminiAIService] generateOptions tipo=', tipo, 'prompt[:300]=', String(prompt).slice(0, 300));
 		const raw = await this.generateRaw(prompt);
 		const options = parseOptionsFromText(raw);

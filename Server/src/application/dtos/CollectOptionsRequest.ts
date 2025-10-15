@@ -9,7 +9,24 @@ function sanitizeAdditional(value: any, max = 200): string | undefined {
   const s = String(value).trim();
   if (!s) return undefined;
   const stripped = s.replace(/<[^>]*>/g, '');
-  return stripped.slice(0, max);
+  const trimmed = stripped.slice(0, max).trim();
+  if (!trimmed) return undefined;
+  const PLACEHOLDERS = new Set([
+    'string',
+    'placeholder',
+    'n/a',
+    'na',
+    'x',
+    '-',
+    '_',
+    'test',
+    'abc',
+    'lorem',
+    'todo',
+  ]);
+  if (PLACEHOLDERS.has(trimmed.toLowerCase())) return undefined;
+  if (trimmed.length < 2) return undefined;
+  return trimmed;
 }
 
 export function CollectOptionsRequestFromHttp(body: any): CollectOptionsRequest {
