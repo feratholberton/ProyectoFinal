@@ -18,6 +18,12 @@ export default function registerCollectEndpoint(fastify: FastifyInstance, useCas
             patientID: { type: 'string', description: 'ID de la consulta/paciente' },
             id: { type: 'string', description: 'Alias for patientID (backwards compatibility)' },
             opciones: { type: 'array', description: 'Array de labels seleccionados', items: { type: 'string' } },
+            additional: {
+              type: 'string',
+              description: 'Texto libre opcional: si se proporciona y el paso lo permite, se añadirá a `opciones` como opción adicional (max 200 chars).',
+              maxLength: 200,
+              nullable: true,
+            },
           },
         },
         response: {
@@ -35,8 +41,8 @@ export default function registerCollectEndpoint(fastify: FastifyInstance, useCas
     async (req, reply) => {
       try {
   const { CollectOptionsRequestFromHttp } = await import('../../../application/dtos/CollectOptionsRequest.ts');
-        const dto = CollectOptionsRequestFromHttp(req.body);
-        const result = await useCase.execute(dto.patientID, dto.opciones);
+  const dto = CollectOptionsRequestFromHttp(req.body);
+  const result = await useCase.execute(dto.patientID, dto.opciones, dto.additional);
         return reply.status(200).send(result);
       } catch (err: any) {
   const { mapDomainErrorToHttp } = await import('../errorMapper.ts');

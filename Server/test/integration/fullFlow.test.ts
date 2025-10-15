@@ -71,7 +71,7 @@ describe('integration - full flow', () => {
   expect(genRes.statusCode).toBe(200);
   const genBody = JSON.parse(genRes.payload);
   expect(genBody.opciones).toBeInstanceOf(Array);
-  expect(genBody.opciones.map((o: any) => o.label)).toEqual(['consulta-opt-1', 'consulta-opt-2', 'consulta-opt-3']);
+  expect(genBody.opciones.map((o: any) => o.label)).toEqual(['antecedentes-opt-1', 'antecedentes-opt-2', 'antecedentes-opt-3']);
 
   // 3) Collect - select first option from the initial options returned by /start
   const startOptionLabel = (startBody.opciones && startBody.opciones[0] && startBody.opciones[0].label) || 'antecedentes-opt-1';

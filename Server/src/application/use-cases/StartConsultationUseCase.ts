@@ -27,10 +27,12 @@ export class StartConsultationUseCase {
       .map((label: any) => ({ label: String(label ?? '').trim(), checked: false }))
       .filter(o => o.label.length > 0);
 
-    consultation.savePartialState(initialState);
-    await this.repo.save(id, consultation);
+  consultation.savePartialState(initialState);
+  // advance immediately so the session starts at 'antecedentes' (skip initial 'consulta' step)
+  consultation.nextStep();
+  await this.repo.save(id, consultation);
 
-    return { patientID: id, pasoActual: consultation.getCurrentStep(), opciones: consultation.getPartialState().opciones };
+  return { patientID: id, pasoActual: consultation.getCurrentStep(), opciones: consultation.getPartialState().opciones };
   }
 }
  

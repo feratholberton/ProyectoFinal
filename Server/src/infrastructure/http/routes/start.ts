@@ -32,19 +32,20 @@ export default function registerStartEndpoint(fastify: FastifyInstance, startUse
         const { ConsultationResponse } = await import('../../../application/dtos/ConsultationResponse.ts');
         const responseObj = ConsultationResponse.toHttp(result);
         try {
-          console.log('[start route] result raw=', result);
+          fastify.log.debug({ msg: '[start route] result raw', result });
           if (Array.isArray(result.opciones)) {
             result.opciones.forEach((o: any, i: number) => {
               try {
-                console.log(`[start route] option[${i}] typeof=`, typeof o, 'keys=', Object.keys(o), 'json=', JSON.stringify(o));
+                // Avoid serializing potentially sensitive nested objects as raw strings
+                fastify.log.debug({ msg: 'start route option', index: i, type: typeof o, keys: Object.keys(o), value: o });
               } catch (e) {
-                console.log(`[start route] option[${i}] inspect=`, o);
+                fastify.log.debug({ msg: 'start route option inspect', index: i, inspect: o });
               }
             });
           }
-          console.log('[start route] responseObj=', JSON.stringify(responseObj, null, 2));
+          fastify.log.debug({ msg: '[start route] responseObj', response: responseObj });
         } catch (e) {
-          console.log('[start route] responseObj (inspect)=', responseObj);
+          fastify.log.debug({ msg: '[start route] responseObj (inspect)', responseObj });
         }
         return reply.status(200).send(responseObj);
       } catch (err) {

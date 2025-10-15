@@ -1,7 +1,7 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { IAIService } from './IAIService.ts';
 import type { PartialState } from '../../../session.ts';
-import { prompts } from './prompts.ts';
+import { promptBuilder } from '../../../application/services/PromptBuilder.ts';
 import { buildClinicalPrompt } from './resumenPrompt.ts';
 import { parseOptionsFromText } from './parseUtils.ts';
 
@@ -28,8 +28,10 @@ export class GeminiAIService implements IAIService {
 	}
 
 	async generateOptions(state: PartialState, tipo: string): Promise<string[]> {
-		const prompt = (prompts as any)[tipo]?.(state) ?? JSON.stringify(state);
-		console.log('[GeminiAIService] generateOptions tipo=', tipo, 'prompt[:300]=', prompt.slice(0, 300));
+		// use PromptBuilder service to construct compact, controlled prompts
+		const builder: any = (promptBuilder as any)[tipo];
+		const prompt = typeof builder === 'function' ? builder(state) : JSON.stringify(state);
+		console.log('[GeminiAIService] generateOptions tipo=', tipo, 'prompt[:300]=', String(prompt).slice(0, 300));
 		const raw = await this.generateRaw(prompt);
 		const options = parseOptionsFromText(raw);
 		console.log('[GeminiAIService] parsed options count=', options.length, 'options[:10]=', options.slice(0, 10));

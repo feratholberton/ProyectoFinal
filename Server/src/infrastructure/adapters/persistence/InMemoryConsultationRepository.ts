@@ -5,7 +5,16 @@ export class InMemoryConsultationRepository implements IConsultationRepository {
   private store = new Map<string, Consultation>();
 
   async save(id: string, session: Consultation): Promise<void> {
+    const prev = this.store.get(id) ?? null;
+    const prevState = prev?.getPartialState?.() ?? null;
     this.store.set(id, session);
+    try {
+      const nextState = session.getPartialState?.() ?? null;
+      // eslint-disable-next-line no-console
+      console.log('[InMemoryRepo] save', JSON.stringify({ id, prev: prevState, next: nextState }, null, 2));
+    } catch (e) {
+      // ignore logging errors
+    }
   }
 
   async get(id: string): Promise<Consultation | null> {

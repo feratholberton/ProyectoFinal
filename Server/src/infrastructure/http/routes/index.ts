@@ -4,11 +4,16 @@ import registerCollectEndpoint from './collect.ts';
 import registerConsultaEndpoint from './consulta.ts';
 import registerEndEndpoint from './end.ts';
 import registerGeneratorEndpoint from './generator.ts';
+import registerExamenFisicoRoutes from './examenFisico.ts';
 import swagger from '@fastify/swagger';
 import swaggerUI from '@fastify/swagger-ui';
 import { createContainer } from '../../config/di-container.ts';
 
 export default async function registerRoutes(fastify: FastifyInstance) {
+  // Lightweight root health endpoint to avoid 404 on '/'
+  fastify.get('/', async (_req, reply) => {
+    return reply.status(200).send({ status: 'ok', docs: '/docs' });
+  });
   const swaggerBase = process.env.SWAGGER_BASE_URL;
   const openapi: any = {
     info: { title: 'Elio', version: '1.0.0', description: 'API de testing' },
@@ -34,4 +39,5 @@ export default async function registerRoutes(fastify: FastifyInstance) {
   registerConsultaEndpoint(fastify, container.repo, container.advanceStepUseCase, container.getConsultationUseCase);
   registerEndEndpoint(fastify, container.generateSummaryUseCase);
   registerGeneratorEndpoint(fastify, container.generateOptionsUseCase);
+  registerExamenFisicoRoutes(fastify, container.saveExamenFisicoUseCase, container.getExamenFisicoUseCase);
 }
