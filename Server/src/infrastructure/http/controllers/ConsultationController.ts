@@ -6,16 +6,6 @@ export class ConsultationController {
 		'antecedentes',
 		'alergias',
 		'farmacos',
-		'inicioCuadro',
-		'evolucion',
-		'localizacion',
-		'caracteristicas',
-		'sintomasAsociados',
-		'factoresDesencadenantes',
-		'antecedentesRecientes',
-		'repercusiones',
-		'tratamientosPrevios',
-		'sintomasAlarma',
 		'resumen',
 	];
 	private pasoActual: ConsultationStep;

@@ -4,16 +4,6 @@ export type ConsultationStep =
   | 'antecedentes'
   | 'alergias'
   | 'farmacos'
-  | 'inicioCuadro'
-  | 'evolucion'
-  | 'localizacion'
-  | 'caracteristicas'
-  | 'sintomasAsociados'
-  | 'factoresDesencadenantes'
-  | 'antecedentesRecientes'
-  | 'repercusiones'
-  | 'tratamientosPrevios'
-  | 'sintomasAlarma'
   | 'resumen';
 
 export interface Option {

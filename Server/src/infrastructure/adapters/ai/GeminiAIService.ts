@@ -36,7 +36,6 @@ export class GeminiAIService implements IAIService {
 		const raw = await this.generateRaw(prompt);
 		const options = parseOptionsFromText(raw);
 		console.log('[GeminiAIService] parsed options count=', options.length, 'options[:10]=', options.slice(0, 10));
-		if (tipo === 'anamnesis') return options;
 		return options.slice(0, 8);
 	}
 
