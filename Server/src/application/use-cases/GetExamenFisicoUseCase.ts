@@ -10,7 +10,6 @@ export class GetExamenFisicoUseCase {
     if (!session) return null;
     const state: any = session.getPartialState();
 
-    // Use existing stored sections if present, otherwise fallback to legacy examen_fisico
     const existing = state.examen_fisico_sections ?? {};
     const payload = {
       estado_general: existing.estado_general ?? state.examen_fisico,

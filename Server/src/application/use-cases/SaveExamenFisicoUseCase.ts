@@ -17,10 +17,9 @@ export class SaveExamenFisicoUseCase {
   async execute(req: SaveExamenFisicoRequest): Promise<{ session: Consultation; flags: Record<string, boolean> }> {
     const session = await this.repo.get(req.sessionId);
     if (!session) throw new Error('session_not_found');
-    // Normalize and compute flags using application service
+
     const { sections, flags } = normalizeSections(req.sections as any);
 
-    // Persist into partialState
     session.savePartialState({ examen_fisico_sections: sections });
     await this.repo.save(req.sessionId, session);
     return { session, flags };

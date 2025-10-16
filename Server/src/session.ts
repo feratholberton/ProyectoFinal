@@ -5,7 +5,6 @@ export type ConsultationStep =
   | 'antecedentes'
   | 'alergias'
   | 'farmacos'
-  // Anamnesis subsections as independent steps
   | 'inicioCuadro'
   | 'evolucion'
   | 'localizacion'
@@ -16,8 +15,6 @@ export type ConsultationStep =
   | 'repercusiones'
   | 'tratamientosPrevios'
   | 'sintomasAlarma'
-  // 'consideracionesUruguay' is a contextual prompt, not a separate step
-  // 'examenFisico' removed — replaced by structured examen_fisico_sections
   | 'resumen';
 
 export interface Option {
@@ -31,10 +28,6 @@ export interface PartialState {
   alergias?: string[];
   farmacos_habituales?: string[];
   examen_fisico?: string;
-  /**
-   * Structured sections for examen físico. New field to replace the legacy single string `examen_fisico`.
-   * Keys correspond to the UI textboxes requested by the user.
-   */
   examen_fisico_sections?: {
     estado_general?: string;
     cardiovascular?: string;

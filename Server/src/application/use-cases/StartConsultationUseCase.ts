@@ -17,7 +17,7 @@ export class StartConsultationUseCase {
     const motivo = new MotivoConsulta(input.motivo_consulta);
 
     const id = this.idGenerator.generate();
-    const consultationId = { toString: () => id } as any; // lightweight wrapper for now
+    const consultationId = { toString: () => id } as any; 
 
     const consultation = Consultation.create(consultationId, motivo);
 
@@ -28,7 +28,7 @@ export class StartConsultationUseCase {
       .filter(o => o.label.length > 0);
 
   consultation.savePartialState(initialState);
-  // advance immediately so the session starts at 'antecedentes' (skip initial 'consulta' step)
+
   consultation.nextStep();
   await this.repo.save(id, consultation);
 

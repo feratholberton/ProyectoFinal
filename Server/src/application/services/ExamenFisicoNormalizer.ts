@@ -9,7 +9,7 @@ export function normalizeSections(input: Partial<ExamenFisicoSections>): { secti
     if (v === undefined || v === null) return DEFAULT_TEXT;
     const s = String(v).trim();
     if (s === '') return DEFAULT_TEXT;
-    // Treat common placeholder tokens as empty
+
     if (PLACEHOLDER_SET.has(s.toLowerCase())) return DEFAULT_TEXT;
     return s;
   };
@@ -26,7 +26,7 @@ export function normalizeSections(input: Partial<ExamenFisicoSections>): { secti
   osteoarticular_vascular_periferico: !!input.osteoarticular_vascular_periferico,
   };
 
-  // According to user's decision (option A): textual flags should be true always because questions can't be evaded
+ 
   const flags: Record<string, boolean> = {
     estado_general: true,
     cardiovascular: true,

@@ -11,6 +11,6 @@ export class ValidationService {
     (list ?? []).forEach(f => new FarmacoHabitual(f));
   }
   validateExamen(text: any) {
-  // legacy examen_fisico textual validation removed (archived). Use structured examen_fisico_sections validation if needed.
+
   }
 }

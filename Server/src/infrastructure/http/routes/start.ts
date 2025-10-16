@@ -36,7 +36,6 @@ export default function registerStartEndpoint(fastify: FastifyInstance, startUse
           if (Array.isArray(result.opciones)) {
             result.opciones.forEach((o: any, i: number) => {
               try {
-                // Avoid serializing potentially sensitive nested objects as raw strings
                 fastify.log.debug({ msg: 'start route option', index: i, type: typeof o, keys: Object.keys(o), value: o });
               } catch (e) {
                 fastify.log.debug({ msg: 'start route option inspect', index: i, inspect: o });

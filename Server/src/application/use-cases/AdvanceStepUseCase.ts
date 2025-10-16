@@ -28,9 +28,6 @@ export class AdvanceStepUseCase {
       arr.forEach((f) => new FarmacoHabitual(f));
     }
 
-    // examen_fisico (legacy textual field) was removed/archived. New structured sections are handled by SaveExamenFisicoUseCase.
-    // If an update carries legacy 'examen_fisico' text, we intentionally ignore it here.
-
     consultation.savePartialState(update);
     consultation.nextStep();
     await this.repo.save(id, consultation);

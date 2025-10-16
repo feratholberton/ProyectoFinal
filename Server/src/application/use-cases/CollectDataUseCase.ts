@@ -10,24 +10,20 @@ export class CollectDataUseCase {
 
     const currentStep = consultation.getCurrentStep();
 
-    // pasos donde se permite additional
     const allowedForAdditional = new Set(['antecedentes', 'alergias', 'farmacos']);
 
-    // existing partial options (merge instead of replace)
     const existingPartial: PartialState = consultation.getPartialState() || {};
     const existingOpciones = Array.isArray(existingPartial.opciones) ? existingPartial.opciones : [];
 
-    // Convertir las opciones enviadas (son seleccionadas): checked = true
+
     const incomingOpciones = (opciones ?? [])
       .map((label: any) => ({ label: String(label ?? '').trim(), checked: true }))
       .filter((o: any) => o.label.length > 0);
 
-    // Start with existing options, overwrite checked state if incoming provides same label
     const mergedMap = new Map<string, { label: string; checked: boolean }>();
     existingOpciones.forEach((o: any) => mergedMap.set(o.label, { label: o.label, checked: !!o.checked }));
     incomingOpciones.forEach((o: any) => mergedMap.set(o.label, { label: o.label, checked: true }));
 
-    // If additional is provided and allowed in current step, add it as checked
     if (additional && allowedForAdditional.has(currentStep)) {
       const label = String(additional).trim();
       const low = label.toLowerCase();
@@ -37,9 +33,7 @@ export class CollectDataUseCase {
 
   const opcionesObj = Array.from(mergedMap.values());
 
-  // Keep repository state tidy: persist only the selected options (checked === true).
-  // This ensures previously selected (true) options accumulate across steps while
-  // unselected options are not kept in persistent state.
+ 
   const opcionesSeleccionadas = opcionesObj.filter((o: any) => !!o.checked);
 
   consultation.savePartialState({ opciones: opcionesSeleccionadas });

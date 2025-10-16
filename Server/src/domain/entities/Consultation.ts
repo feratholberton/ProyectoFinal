@@ -8,7 +8,6 @@ export class Consultation {
     'antecedentes',
     'alergias',
     'farmacos',
-    // Anamnesis subsections as independent steps
     'inicioCuadro',
     'evolucion',
     'localizacion',
@@ -19,8 +18,7 @@ export class Consultation {
     'repercusiones',
     'tratamientosPrevios',
     'sintomasAlarma',
-    // contextual prompts like 'consideracionesUruguay' are not steps
-    // examenFisico replaced by structured examen_fisico_sections in PartialState
+
     'resumen',
   ];
   private pasoActual: ConsultationStep;

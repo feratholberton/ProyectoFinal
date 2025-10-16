@@ -10,10 +10,10 @@ export class InMemoryConsultationRepository implements IConsultationRepository {
     this.store.set(id, session);
     try {
       const nextState = session.getPartialState?.() ?? null;
-      // eslint-disable-next-line no-console
+
       console.log('[InMemoryRepo] save', JSON.stringify({ id, prev: prevState, next: nextState }, null, 2));
     } catch (e) {
-      // ignore logging errors
+
     }
   }
 

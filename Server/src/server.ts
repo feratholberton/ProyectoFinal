@@ -7,7 +7,7 @@ const fastify = Fastify({ logger: true });
 
 (async () => {
 	try {
-	// Parse CORS_ORIGIN env var: allow 'true'|'*' => boolean true, 'false' => boolean false, otherwise treat as origin string
+
 	let corsOrigin: any = true;
 	if (typeof process.env.CORS_ORIGIN === 'string') {
 		const v = process.env.CORS_ORIGIN.trim();
@@ -16,14 +16,14 @@ const fastify = Fastify({ logger: true });
 		} else if (v.toLowerCase() === 'false') {
 			corsOrigin = false;
 		} else {
-			// allow comma separated origins
+
 			corsOrigin = v.split(',').map(s => s.trim()).filter(Boolean);
 		}
 	}
 	await fastify.register(cors, { origin: corsOrigin });
 	fastify.log.info({ corsOrigin }, 'CORS origin configured');
 
-	// startup debug: log PORT and SWAGGER_BASE_URL presence (do not print secrets)
+
 	const port = process.env.PORT ? Number(process.env.PORT) : 10000;
 	const swaggerBase = process.env.SWAGGER_BASE_URL;
 	fastify.log.info({ port, swaggerBase }, 'startup config');

@@ -47,10 +47,6 @@ export class PromptBuilder {
     return this.header(context) + `\n\nEjemplo: ["¿Cuándo comenzó el problema?", "¿Qué empeora o mejora el síntoma?"]`;
   }
 
-  // -----------------------------
-  // ANAMNESIS (secciones clínicas)
-  // -----------------------------
-
   inicioCuadro(state: PartialState) {
     const edad = (state as any).edad ?? 'edad no especificada';
     const motivo = state.motivo_consulta || 'motivo no especificado';
@@ -127,10 +123,6 @@ export class PromptBuilder {
 
     return this.header(context) + `\n\nEjemplo: ["¿Tuvo picaduras de mosquitos y fiebre reciente?", "¿Ha estado en contacto con ganado o agua estancada?"]`;
   }
-
-  // -----------------------------
-  // EXAMEN FÍSICO
-  // -----------------------------
 
   examenFisico(state: PartialState) {
     const contexto = {

@@ -3,7 +3,6 @@ import type { FastifyReply } from 'fastify';
 export async function mapDomainErrorToHttp(reply: FastifyReply, err: any): Promise<boolean> {
 	if (!err) return false;
 
-	// import domain errors dynamically to avoid root circular deps
 	const { ValidationError } = await import('../../domain/errors/ValidationError.ts');
 	const { NotFoundError } = await import('../../domain/errors/NotFoundError.ts');
 

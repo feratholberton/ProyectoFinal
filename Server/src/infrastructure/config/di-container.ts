@@ -19,7 +19,7 @@ export function createContainer() {
   const generateSummaryUseCase = new GenerateSummaryUseCase(repo, aiService);
   const advanceStepUseCase = new AdvanceStepUseCase(repo);
   const getConsultationUseCase = new GetConsultationUseCase(repo);
-  // ExamenFisico use-cases were archived as part of cleanup
+
 
   return {
     aiService,
@@ -31,6 +31,6 @@ export function createContainer() {
     generateSummaryUseCase,
     advanceStepUseCase,
     getConsultationUseCase,
-  // saveExamenFisicoUseCase and getExamenFisicoUseCase removed (archived)
+
   } as const;
 }

@@ -9,7 +9,7 @@ import swaggerUI from '@fastify/swagger-ui';
 import { createContainer } from '../../config/di-container.ts';
 
 export default async function registerRoutes(fastify: FastifyInstance) {
-  // Lightweight root health endpoint to avoid 404 on '/'
+
   fastify.get('/', async (_req, reply) => {
     return reply.status(200).send({ status: 'ok', docs: '/docs' });
   });
