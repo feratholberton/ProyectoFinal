@@ -43,4 +43,22 @@ export default function registerConsultaEndpoint(fastify: FastifyInstance, repo:
       }
     }
   );
+
+  fastify.post<{ Params: { id: string } }>(
+    '/consulta/:id/recede',
+    {},
+    async (req, reply) => {
+      try {
+        const { id } = req.params;
+        const useCase = new (await import('../../../application/use-cases/RecedeStepUseCase.ts')).RecedeStepUseCase(repo);
+        const result = await useCase.execute(id);
+        return reply.status(200).send(result);
+      } catch (err: any) {
+        const { mapDomainErrorToHttp } = await import('../errorMapper.ts');
+        const handled = await mapDomainErrorToHttp(reply, err);
+        if (handled) return;
+        throw err;
+      }
+    }
+  );
 }

@@ -58,4 +58,17 @@ export class Consultation {
   getCurrentStep(): ConsultationStep {
     return this.pasoActual;
   }
+
+  canRecede(): boolean {
+    const currentIndex = this.steps.indexOf(this.pasoActual);
+    return currentIndex > 0;
+  }
+
+  recedeStep(): void {
+    const currentIndex = this.steps.indexOf(this.pasoActual);
+    if (currentIndex <= 0) {
+      throw new Error('No se puede retroceder: ya está en el primer paso');
+    }
+    this.pasoActual = this.steps[currentIndex - 1];
+  }
 }
