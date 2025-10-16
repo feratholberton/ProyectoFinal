@@ -10,7 +10,7 @@ Thank you for your interest in contributing to the **proyecto Final ELIO** proje
 If you encounter bugs, have suggestions, or experience any problems, please open an issue on the repository. Be sure to include:
 - A clear and descriptive title.
 - A detailed explanation of the issue or suggestion.
-- Steps to reproduce the issue (if applicable).
+- Steps to reproduce the issue.
 
 ### 2. Suggesting Enhancements
 Have an idea for a new feature or improvement? Open an issue labeled as `enhancement` and provide:
