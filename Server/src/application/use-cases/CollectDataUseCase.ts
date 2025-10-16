@@ -35,10 +35,15 @@ export class CollectDataUseCase {
       if (label.length > 1 && !PLACEHOLDERS.has(low)) mergedMap.set(label, { label, checked: true });
     }
 
-    const opcionesObj = Array.from(mergedMap.values());
+  const opcionesObj = Array.from(mergedMap.values());
 
-    consultation.savePartialState({ opciones: opcionesObj });
-    await this.repo.save(patientID, consultation);
-    return { patientID, pasoActual: consultation.getCurrentStep(), partialState: consultation.getPartialState() };
+  // Keep repository state tidy: persist only the selected options (checked === true).
+  // This ensures previously selected (true) options accumulate across steps while
+  // unselected options are not kept in persistent state.
+  const opcionesSeleccionadas = opcionesObj.filter((o: any) => !!o.checked);
+
+  consultation.savePartialState({ opciones: opcionesSeleccionadas });
+  await this.repo.save(patientID, consultation);
+  return { patientID, pasoActual: consultation.getCurrentStep(), partialState: consultation.getPartialState() };
   }
 }
