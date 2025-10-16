@@ -12,7 +12,11 @@
     "noEmit": true
   },
   "include": [
-    "./**/*.ts" 
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "test",
+    "node_modules"
   ],
   "ts-node": {
     "esm": true
