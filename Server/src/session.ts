@@ -5,7 +5,19 @@ export type ConsultationStep =
   | 'antecedentes'
   | 'alergias'
   | 'farmacos'
-  | 'examenFisico'
+  // Anamnesis subsections as independent steps
+  | 'inicioCuadro'
+  | 'evolucion'
+  | 'localizacion'
+  | 'caracteristicas'
+  | 'sintomasAsociados'
+  | 'factoresDesencadenantes'
+  | 'antecedentesRecientes'
+  | 'repercusiones'
+  | 'tratamientosPrevios'
+  | 'sintomasAlarma'
+  // 'consideracionesUruguay' is a contextual prompt, not a separate step
+  // 'examenFisico' removed — replaced by structured examen_fisico_sections
   | 'resumen';
 
 export interface Option {

@@ -6,7 +6,6 @@ export class ConsultationController {
     'antecedentes',
     'alergias',
     'farmacos',
-    'examenFisico',
     'resumen',
   ];
   private pasoActual: ConsultationStep;

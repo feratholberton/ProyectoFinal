@@ -8,7 +8,19 @@ export class Consultation {
     'antecedentes',
     'alergias',
     'farmacos',
-  // 'examenFisico' removed (archived)
+    // Anamnesis subsections as independent steps
+    'inicioCuadro',
+    'evolucion',
+    'localizacion',
+    'caracteristicas',
+    'sintomasAsociados',
+    'factoresDesencadenantes',
+    'antecedentesRecientes',
+    'repercusiones',
+    'tratamientosPrevios',
+    'sintomasAlarma',
+    // contextual prompts like 'consideracionesUruguay' are not steps
+    // examenFisico replaced by structured examen_fisico_sections in PartialState
     'resumen',
   ];
   private pasoActual: ConsultationStep;
