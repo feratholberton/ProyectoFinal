@@ -1,4 +1,3 @@
-// session.ts (canonical in src)
 
 export type ConsultationStep =
   | 'consulta'

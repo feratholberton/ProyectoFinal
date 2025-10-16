@@ -1,7 +1,6 @@
 import type { PartialState, ConsultationStep } from '../../../session';
 
 export class ConsultationController {
-	// Keep controller steps synchronized with the domain Consultation entity.
 	private steps: ConsultationStep[] = [
 		'consulta',
 		'antecedentes',

@@ -17,18 +17,18 @@ export class GeminiAIService implements IAIService {
 		const model = this.client.getGenerativeModel({ model: 'gemini-2.5-flash' });
 		const result = await model.generateContent(prompt);
 		const text = await result.response.text();
-		// visible logging for debugging: print prompt and raw response snippets
+
 		try {
 			console.log('[GeminiAIService] prompt[:600]=', prompt.slice(0, 600));
 			console.log('[GeminiAIService] rawLen=', text.length, 'raw[:2000]=', text.slice(0, 2000));
 		} catch (e) {
-			// ignore logging errors
+
 		}
 		return text;
 	}
 
 	async generateOptions(state: PartialState, tipo: string): Promise<string[]> {
-		// use PromptBuilder service to construct compact, controlled prompts
+
 			const builder: any = (promptBuilder as any)[tipo];
 			const prompt =
 				typeof builder === 'function' ? builder.call(promptBuilder, state) : JSON.stringify(state);
