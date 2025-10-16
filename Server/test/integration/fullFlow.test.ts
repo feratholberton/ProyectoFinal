@@ -5,12 +5,12 @@ import { createContainer as createRealContainer } from '../../infrastructure/con
 import type { IAIService } from '../../infrastructure/adapters/ai/IAIService.ts';
 class MockAIService implements IAIService {
   async generateOptions(_state: any, tipo: string) {
-    // return predictable options per tipo
+
     return [`${tipo}-opt-1`, `${tipo}-opt-2`, `${tipo}-opt-3`];
   }
 
   async generateSummary(state: any) {
-    // return a summary based on keys present in partial state
+
     const keys = Object.keys(state || {}).join(',');
     return `Resumen basado en: ${keys}`;
   }
