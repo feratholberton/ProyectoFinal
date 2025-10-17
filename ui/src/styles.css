@@ -20,12 +20,12 @@
   --cl-main-mid-900: hsl(176, 50%, 5%);
 
 	--cl-neutral-100: hsl(0, 0%, 95%);
-  --cl-neutral-100: hsl(0, 0%, 85%);
+  --cl-neutral-200: hsl(0, 0%, 85%);
 	--cl-neutral-300: hsl(0, 0%, 75%);
-  --cl-neutral-100: hsl(0, 0%, 55%);
-  --cl-neutral-100: hsl(0, 0%, 45%);
-  --cl-neutral-100: hsl(0, 0%, 35%);
-  --cl-neutral-100: hsl(0, 0%, 25%);
+  --cl-neutral-400: hsl(0, 0%, 55%);
+  --cl-neutral-500: hsl(0, 0%, 45%);
+  --cl-neutral-600: hsl(0, 0%, 35%);
+  --cl-neutral-700: hsl(0, 0%, 25%);
   --cl-neutral-800: hsl(0, 0%, 15%);
 	--cl-neutral-900: hsl(0, 0%, 5%);
 
