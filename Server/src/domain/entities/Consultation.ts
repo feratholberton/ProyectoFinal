@@ -8,7 +8,7 @@ export class Consultation {
     'antecedentes',
     'alergias',
     'farmacos',
-    'resumen',
+
   ];
   private pasoActual: ConsultationStep;
   private partialState: PartialState;
@@ -31,7 +31,7 @@ export class Consultation {
     if (currentIndex < this.steps.length - 1) {
       this.pasoActual = this.steps[currentIndex + 1];
     } else {
-      this.pasoActual = 'resumen';
+      this.pasoActual = 'farmacos';
     }
   }
 

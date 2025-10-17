@@ -6,7 +6,7 @@ export class ConsultationController {
 		'antecedentes',
 		'alergias',
 		'farmacos',
-		'resumen',
+
 	];
 	private pasoActual: ConsultationStep;
 	private patientID: string;
@@ -23,7 +23,7 @@ export class ConsultationController {
 		if (currentIndex < this.steps.length - 1) {
 			this.pasoActual = this.steps[currentIndex + 1];
 		} else {
-			this.pasoActual = 'resumen';
+			this.pasoActual = 'farmacos';
 		}
 	}
 

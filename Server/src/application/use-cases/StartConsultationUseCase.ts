@@ -21,11 +21,19 @@ export class StartConsultationUseCase {
 
     const consultation = Consultation.create(consultationId, motivo);
 
-    const initialState: PartialState = { motivo_consulta: motivo.toString() };
-    const opcionesRaw = await this.aiService.generateOptions(initialState, 'antecedentes');
-    initialState.opciones = opcionesRaw
-      .map((label: any) => ({ label: String(label ?? '').trim(), checked: false }))
-      .filter(o => o.label.length > 0);
+  const baseState = { motivo_consulta: motivo.toString() } as any;
+
+  // include demographic data when provided so the AI can produce better options
+  const demographics: any = {};
+  if ((input as any).edad != null) demographics.edad = (input as any).edad;
+  if ((input as any).genero != null) demographics.genero = (input as any).genero;
+
+  const initialState: PartialState = { ...baseState, ...demographics };
+
+  const opcionesRaw = await this.aiService.generateOptions(initialState, 'antecedentes');
+  initialState.opciones = opcionesRaw
+    .map((label: any) => ({ label: String(label ?? '').trim(), checked: false }))
+    .filter(o => o.label.length > 0);
 
   consultation.savePartialState(initialState);
 
