@@ -30,7 +30,7 @@ function sanitizeAdditional(value: any, max = 200): string | undefined {
 }
 
 export function CollectOptionsRequestFromHttp(body: any): CollectOptionsRequest {
-  const patientID = body?.patientID ?? body?.id ?? '';
+  const patientID = body?.patientID ?? '';
   const PLACEHOLDERS = new Set([
     'string',
     'placeholder',

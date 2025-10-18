@@ -13,7 +13,7 @@ export type AnamnesisCollectRequest = {
 
 export const AnamnesisCollectRequestFromHttp = (body: any): AnamnesisCollectRequest => {
   return {
-    patientID: String(body?.patientID ?? body?.id ?? ''),
+    patientID: String(body?.patientID ?? ''),
     answers: Array.isArray(body?.answers)
       ? body.answers.map((a: any) => ({ key: String(a?.key ?? ''), type: String(a?.type ?? 'text') as AnswerType, value: a?.value }))
       : [],

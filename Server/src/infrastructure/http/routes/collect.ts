@@ -10,13 +10,9 @@ export default function registerCollectEndpoint(fastify: FastifyInstance, useCas
         description: 'Recibe opciones seleccionadas (array) y las guarda en partialState',
         body: {
           type: 'object',
-          anyOf: [
-            { required: ['patientID', 'opciones'] },
-            { required: ['id', 'opciones'] },
-          ],
+          required: ['patientID', 'opciones'],
           properties: {
             patientID: { type: 'string', description: 'ID de la consulta/paciente' },
-            id: { type: 'string', description: 'Alias for patientID (backwards compatibility)' },
             opciones: { type: 'array', description: 'Array de labels seleccionados', items: { type: 'string' } },
             additional: {
               type: 'string',
