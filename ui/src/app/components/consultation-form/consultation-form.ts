@@ -5,7 +5,6 @@ import { ConsultationService } from '../../services/consultation.service';
 
 @Component({
   selector: 'app-consultation-form',
-  standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './consultation-form.html',
   styleUrl: './consultation-form.css'
