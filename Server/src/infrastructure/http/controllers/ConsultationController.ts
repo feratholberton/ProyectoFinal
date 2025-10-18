@@ -1,4 +1,5 @@
-import type { PartialState, ConsultationStep } from '../../../session';
+import type { PartialState } from '../../../session';
+import type { ConsultationStep } from '../../../domain/entities/ClinicalStep.ts';
 
 export class ConsultationController {
 	private steps: ConsultationStep[] = [

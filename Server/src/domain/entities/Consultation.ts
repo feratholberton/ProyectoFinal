@@ -1,15 +1,11 @@
 import { ConsultationId } from '../value-objects/ConsultationId.ts';
-import type { PartialState, ConsultationStep } from '../../session.ts';
+import type { PartialState } from '../../session.ts';
+import type { ConsultationStep, ClinicalStep } from './ClinicalStep.ts';
+import { ALL_CLINICAL_STEPS } from './ClinicalStep.ts';
 import { MotivoConsulta } from '../value-objects/MotivoConsulta.ts';
 
 export class Consultation {
-  private steps: ConsultationStep[] = [
-    'consulta',
-    'antecedentes',
-    'alergias',
-    'farmacos',
-
-  ];
+  private steps: ClinicalStep[] = ALL_CLINICAL_STEPS;
   private pasoActual: ConsultationStep;
   private partialState: PartialState;
 

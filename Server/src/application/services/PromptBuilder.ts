@@ -31,10 +31,10 @@ export class PromptBuilder {
 
     const context =
       `Eres un médico clínico. Datos: Edad: ${edad} años. Antecedentes patológicos: ${antecedentes}. Motivo: "${motivo}".` +
-      ' Genera hasta 8 medicamentos o clases farmacológicas que podrían ser razonablemente considerados para este caso.' +
-  ' Incluye NOMBRE GENÉRICO y DOSIS. Prioriza nombres genéricos cuando sea posible.' +
+      ' Genera hasta 8 medicamentos que podrían ser razonablemente considerados para este caso.' +
+  ' SOLO EL NOMBRE . Prioriza nombres genéricos cuando sea posible.' +
       ' Si la información clínica es insuficiente para proponer fármacos específicos, devuelve sugerencias generales de clases (por ejemplo: "AINEs", "Antibiótico tópico para conjuntivitis") o responde con [].' +
-      ' No inventes fármacos, dosis ni fechas.';
+      ' No inventes fármacos.';
 
     return this.header(context) + `\n\nEjemplo: ["Ibuprofeno", "Cloranfenicol", "AINEs"]`;
   }

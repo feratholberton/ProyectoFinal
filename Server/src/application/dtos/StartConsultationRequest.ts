@@ -4,12 +4,38 @@ export type StartConsultationRequest = {
   genero?: string;
 };
 
+import { ValidationError } from '../../domain/errors/ValidationError.ts';
+
 export const StartConsultationRequest = {
   fromHttp(body: any): StartConsultationRequest {
+    const motivo_consulta = String(body?.motivo_consulta ?? '');
+    const rawEdad = body?.edad;
+    const edad = typeof rawEdad === 'number' ? rawEdad : rawEdad ? Number(rawEdad) : undefined;
+
+    if (edad != null) {
+      if (!Number.isFinite(edad) || edad < 0 || edad > 120) {
+        throw new ValidationError('edad invalida: debe estar entre 0 y 120 años');
+      }
+    }
+
+    let genero: string | undefined = undefined;
+    if (body?.genero != null) {
+      const g = String(body.genero).trim();
+      if (g === '') {
+        genero = undefined;
+      } else {
+        const GU = g.toUpperCase();
+        if (GU !== 'F' && GU !== 'M') {
+          throw new ValidationError('genero invalido');
+        }
+        genero = GU;
+      }
+    }
+
     return {
-      motivo_consulta: String(body?.motivo_consulta ?? ''),
-      edad: typeof body?.edad === 'number' ? body.edad : body?.edad ? Number(body.edad) : undefined,
-      genero: body?.genero != null ? String(body.genero) : undefined,
+      motivo_consulta,
+      edad,
+      genero,
     };
   },
 };
