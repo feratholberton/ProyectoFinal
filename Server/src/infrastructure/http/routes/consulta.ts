@@ -13,8 +13,8 @@ export default function registerConsultaEndpoint(fastify: FastifyInstance, repo:
         const { id } = req.params;
   const useCase = advanceUseCase ?? new (await import('../../../application/use-cases/AdvanceStepUseCase.ts')).AdvanceStepUseCase(repo);
   const { AdvanceStepRequest } = await import('../../../application/dtos/AdvanceStepRequest.ts');
-        const dto = AdvanceStepRequest.fromHttp(req.body);
-        const result = await useCase.execute(id, dto.partial as PartialState);
+  const dto = AdvanceStepRequest.fromHttp(req.body, req.params);
+  const result = await useCase.execute(id, dto.partial as PartialState);
         return reply.status(200).send(result);
       } catch (err: any) {
   const { mapDomainErrorToHttp } = await import('../errorMapper.ts');

@@ -11,11 +11,22 @@ export type AnamnesisCollectRequest = {
   answers: AnamnesisAnswer[];
 };
 
+import { ValidationError } from '../../domain/errors/ValidationError.ts';
+
 export const AnamnesisCollectRequestFromHttp = (body: any): AnamnesisCollectRequest => {
-  return {
-    patientID: String(body?.patientID ?? ''),
-    answers: Array.isArray(body?.answers)
-      ? body.answers.map((a: any) => ({ key: String(a?.key ?? ''), type: String(a?.type ?? 'text') as AnswerType, value: a?.value }))
-      : [],
-  };
+  const patientID = String(body?.patientID ?? '').trim();
+  if (!patientID) throw new ValidationError('patientID requerido');
+  if (!Array.isArray(body?.answers)) {
+    throw new ValidationError('answers debe ser un array');
+  }
+
+  const answers: AnamnesisAnswer[] = body.answers.map((a: any, idx: number) => {
+    const key = String(a?.key ?? '').trim();
+    if (!key) throw new ValidationError(`answers[${idx}].key requerido`);
+    const type = String(a?.type ?? 'text') as AnswerType;
+    const value = a?.value;
+    return { key, type, value } as AnamnesisAnswer;
+  });
+
+  return { patientID, answers };
 };

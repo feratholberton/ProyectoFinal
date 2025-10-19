@@ -4,6 +4,7 @@ import type { PartialState } from '../../../session.ts';
 import { promptBuilder } from '../../../application/services/PromptBuilder.ts';
 import { buildClinicalPrompt } from './resumenPrompt.ts';
 import { parseOptionsFromText } from './parseUtils.ts';
+import { logger, safeSnippet } from '../../logging/logger.ts';
 
 export class GeminiAIService implements IAIService {
 	private client: any;
@@ -19,10 +20,10 @@ export class GeminiAIService implements IAIService {
 		const text = await result.response.text();
 
 		try {
-			console.log('[GeminiAIService] prompt[:600]=', prompt.slice(0, 600));
-			console.log('[GeminiAIService] rawLen=', text.length, 'raw[:2000]=', text.slice(0, 2000));
+			logger.debug('[GeminiAIService] prompt snippet=', safeSnippet(prompt, 600));
+			logger.debug('[GeminiAIService] rawLen=', String(text).length, 'raw snippet=', safeSnippet(text, 2000));
 		} catch (e) {
-
+			logger.warn('[GeminiAIService] logging failure', e);
 		}
 		return text;
 	}
@@ -32,10 +33,10 @@ export class GeminiAIService implements IAIService {
 			const builder: any = (promptBuilder as any)[tipo];
 			const prompt =
 				typeof builder === 'function' ? builder.call(promptBuilder, state) : JSON.stringify(state);
-		console.log('[GeminiAIService] generateOptions tipo=', tipo, 'prompt[:300]=', String(prompt).slice(0, 300));
+	logger.debug('[GeminiAIService] generateOptions tipo=', tipo, 'prompt snippet=', safeSnippet(String(prompt), 300));
 		const raw = await this.generateRaw(prompt);
 		const options = parseOptionsFromText(raw);
-		console.log('[GeminiAIService] parsed options count=', options.length, 'options[:10]=', options.slice(0, 10));
+	logger.info('[GeminiAIService] parsed options count=', options.length);
 		return options.slice(0, 8);
 	}
 
