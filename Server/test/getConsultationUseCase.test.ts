@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { GetConsultationUseCase } from '../application/use-cases/GetConsultationUseCase.ts';
+import { GetConsultationUseCase } from '../src/application/use-cases/GetConsultationUseCase.ts';
 
 describe('GetConsultationUseCase', () => {
   it('throws NOT_FOUND when missing', async () => {

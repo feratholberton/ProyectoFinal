@@ -9,7 +9,6 @@ import { ValidationError } from '../../domain/errors/ValidationError.ts';
 export const StartConsultationRequest = {
   fromHttp(body: any): StartConsultationRequest {
     const motivo_consulta = String(body?.motivo_consulta ?? '');
-    // reject obvious placeholder/test values that are commonly used in API testing
     const forbiddenPlaceholders = ['string', 'test', 'prueba', 'dummy', 'placeholder'];
     if (typeof motivo_consulta === 'string' && forbiddenPlaceholders.includes(motivo_consulta.trim().toLowerCase())) {
       throw new ValidationError('motivo_consulta contiene un valor inválido');

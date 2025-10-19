@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { GenerateSummaryUseCase } from '../application/use-cases/GenerateSummaryUseCase.ts';
+import { GenerateSummaryUseCase } from '../src/application/use-cases/GenerateSummaryUseCase.ts';
 
 describe('GenerateSummaryUseCase', () => {
   it('throws NOT_FOUND when missing', async () => {

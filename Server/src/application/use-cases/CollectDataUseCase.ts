@@ -1,4 +1,4 @@
-import type { IConsultationRepository } from '../../infrastructure/adapters/persistence/IConsultationRepository.ts';
+import type { IConsultationRepository } from '../../domain/ports/IConsultationRepository.ts';
 import type { PartialState } from '../../session.ts';
 
 export class CollectDataUseCase {

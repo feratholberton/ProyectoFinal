@@ -1,5 +1,6 @@
 import type { Consultation } from '../../../domain/entities/Consultation.ts';
 import { IConsultationRepository } from './IConsultationRepository.ts';
+import { logger, safeSnippet } from '../../logging/logger.ts';
 
 export class InMemoryConsultationRepository implements IConsultationRepository {
   private store = new Map<string, Consultation>();
@@ -11,7 +12,7 @@ export class InMemoryConsultationRepository implements IConsultationRepository {
     try {
       const nextState = session.getPartialState?.() ?? null;
 
-      console.log('[InMemoryRepo] save', JSON.stringify({ id, prev: prevState, next: nextState }, null, 2));
+  logger.debug('[InMemoryRepo] save', safeSnippet(JSON.stringify({ id, prev: prevState, next: nextState }, null, 2), 1000));
     } catch (e) {
 
     }

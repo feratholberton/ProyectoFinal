@@ -1,4 +1,4 @@
-import type { IConsultationRepository } from '../../infrastructure/adapters/persistence/IConsultationRepository.ts';
+import type { IConsultationRepository } from '../../domain/ports/IConsultationRepository.ts';
 import type { IAIService } from '../../infrastructure/adapters/ai/IAIService.ts';
 import type { IIdGenerator } from '../../domain/ports/IIdGenerator.ts';
 import type { StartConsultationRequest } from '../dtos/StartConsultationRequest.ts';
@@ -23,7 +23,6 @@ export class StartConsultationUseCase {
 
   const baseState = { motivo_consulta: motivo.toString() } as any;
 
-  // include demographic data when provided so the AI can produce better options
   const demographics: any = {};
   if ((input as any).edad != null) demographics.edad = (input as any).edad;
   if ((input as any).genero != null) demographics.genero = (input as any).genero;

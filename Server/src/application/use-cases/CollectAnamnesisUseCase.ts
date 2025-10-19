@@ -1,4 +1,4 @@
-import type { IConsultationRepository } from '../../infrastructure/adapters/persistence/IConsultationRepository.ts';
+import type { IConsultationRepository } from '../../domain/ports/IConsultationRepository.ts';
 import type { PartialState } from '../../session.ts';
 import { NotFoundError } from '../../domain/errors/NotFoundError.ts';
 import type { AnamnesisCollectRequest, AnamnesisAnswer } from '../dtos/AnamnesisCollectRequest.ts';
@@ -42,7 +42,6 @@ export class CollectAnamnesisUseCase {
 
     for (const a of req.answers ?? []) applyAnswer(a as AnamnesisAnswer);
 
-    // merge into existing partial state
     consultation.savePartialState({ ...existing, ...update });
     await this.repo.save(req.patientID, consultation);
 

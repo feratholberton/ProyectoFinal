@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { AdvanceStepUseCase } from '../application/use-cases/AdvanceStepUseCase.ts';
+import { AdvanceStepUseCase } from '../src/application/use-cases/AdvanceStepUseCase.ts';
 
 describe('AdvanceStepUseCase', () => {
   it('throws NOT_FOUND when missing', async () => {

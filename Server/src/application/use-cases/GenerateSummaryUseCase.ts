@@ -1,4 +1,4 @@
-import type { IConsultationRepository } from "../../infrastructure/adapters/persistence/IConsultationRepository.ts";
+import type { IConsultationRepository } from "../../domain/ports/IConsultationRepository.ts";
 import type { IAIService } from "../../infrastructure/adapters/ai/IAIService.ts";
 
 export class GenerateSummaryUseCase {

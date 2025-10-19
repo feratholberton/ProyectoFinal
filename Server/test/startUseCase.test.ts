@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest';
-import { StartConsultationUseCase } from '../application/use-cases/StartConsultationUseCase.ts';
-import { Consultation } from '../domain/entities/Consultation.ts';
-import { ConsultationId } from '../domain/value-objects/ConsultationId.ts';
-import { MotivoConsulta } from '../domain/value-objects/MotivoConsulta.ts';
+import { StartConsultationUseCase } from '../src/application/use-cases/StartConsultationUseCase.ts';
+import { Consultation } from '../src/domain/entities/Consultation.ts';
+import { ConsultationId } from '../src/domain/value-objects/ConsultationId.ts';
+import { MotivoConsulta } from '../src/domain/value-objects/MotivoConsulta.ts';
 
 describe('StartConsultationUseCase', () => {
   it('creates a consultation and returns initial opciones', async () => {

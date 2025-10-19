@@ -10,9 +10,9 @@ export class PromptBuilder {
     const genero = (state as any).genero ?? 'género no especificado';
     const motivo = state.motivo_consulta ?? 'motivo no especificado';
 
-    const context = `Eres un médico clínico. Datos: Edad: ${edad} años; Género: ${genero}; Motivo: "${motivo}".\nGenera hasta 8 antecedentes personales RELEVANTES para este caso. Incluye (cuando correspondan): enfermedades crónicas, cirugías previas (añade año entre paréntesis si se conoce), hospitalizaciones y hábitos tóxicos (p.ej. tabaquismo, alcohol). Cada antecedente debe tener como máximo 3 palabras cuando sea posible.`;
+    const context = `Eres un médico clínico. Datos: Edad: ${edad} años; Género: ${genero}; Motivo: "${motivo}".\nGenera hasta 8 antecedentes personales RELEVANTES para este caso. Incluye (cuando correspondan): enfermedades crónicas, cirugías, hospitalizaciones y hábitos tóxicos (p.ej. tabaquismo, alcohol). Cada antecedente debe tener como máximo 3 palabras cuando sea posible.`;
 
-    return this.header(context) + `\n\nEjemplo: ["Hipertensión arterial", "Colecistectomía (2018)", "Tabaquismo (16 cig/día)"]`;
+    return this.header(context) + `\n\nEjemplo: ["Hipertensión arterial", "Colecistectomía", "Tabaquismo (16 cig/día)"]`;
   }
 
   alergias(state: PartialState) {

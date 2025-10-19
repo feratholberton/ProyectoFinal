@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { GenerateOptionsUseCase } from '../application/use-cases/GenerateOptionsUseCase.ts';
+import { GenerateOptionsUseCase } from '../src/application/use-cases/GenerateOptionsUseCase.ts';
 
 describe('GenerateOptionsUseCase', () => {
   it('returns NOT_FOUND when consultation missing', async () => {

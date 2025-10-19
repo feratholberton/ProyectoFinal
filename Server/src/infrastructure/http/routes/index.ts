@@ -35,7 +35,6 @@ export default async function registerRoutes(fastify: FastifyInstance) {
 
   registerStartEndpoint(fastify, container.startUseCase);
   registerCollectEndpoint(fastify, container.collectUseCase);
-  // anamnesis batch endpoint
   fastify.log.info('Registering anamnesis route (dynamic import)');
   const anam = await import('./anamnesis.ts');
   fastify.log.info('Imported anamnesis module, registering endpoint');

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { parseOptionsFromText } from '../infrastructure/adapters/ai/parseUtils.ts';
+import { parseOptionsFromText } from '../src/infrastructure/adapters/ai/parseUtils.ts';
 
 describe('parseOptionsFromText', () => {
   it('parses JSON array responses', () => {

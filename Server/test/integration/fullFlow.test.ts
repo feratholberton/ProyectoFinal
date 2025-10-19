@@ -1,8 +1,8 @@
 import Fastify from 'fastify';
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import registerRoutes from '../../src/infrastructure/http/routes/index';
-import { createContainer as createRealContainer } from '../../infrastructure/config/di-container.ts';
-import type { IAIService } from '../../infrastructure/adapters/ai/IAIService.ts';
+import { createContainer as createRealContainer } from '../../src/infrastructure/config/di-container.ts';
+import type { IAIService } from '../../src/infrastructure/adapters/ai/IAIService.ts';
 class MockAIService implements IAIService {
   async generateOptions(_state: any, tipo: string) {
 
@@ -23,14 +23,14 @@ describe('integration - full flow', () => {
     fastify = Fastify();
 
     // build a small test container manually to avoid requiring external API keys
-    const { InMemoryConsultationRepository } = await import('../../infrastructure/adapters/persistence/InMemoryConsultationRepository.ts');
-    const { RandomUuidGenerator } = await import('../../infrastructure/adapters/id/RandomUuidGenerator.ts');
-    const { StartConsultationUseCase } = await import('../../application/use-cases/StartConsultationUseCase.ts');
-    const { CollectDataUseCase } = await import('../../application/use-cases/CollectDataUseCase.ts');
-    const { GenerateOptionsUseCase } = await import('../../application/use-cases/GenerateOptionsUseCase.ts');
-    const { GenerateSummaryUseCase } = await import('../../application/use-cases/GenerateSummaryUseCase.ts');
-    const { AdvanceStepUseCase } = await import('../../application/use-cases/AdvanceStepUseCase.ts');
-    const { GetConsultationUseCase } = await import('../../application/use-cases/GetConsultationUseCase.ts');
+  const { InMemoryConsultationRepository } = await import('../../src/infrastructure/adapters/persistence/InMemoryConsultationRepository.ts');
+  const { RandomUuidGenerator } = await import('../../src/infrastructure/adapters/id/RandomUuidGenerator.ts');
+  const { StartConsultationUseCase } = await import('../../src/application/use-cases/StartConsultationUseCase.ts');
+  const { CollectDataUseCase } = await import('../../src/application/use-cases/CollectDataUseCase.ts');
+  const { GenerateOptionsUseCase } = await import('../../src/application/use-cases/GenerateOptionsUseCase.ts');
+  const { GenerateSummaryUseCase } = await import('../../src/application/use-cases/GenerateSummaryUseCase.ts');
+  const { AdvanceStepUseCase } = await import('../../src/application/use-cases/AdvanceStepUseCase.ts');
+  const { GetConsultationUseCase } = await import('../../src/application/use-cases/GetConsultationUseCase.ts');
 
     const repo = new InMemoryConsultationRepository();
     const idGenerator = new RandomUuidGenerator();
@@ -75,7 +75,7 @@ describe('integration - full flow', () => {
 
   // 3) Collect - select first option from the initial options returned by /start
   const startOptionLabel = (startBody.opciones && startBody.opciones[0] && startBody.opciones[0].label) || 'antecedentes-opt-1';
-  const collectRes = await fastify.inject({ method: 'POST', url: '/api/collect', payload: { id, opciones: [startOptionLabel] } });
+  const collectRes = await fastify.inject({ method: 'POST', url: '/api/collect', payload: { patientID: id, opciones: [startOptionLabel] } });
     expect(collectRes.statusCode).toBe(200);
     const collectBody = JSON.parse(collectRes.payload);
     expect(collectBody.partialState).toBeDefined();

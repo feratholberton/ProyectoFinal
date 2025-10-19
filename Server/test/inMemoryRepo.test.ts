@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest';
-import { InMemoryConsultationRepository } from '../infrastructure/adapters/persistence/InMemoryConsultationRepository';
-import { Consultation } from '../domain/entities/Consultation.ts';
-import { ConsultationId } from '../domain/value-objects/ConsultationId.ts';
-import { MotivoConsulta } from '../domain/value-objects/MotivoConsulta.ts';
+import { InMemoryConsultationRepository } from '../src/infrastructure/adapters/persistence/InMemoryConsultationRepository.ts';
+import { Consultation } from '../src/domain/entities/Consultation.ts';
+import { ConsultationId } from '../src/domain/value-objects/ConsultationId.ts';
+import { MotivoConsulta } from '../src/domain/value-objects/MotivoConsulta.ts';
 
 describe('InMemoryConsultationRepository', () => {
   it('saves and retrieves a consultation', async () => {

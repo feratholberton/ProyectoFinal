@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { CollectDataUseCase } from '../application/use-cases/CollectDataUseCase.ts';
-import type { IConsultationRepository } from '../infrastructure/adapters/persistence/IConsultationRepository.ts';
+import { CollectDataUseCase } from '../src/application/use-cases/CollectDataUseCase.ts';
+import type { IConsultationRepository } from '../src/domain/ports/IConsultationRepository.ts';
 
 describe('CollectDataUseCase', () => {
   it('returns 404 when consultation not found', async () => {

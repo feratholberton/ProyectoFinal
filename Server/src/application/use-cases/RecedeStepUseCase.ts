@@ -1,4 +1,4 @@
-import type { IConsultationRepository } from "../../infrastructure/adapters/persistence/IConsultationRepository.ts";
+import type { IConsultationRepository } from "../../domain/ports/IConsultationRepository.ts";
 
 export class RecedeStepUseCase {
   constructor(private repo: IConsultationRepository) {}

@@ -1,7 +1,7 @@
 export type AnswerType = 'text' | 'boolean' | 'single' | 'multi' | 'number' | 'date';
 
 export type AnamnesisAnswer = {
-  key: string; // key that maps to partialState field, e.g. 'inicio', 'patron', 'dolor_tipo'
+  key: string; // key that maps to partialState field 'inicio', 'patron', 'dolor_tipo'
   type: AnswerType;
   value: any; // value depends on type: string | boolean | string | string[] | number | ISO date string
 };
