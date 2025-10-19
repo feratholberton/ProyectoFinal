@@ -1,229 +1,358 @@
-# ELIO: System Architecture
+# ELIO Architecture Documentation
 
-## Overview
-This document outlines the technical architecture of the ELIO medical records system, providing a comprehensive view of how the system components interact to deliver secure, efficient, and compliant medical record management.
+This document provides a comprehensive overview of the application's architecture, design patterns, and technical decisions.
 
-## Architecture Diagram
+## Table of Contents
 
-# ELIO: System Architecture
+- [System Overview](#system-overview)
+- [Architecture Pattern](#architecture-pattern)
+- [Backend Architecture](#backend-architecture)
+- [Frontend Architecture](#frontend-architecture)
+- [Data Flow](#data-flow)
+- [Design Decisions](#design-decisions)
 
-```mermaid
-flowchart TD
-    Browser[Web Browsers] --> Gateway
-    Mobile[Mobile Apps] --> Gateway
-    Hospital[Hospital Systems] --> Gateway
-    
-    Gateway[API Gateway] --> Auth
-    Gateway[API Gateway] --> Web
-    
-    Auth[Authentication] --> API
-    Web[Web Server] --> API
-    API[API Services] --> BL
-    
-    subgraph BL[Business Logic]
-        PM[Patient Management]
-        MR[Medical Records]
-        REP[Reporting]
-        AUD[Audit]
-        NS[Notifications]
-    end
-    
-    BL --> DB[(Primary Database)]
-    BL --> Cache[(Cache)]
-    BL --> DocStore[(Document Storage)]
-    
-    subgraph SS[Supporting Services]
-        Log[Logging]
-        Mon[Monitoring]
-        Backup[Backup]
-        IdP[Identity Provider]
-    end
-    
-    IdP -.-> Auth
-    SS -.-> BL
-    SS -.-> DB
-    
-    subgraph EI[External Integrations]
-        HL7[HL7/FHIR]
-        Lab[Laboratory]
-        Pharm[Pharmacy]
-        Ins[Insurance]
-    end
-    
-    BL <--> EI
+## System Overview
+
+The application follows a **client-server architecture** with clear separation of concerns:
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                    Client (Browser)                     │
+│              Angular 20 + SSR + RxJS                    │
+└──────────────────────┬──────────────────────────────────┘
+                       │ HTTP/HTTPS
+                       │ REST API
+┌──────────────────────▼──────────────────────────────────┐
+│                   API Server                            │
+│           Fastify + TypeScript + CORS                   │
+└──────────────────────┬──────────────────────────────────┘
+                       │
+                       │
+┌──────────────────────▼──────────────────────────────────┐
+│             External Services                           │
+│          Google Generative AI (Gemini)                  │
+└─────────────────────────────────────────────────────────┘
 ```
 
-## System Components
+## Architecture Pattern
 
-### Application Layers
+### Hexagonal Architecture (Backend)
 
-#### Presentation Layer
-- **API Gateway**: Handles all incoming requests, provides TLS termination, rate limiting, and request routing
-- **Authentication Service**: Manages user authentication, issues JWTs, and validates credentials
-- **API Controllers**: RESTful endpoints that accept and respond to client requests
+The backend implements **Hexagonal Architecture** (also known as Ports and Adapters), which provides:
 
-#### Business Logic Layer
-- **Patient Service**: Handles patient data operations, validation, and business rules
-- **Medical Record Service**: Manages the creation, retrieval, and modification of medical records
-- **Reporting Service**: Generates reports and analytics from system data
-- **Audit Service**: Records all system actions for compliance and security purposes
-- **Notification Service**: Manages alerts and notifications to users
+- **Separation of concerns**
+- **Testability**
+- **Flexibility to change external dependencies**
+- **Domain-driven design principles**
 
-#### Data Access Layer
-- **Repository Pattern Implementation**: Abstracts database operations from business logic
-- **Data Validation**: Ensures data integrity before persistence
-- **Query Optimization**: Implements efficient data access patterns
-- **Caching Strategy**: Reduces database load for frequently accessed data
+```
+┌───────────────────────────────────────────────────────────┐
+│                    Infrastructure Layer                   │
+│  ┌─────────────┐  ┌──────────────┐  ┌─────────────────┐   │
+│  │   HTTP API  │  │  AI Adapter  │  │  Config Files   │   │
+│  └──────┬──────┘  └──────┬───────┘  └─────────┬───────┘   │
+│         │                │                    │           │
+└─────────┼────────────────┼────────────────────┼───────────┘
+          │                │                    │
+┌─────────▼────────────────▼────────────────────▼───────────┐
+│                   Application Layer                       │
+│  ┌──────────────┐  ┌─────────────────┐  ┌──────────────┐  │
+│  │  Use Cases   │  │   Services      │  │     DTOs     │  │
+│  └──────┬───────┘  └─────────┬───────┘  └──────────────┘  │
+└─────────┼────────────────────┼────────────────────────────┘
+          │                    │
+┌─────────▼────────────────────▼────────────────────────────┐
+│                      Domain Layer                         │
+│  ┌───────────────┐  ┌──────────────┐  ┌──────────────┐    │
+│  │   Entities    │  │    Ports     │  │ Value Objects│    │
+│  └───────────────┘  └──────────────┘  └──────────────┘    │
+│  ┌───────────────┐  ┌──────────────┐                      │
+│  │Domain Services│  │    Errors    │                      │
+│  └───────────────┘  └──────────────┘                      │
+└───────────────────────────────────────────────────────────┘
+```
 
-#### Infrastructure Layer
-- **Logging Framework**: Captures system events and errors
-- **Configuration Management**: Manages environment-specific settings
-- **Exception Handling**: Provides consistent error management
-- **Security Middleware**: Implements authentication and authorization checks
+## Backend Architecture
 
-#### Indexing Strategy
-- Patient identification number
-- Provider identification
-- Timestamp-based indexes for medical records
-- Full-text search indexes for clinical notes
-- Compound indexes for common query patterns
+### Directory Structure
 
-#### Data Partitioning
-- Time-based partitioning for historical records
-- Sharding strategy for high-volume deployments
-- Archive policy for inactive patient data
+```
+Server/
+├── src/
+│   ├── domain/                    # Core business logic
+│   │   ├── entities/              # Domain entities
+│   │   ├── value-objects/         # Immutable value objects
+│   │   ├── ports/                 # Interfaces (contracts)
+│   │   ├── services/              # Domain services
+│   │   └── errors/                # Domain-specific errors
+│   │
+│   ├── application/               # Application use cases
+│   │   ├── use-cases/             # Business use cases
+│   │   ├── services/              # Application services
+│   │   └── dtos/                  # Data Transfer Objects
+│   │
+│   ├── infrastructure/            # External adapters
+│   │   ├── http/                  # HTTP routes & controllers
+│   │   │   ├── routes/            # Route definitions
+│   │   │   └── controllers/       # Request handlers
+│   │   ├── adapters/              # External service adapters
+│   │   └── config/                # Configuration files
+│   │
+│   └── server.ts                  # Application entry point
+│
+├── test/                          # Test files
+├── tsconfig.json                  # TypeScript configuration
+├── package.json                   # Dependencies
+└── .env                           # Environment variables
+```
 
-### Integration Points
+### Layer Responsibilities
 
-#### Third-party Services
-- **Identity Provider**: OAuth 2.0 / OpenID Connect services
-- **Medical Terminology Service**: ICD-10, SNOMED CT integration
-- **Document Processing Service**: For handling uploaded documents
+#### 1. Domain Layer
+- **Entities**: Core business objects with unique identity
+- **Value Objects**: Immutable objects defined by their attributes
+- **Ports**: Interfaces that define contracts for external dependencies
+- **Domain Services**: Business logic that doesn't belong to entities
+- **Errors**: Custom error types for domain violations
 
-#### Health System Integrations
-- **EHR Systems**: Bidirectional data exchange
-- **Laboratory Information Systems**: Test ordering and result retrieval
-- **Radiology Information Systems**: Imaging order and result management
-- **Pharmacy Systems**: Prescription transmission
+**Key Principle**: No external dependencies, pure business logic
 
-## Scalability Design
+#### 2. Application Layer
+- **Use Cases**: Orchestrate domain objects to fulfill business requirements
+- **Application Services**: Coordinate use cases and infrastructure
+- **DTOs**: Transform data between layers
 
-### Load Balancing
-- Application-level load balancing using Nginx/HAProxy
-- Distribution algorithms: round-robin with health checks
-- Session affinity configuration
+**Key Principle**: Coordinates domain and infrastructure
 
-### Horizontal Scaling
-- Stateless application server design
-- Auto-scaling based on CPU/memory metrics
-- Containerization with Docker and Kubernetes
+#### 3. Infrastructure Layer
+- **HTTP**: REST API endpoints and controllers
+- **Adapters**: Implementations of domain ports (AI services, databases, etc.)
+- **Config**: Environment and application configuration
 
-### Database Scaling
-- Read replicas for query-intensive operations
-- Vertical scaling for write operations
-- Sharding for very large datasets
-- Caching layer using Redis/Memcached
+**Key Principle**: Implements technical details and external integrations
 
-## Availability and Redundancy
+### Technology Stack
 
-### Failover Mechanisms
-- Active-passive database configuration
-- Automatic failover with minimal downtime
-- Health monitoring and self-healing capabilities
+| Component | Technology | Version | Purpose |
+|-----------|-----------|---------|---------|
+| Runtime | Node.js | 18+ | JavaScript runtime |
+| Framework | Fastify | 5.6.1 | High-performance web framework |
+| Language | TypeScript | 5.9.2 | Type-safe JavaScript |
+| CORS | @fastify/cors | 11.1.0 | Cross-origin resource sharing |
+| Security | @fastify/helmet | 13.0.2 | Security headers |
+| Documentation | @fastify/swagger | 9.5.2 | API documentation |
+| AI Integration | @google/generative-ai | 0.24.1 | Google Gemini AI |
+| Testing | Vitest | 1.0.0 | Unit testing framework |
+| Environment | dotenv | 17.2.3 | Environment variables |
 
-### Backup Strategies
-- Daily full database backups
-- Hourly incremental backups
-- Point-in-time recovery capabilities
-- Geographically distributed backup storage
+## Frontend Architecture
 
-### Disaster Recovery Plan
-- Recovery Time Objective (RTO): 2 hours
-- Recovery Point Objective (RPO): 15 minutes
-- Regular disaster recovery testing
-- Documented recovery procedures
+### Directory Structure
 
-## Security Architecture
+```
+ui/
+├── src/
+│   ├── app/                       # Application code
+│   │   ├── components/            # Reusable components
+│   │   ├── services/              # Business services
+│   │   ├── models/                # TypeScript interfaces
+│   │   ├── guards/                # Route guards
+│   │   └── interceptors/          # HTTP interceptors
+│   │
+│   ├── assets/                    # Static assets
+│   ├── environments/              # Environment configs
+│   ├── main.ts                    # Application entry point
+│   ├── main.server.ts             # SSR entry point
+│   └── styles.css                 # Global styles
+│
+├── public/                        # Public assets
+├── angular.json                   # Angular configuration
+├── tsconfig.json                  # TypeScript configuration
+└── package.json                   # Dependencies
+```
+
+### Component Architecture
+
+Angular follows a **component-based architecture** with:
+
+- **Smart Components**: Handle business logic and state management
+- **Presentational Components**: Pure UI components
+- **Services**: Shared business logic and HTTP communication
+- **Guards**: Route protection
+- **Interceptors**: HTTP request/response modification
+
+### Technology Stack
+
+| Component | Technology | Version | Purpose |
+|-----------|-----------|---------|---------|
+| Framework | Angular | 20.3.0 | Frontend framework |
+| Language | TypeScript | 5.9.2 | Type-safe JavaScript |
+| State Management | RxJS | 7.8.0 | Reactive programming |
+| SSR | Angular SSR | 20.3.3 | Server-side rendering |
+| Server | Express | 5.1.0 | SSR server |
+| Testing | Jasmine/Karma | Latest | Unit/Integration testing |
+
+## Data Flow
+
+### Request Flow
+
+```
+User Action (Browser)
+    ↓
+Angular Component
+    ↓
+Angular Service (HTTP Client)
+    ↓
+[HTTP Request] → Backend API
+    ↓
+Fastify Route Handler
+    ↓
+Controller
+    ↓
+Use Case (Application Layer)
+    ↓
+Domain Service / Entity
+    ↓
+Port Interface
+    ↓
+Adapter (Infrastructure)
+    ↓
+External Service (Google AI)
+    ↓
+[Response Path - Reverse Order]
+    ↓
+Angular Component Updates View
+    ↓
+User Sees Result
+```
 
 ### Authentication Flow
-1. User provides credentials
-2. Authentication service validates credentials
-3. JWT token issued with appropriate claims
-4. Token validation on subsequent requests
-5. Refresh token mechanism for session continuity
 
-### Authorization Model
-- Role-Based Access Control (RBAC)
-- Fine-grained permissions for medical records
-- Context-aware authorization (patient-provider relationship)
-- Principle of least privilege enforcement
+```
+User Login Request
+    ↓
+Backend validates credentials
+    ↓
+Generate JWT token
+    ↓
+Return token to frontend
+    ↓
+Frontend stores token (session/localStorage)
+    ↓
+Subsequent requests include token in headers
+    ↓
+Backend validates token via middleware
+    ↓
+Grant/Deny access to resources
+```
 
-### Data Encryption
-- Data-at-rest encryption
-- TLS 1.3 for data-in-transit
-- Field-level encryption for highly sensitive data
-- Secure key management system
+## Design Decisions
 
-### Audit Mechanisms
-- Comprehensive action logging
-- Tamper-evident audit trail
-- Real-time suspicious activity detection
-- Compliance reporting capabilities
+### 1. Why Hexagonal Architecture?
 
-## Performance Considerations
+**Rationale**: 
+- Decouples business logic from technical implementation
+- Makes the application more testable
+- Allows easy replacement of external dependencies
+- Enforces clean separation of concerns
 
-### Caching Strategies
-- Application-level caching for reference data
-- Database query caching
-- HTTP response caching with appropriate cache headers
-- Distributed caching for session data
+### 2. Why Fastify over Express?
 
-### Performance Optimization
-- Database query optimization
-- Asynchronous processing for non-critical operations
-- Connection pooling
-- Resource compression
+**Rationale**:
+- **Performance**: 2-3x faster than Express
+- **Type Safety**: Better TypeScript support
+- **Plugin System**: Modular architecture
+- **Schema Validation**: Built-in request/response validation
+- **Modern**: Async/await support out of the box
 
-### Expected Load Parameters
-- Concurrent users: Up to 500
-- Average request rate: 50 requests/second
-- Peak request rate: 200 requests/second
-- Average response time: < 200ms
-- Storage growth rate: ~100GB/year
+### 3. Why Angular with SSR?
 
-## Deployment Architecture
+**Rationale**:
+- **SEO**: Server-side rendering improves search engine optimization
+- **Performance**: Faster initial page load
+- **Type Safety**: Full TypeScript support
+- **Enterprise-Ready**: Comprehensive framework with everything included
+- **Reactive Programming**: RxJS for complex async operations
 
-### Development Environment
-- Local developer environments
-- CI/CD pipeline integration
-- Automated testing environment
+### 4. Why Google Generative AI?
 
-### Staging Environment
-- Production-like configuration
-- Data anonymization for testing
-- Performance testing capabilities
+**Rationale**:
+- **Advanced Capabilities**: State-of-the-art language model
+- **Reliability**: Enterprise-grade service
+- **Cost-Effective**: Competitive pricing
+- **Easy Integration**: Official SDK available
 
-### Production Environment
-- High-availability configuration
-- Enhanced security measures
-- Comprehensive monitoring
+### 5. Why Vitest for Testing?
 
-## Monitoring and Observability
+**Rationale**:
+- **Speed**: Extremely fast test execution
+- **Vite Integration**: Seamless integration with modern tooling
+- **ESM Support**: Native ES modules support
+- **TypeScript**: First-class TypeScript support
 
-### System Metrics
-- Server health (CPU, memory, disk)
-- Application performance metrics
-- Database performance metrics
-- API endpoint response times
+## Security Considerations
 
-### Application Insights
-- Error tracking and aggregation
-- User behavior analytics
-- Feature usage statistics
-- Performance bottleneck identification
+### Backend Security
 
-### Alerting Strategy
-- Threshold-based alerts
-- Anomaly detection
-- On-call rotation
-- Incident management workflow
+1. **Helmet**: Security headers (XSS, clickjacking protection)
+2. **CORS**: Configurable cross-origin resource sharing
+3. **Environment Variables**: Sensitive data not hardcoded
+4. **Input Validation**: Schema-based request validation
+5. **Error Handling**: Generic error messages to clients
+
+### Frontend Security
+
+1. **Angular Sanitization**: Automatic XSS protection
+2. **HTTP Interceptors**: Token management and error handling
+3. **Route Guards**: Access control
+4. **Environment Variables**: Separate configs for dev/prod
+
+## Performance Optimizations
+
+### Backend
+- Fastify's high-performance architecture
+- Asynchronous request handling
+- Connection pooling for external services
+- Response caching where appropriate
+
+### Frontend
+- Server-Side Rendering (SSR) for initial load
+- Lazy loading of modules
+- OnPush change detection strategy
+- Production build optimizations (minification, tree-shaking)
+
+## Scalability Considerations
+
+### Horizontal Scaling
+- Stateless API design
+- Load balancing support
+- Multiple server instances
+
+### Vertical Scaling
+- Efficient resource utilization
+- Async/await for non-blocking operations
+- Memory management best practices
+
+## Monitoring and Logging
+
+### Backend
+- Fastify built-in logger (Pino)
+- Structured logging (JSON format)
+- Error tracking and reporting
+- Performance metrics
+
+### Frontend
+- Error boundary components
+- Console logging in development
+- Analytics integration ready
+
+## Future Improvements
+
+1. **Database Integration**: Add PostgreSQL/MongoDB
+2. **Caching Layer**: Implement Redis for performance
+3. **Message Queue**: Add RabbitMQ/Kafka for async processing
+4. **API Gateway**: Centralized API management
+5. **Microservices**: Split into domain-specific services
+6. **Container Orchestration**: Kubernetes deployment
+7. **GraphQL**: Alternative API layer
+8. **WebSockets**: Real-time communication

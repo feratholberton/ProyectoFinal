@@ -1,105 +1,202 @@
-# ELIO: Installation and Configuration Guide
+# ELIO Installation Guide
+
+This guide provides comprehensive instructions for setting up the development environment and deploying the application.
+
+## Table of Contents
+
+- [System Requirements](#system-requirements)
+- [Development Setup](#development-setup)
+- [Environment Configuration](#environment-configuration)
+- [Database Setup](#database-setup)
+- [Deployment](#deployment)
+- [Troubleshooting](#troubleshooting)
 
 ## System Requirements
-- Node.js v14+ (or your specific version)
-- NPM
 
-## Step-by-Step Installation
+### Minimum Requirements
+
+- **Operating System**: Windows 10+, macOS 11+, or Linux (Ubuntu 20.04+)
+- **Node.js**: v18.0.0 or higher
+- **npm**: v9.0.0 or higher
+- **RAM**: 4GB minimum (8GB recommended)
+- **Disk Space**: 2GB free space
+
+### Recommended Development Tools
+
+- **IDE**: Visual Studio Code with Angular/TypeScript extensions
+- **Terminal**: PowerShell, Bash, or Zsh
+- **Browser**: Chrome or Firefox (latest version)
+- **Git**: Latest stable version
+
+## Development Setup
 
 ### 1. Clone the Repository
+
 ```bash
-git clone https://github.com/your-repo.git
+git clone https://github.com/your-user/your-repo.git
 cd your-repo
 ```
 
-### 2. Install Dependencies
+### 2. Backend Setup (Server)
+
 ```bash
+cd Server
+
 npm install
+
+npm run test
 ```
 
-### 3. Environment Variables Configuration
-Create a `.env` file in the project root with the following variables:
+### 3. Frontend Setup (UI)
 
+```bash
+cd ../ui
+
+npm install
+
+npm run build
 ```
-# Server
-PORT=3000
-NODE_ENV=production
 
-# Database
-DB_URI=mongodb://localhost:27017/elio
-DB_NAME=elio
+## Environment Configuration
 
-# JWT
-JWT_SECRET=your_secure_secret_key
-JWT_EXPIRES_IN=24h
+### Backend Environment Variables
 
-# Security Configuration
-CORS_ORIGIN=https://your-frontend-domain.com
-RATE_LIMIT_WINDOW=15
-RATE_LIMIT_MAX=100
+Create a `.env` file in the `Server/` directory:
+
+```env
+# Server Configuration
+PORT=10000
+NODE_ENV=development
+
+# CORS Configuration
+# Options: 
+# - 'true' or '*' for all origins
+# - 'false' to disable CORS
+# - Comma-separated list of origins: 'http://localhost:4200,https://yourdomain.com'
+CORS_ORIGIN=http://localhost:4200
+
+# Google Generative AI Configuration
+GEMINI_API_KEY=your_gemini_api_key_here
+
+# Swagger Documentation
+SWAGGER_BASE_URL=/api/docs
 
 # Logging
 LOG_LEVEL=info
 ```
 
-## Development Configuration
+### Frontend Environment Configuration
 
-### Running in Development Mode
+The Angular application uses environment files located in `ui/src/environments/`:
+
+- `environment.ts` - Development environment
+- `environment.prod.ts` - Production environment
+
+## Running the Application
+
+### Development Mode
+
+#### Start Backend Server
+
 ```bash
+cd Server
 npm run dev
 ```
 
-### Testing
-```bash
-npm test
+Server will start at `http://localhost:10000` with hot-reload enabled.
 
-npm run test:coverage
+#### Start Frontend Application
+
+```bash
+cd ui
+npm start
 ```
 
-## Production Deployment
+Application will be available at `http://localhost:4200`.
 
-### Build for Production
+### Production Mode
+
+#### Build Backend
+
+```bash
+cd Server
+npm start
+```
+
+#### Build Frontend
+
+```bash
+cd ui
+npm run build
+npm run serve:ssr:ui
+```
+
+## Deployment
+
+### Prerequisites
+
+- Cloud platform account (AWS, Google Cloud, Azure, etc.)
+- Domain name (optional but recommended)
+- SSL certificate for HTTPS
+
+### Backend Deployment
+
+1. **Set production environment variables**
+2. **Build the application**
+   ```bash
+   cd Server
+   npm install --production
+   ```
+3. **Start with process manager (PM2)**
+   ```bash
+   npm install -g pm2
+   pm2 start npm --name "api-server" -- start
+   ```
+
+### Frontend Deployment
+
+1. **Build for production**
+   ```bash
+   cd ui
+   npm run build
+   ```
+2. **Deploy the `dist/` directory** to your hosting service
+
+### Docker Deployment (Optional)
+
+Create a `Dockerfile` in each directory for containerized deployment.
+
+## Troubleshooting
+
+### Common Issues
+
+#### Port Already in Use
+
+```bash
+lsof -ti:10000 | xargs kill -9
+
+netstat -ano | findstr :10000
+taskkill /PID <PID> /F
+```
+
+#### Module Not Found Errors
+
+```bash
+rm -rf node_modules package-lock.json
+npm cache clean --force
+npm install
+```
+
+#### TypeScript Compilation Errors
+
 ```bash
 npm run build
 ```
 
-### Run in Production
-```bash
-npm start
-```
+### Getting Help
 
-### Production Considerations
-- Use a process manager like PM2
-- Set up proper monitoring
-- Configure NGINX or similar as a reverse proxy
-- Enable HTTPS with proper certificates
-- Configure database backups
+If you encounter issues not covered here:
 
-## System Architecture
-ELIO is designed with a layered architecture:
-1. **API Layer**: Handles HTTP requests and responses
-2. **Service Layer**: Contains business logic
-3. **Data Access Layer**: Interfaces with the database
-4. **Infrastructure Layer**: Handles cross-cutting concerns
-
-## Troubleshooting Common Issues
-1. **Connection Issues**
-   - Verify database connection string
-   - Ensure database service is running
-   - Check network configuration and firewall settings
-
-2. **Authentication Issues**
-   - Verify JWT secret and expiration settings
-   - Check user credentials in database
-   - Ensure correct role assignments
-
-3. **Performance Issues**
-   - Check database indexing
-   - Monitor memory usage
-   - Review logging levels in production
-
-## Maintenance Procedures
-- Regular database backups
-- Log rotation and management
-- Security updates and patches
-- Performance monitoring
+1. Check the [API Documentation](API.md)
+2. Review the [Architecture Guide](ARCHITECTURE.md)
+3. Open an issue on GitHub with detailed error logs

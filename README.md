@@ -1,81 +1,136 @@
-# ELIO: Digital Medical Record Assistant
+# ELIO Project Documentation
 
-## Overview
-ELIO is a sophisticated backend system designed to streamline the process of completing and managing digital medical records. This solution provides healthcare professionals with an efficient, secure, and compliant platform for patient data management.
+A full-stack application built with Angular 20 (frontend) and Fastify (backend), featuring AI-powered consultation services using Google's Generative AI.
 
-## Key Features
-- Complete patient management system
-- Digital medical record creation and storage
-- Medical data validation and verification
-- Comprehensive RESTful API architecture
-- Role-based authentication and authorization
-- Complete audit trail for medical record modifications
-- HIPAA and GDPR compliance features
+## Architecture
+
+This project follows a **monorepo structure** with clear separation between frontend and backend:
+
+```
+your-repo/
+├── Server/          # Backend API (Fastify + TypeScript)
+├── ui/              # Frontend Application (Angular 20)
+└── docs/            # Comprehensive documentation
+```
+
+## Quick Start
+
+### Prerequisites
+
+- **Node.js**: v18.0.0 or higher
+- **npm**: v9.0.0 or higher
+- **Git**: Latest version
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/your-user/your-repo.git
+   cd your-repo
+   ```
+
+2. **Install backend dependencies**
+   ```bash
+   cd Server
+   npm install
+   ```
+
+3. **Install frontend dependencies**
+   ```bash
+   cd ../ui
+   npm install
+   ```
+
+### Configuration
+
+Create a `.env` file in the `Server/` directory:
+
+```env
+# Server Configuration
+PORT=10000
+
+# CORS Configuration
+CORS_ORIGIN=http://localhost:4200
+
+# Google Generative AI
+GEMINI_API_KEY=your_api_key_here
+
+# Swagger Documentation
+SWAGGER_BASE_URL=/api/docs
+```
+
+### Running the Application
+
+#### Backend Server
+
+```bash
+cd Server
+npm run dev 
+npm start
+npm test
+```
+
+The API will be available at `http://localhost:10000`
+
+#### Frontend Application
+
+```bash
+cd ui
+npm start
+npm run build
+npm test
+```
+
+The UI will be available at `http://localhost:4200`
+
+## Documentation
+
+Comprehensive documentation is available in the `/docs` directory:
+
+- **[Installation Guide](docs/INSTALL.md)** - Detailed setup instructions
+- **[Architecture Overview](docs/ARCHITECTURE.md)** - System design and patterns
+- **[API Reference](docs/API.md)** - Complete API documentation
+- **[Security Guide](docs/SECURITY.md)** - Security best practices
+- **[User Guide](docs/USER_GUIDE.md)** - End-user documentation
 
 ## Technology Stack
-- [List frameworks, languages, and technologies]
-- [Database systems]
-- [Authentication systems]
-- [Other technologies]
 
-## System Requirements
-- [Node.js/Python/etc. version]
-- [Database requirements]
-- [Other dependencies]
+### Backend
+- **Framework**: Fastify 5.6.1
+- **Language**: TypeScript 5.9.2
+- **AI Integration**: Google Generative AI
+- **Testing**: Vitest
+- **Documentation**: Swagger/OpenAPI
 
-## Installation
+### Frontend
+- **Framework**: Angular 20.3.0
+- **Language**: TypeScript 5.9.2
+- **Rendering**: Server-Side Rendering (SSR)
+- **Testing**: Jasmine + Karma
+- **Styling**: CSS3
 
-```bash
-git clone https://github.com/your-repo.git
-cd your-repo
+## Architecture Pattern
 
-npm install
+The backend follows **Hexagonal Architecture (Ports & Adapters)**:
 
-cp .env.example .env
-```
+- **Domain Layer**: Business logic and entities
+- **Application Layer**: Use cases and services
+- **Infrastructure Layer**: External adapters (HTTP, AI, etc.)
 
-## Configuration
-This section details how to configure the project:
-- Required environment variables
-- Database configuration
-- Security settings
-- API keys and external services
+## Contributing
 
-## Deployment
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
 
-```bash
-npm run dev
+## License
 
-npm start
-```
+This project is licensed under the ISC License.
 
-## Project Structure
-```
-/src
-  /controllers   # API controllers
-  /models        # Data models
-  /routes        # Route definitions
-  /middleware    # Custom middleware
-  /services      # Business logic
-  /utils         # Utility functions
-  /config        # Configuration files
-```
+## Useful Links
 
-## API Documentation
-Detailed API documentation is available at [documentation link] or by accessing `/api-docs` after starting the server.
-
-## Security and Compliance
-ELIO implements medical data protection standards including:
-- End-to-end encryption for sensitive data
-- Role-based access control
-- Comprehensive audit logging
-- [Other security measures]
-
-## Roadmap
-- Frontend implementation
-- Hospital system integration
-- Analytics and reporting module
-- [Other planned features]
+- [Fastify Documentation](https://www.fastify.io/)
+- [Angular Documentation](https://angular.io/docs)
+- [Google Generative AI](https://ai.google.dev/)
 
 ## Support
-For technical support, please contact developers
+
+For issues, questions, or contributions, please open an issue in the repository.
