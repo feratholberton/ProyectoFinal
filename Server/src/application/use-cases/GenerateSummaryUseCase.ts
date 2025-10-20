@@ -8,7 +8,14 @@ export class GenerateSummaryUseCase {
     const consultation = await this.repo.get(id);
     if (!consultation) {
       const { NotFoundError } = await import('../../domain/errors/NotFoundError.ts');
-      throw new NotFoundError('No existe la sesión');
+      throw new NotFoundError('No existe la sesi\u00f3n');
+    }
+
+    // Ensure the consultation is at the 'resumen' step before generating a summary
+  const currentStep = typeof consultation.getCurrentStep === 'function' ? consultation.getCurrentStep() : null;
+    if (currentStep !== 'resumen') {
+      const { ValidationError } = await import('../../domain/errors/ValidationError.ts');
+      throw new ValidationError("No se puede generar el resumen: el paso actual no es 'resumen'");
     }
 
     const partialState = consultation.getPartialState();
