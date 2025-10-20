@@ -4,6 +4,8 @@ import { Observable, catchError, throwError } from 'rxjs';
 
 export interface ConsultationRequest {
   motivo_consulta: string;
+  edad: number;
+  genero: string;
 }
 
 export interface ConsultationResponse {
@@ -22,14 +24,16 @@ export class ConsultationService {
   private http = inject(HttpClient);
   private apiUrl = 'https://backend-w6ii.onrender.com';
 
-  startConsultation(motivoConsulta: string): Observable<ConsultationResponse> {
+  startConsultation(motivoConsulta: string, edad: number, genero: string): Observable<ConsultationResponse> {
     const headers = new HttpHeaders({
       'accept': 'application/json',
       'Content-Type': 'application/json'
     });
 
     const body: ConsultationRequest = {
-      motivo_consulta: motivoConsulta
+      motivo_consulta: motivoConsulta,
+      edad: edad,
+      genero: genero
     };
 
     return this.http.post<ConsultationResponse>(

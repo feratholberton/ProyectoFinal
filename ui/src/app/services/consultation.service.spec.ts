@@ -25,15 +25,21 @@ describe('ConsultationService', () => {
 
   it('should send POST request to start consultation', () => {
     const mockResponse: ConsultationResponse = { message: 'Success' };
-    const motivoConsulta = 'Dolor primer dedo pie';
+    const motivoConsulta = 'Dolor rodilla';
+    const edad = 50;
+    const genero = 'm';
 
-    service.startConsultation(motivoConsulta).subscribe(response => {
+    service.startConsultation(motivoConsulta, edad, genero).subscribe(response => {
       expect(response).toEqual(mockResponse);
     });
 
     const req = httpMock.expectOne('https://backend-w6ii.onrender.com/start');
     expect(req.request.method).toBe('POST');
-    expect(req.request.body).toEqual({ motivo_consulta: motivoConsulta });
+    expect(req.request.body).toEqual({ 
+      motivo_consulta: motivoConsulta,
+      edad: edad,
+      genero: genero
+    });
     expect(req.request.headers.get('accept')).toBe('application/json');
     expect(req.request.headers.get('Content-Type')).toBe('application/json');
     
@@ -41,10 +47,12 @@ describe('ConsultationService', () => {
   });
 
   it('should handle error when consultation fails', () => {
-    const motivoConsulta = 'Dolor primer dedo pie';
+    const motivoConsulta = 'Dolor rodilla';
+    const edad = 50;
+    const genero = 'm';
     const errorMessage = 'Internal Server Error';
 
-    service.startConsultation(motivoConsulta).subscribe({
+    service.startConsultation(motivoConsulta, edad, genero).subscribe({
       next: () => fail('should have failed'),
       error: (error) => {
         expect(error.status).toBe(500);
