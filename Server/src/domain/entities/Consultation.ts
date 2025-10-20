@@ -3,6 +3,7 @@ import type { PartialState } from '../../session.ts';
 import type { ConsultationStep, ClinicalStep } from './ClinicalStep.ts';
 import { ALL_CLINICAL_STEPS } from './ClinicalStep.ts';
 import { MotivoConsulta } from '../value-objects/MotivoConsulta.ts';
+import { ValidationError } from '../errors/ValidationError.ts';
 
 export class Consultation {
   private steps: ClinicalStep[] = ALL_CLINICAL_STEPS;
@@ -27,7 +28,8 @@ export class Consultation {
     if (currentIndex < this.steps.length - 1) {
       this.pasoActual = this.steps[currentIndex + 1];
     } else {
-      this.pasoActual = 'farmacos';
+      // Do not wrap around: 'resumen' is the last step and advancing further is invalid
+      throw new ValidationError("No se puede avanzar la consulta: ya está en el último paso 'resumen'");
     }
   }
 
