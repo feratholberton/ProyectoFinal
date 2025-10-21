@@ -1,6 +1,12 @@
+.consultation-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
 .consultation-form {
   max-width: 600px;
-  margin: 2rem auto;
+  margin: 0 auto 2rem;
   padding: 2rem;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -53,17 +59,26 @@ select:disabled {
   cursor: not-allowed;
 }
 
-.submit-button {
-  width: 100%;
+.button-group {
+  display: flex;
+  gap: 1rem;
+}
+
+.submit-button,
+.reset-button {
+  flex: 1;
   padding: 0.75rem;
-  background-color: #007bff;
-  color: white;
   border: none;
   border-radius: 4px;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.3s;
+}
+
+.submit-button {
+  background-color: #007bff;
+  color: white;
 }
 
 .submit-button:hover:not(:disabled) {
@@ -73,6 +88,15 @@ select:disabled {
 .submit-button:disabled {
   background-color: #ccc;
   cursor: not-allowed;
+}
+
+.reset-button {
+  background-color: #6c757d;
+  color: white;
+}
+
+.reset-button:hover {
+  background-color: #545b62;
 }
 
 .error-message {

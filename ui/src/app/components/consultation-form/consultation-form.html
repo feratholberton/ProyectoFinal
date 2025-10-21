@@ -1,73 +1,91 @@
-<div class="consultation-form">
-  <h2>Iniciar Consulta</h2>
-  
-  <form (ngSubmit)="onSubmit()">
-    <div class="form-group">
-      <label for="motivoConsulta">Motivo de Consulta:</label>
-      <textarea
-        id="motivoConsulta"
-        [value]="motivoConsulta()"
-        (input)="updateMotivoConsulta($any($event.target).value)"
-        placeholder="Ejemplo: Dolor rodilla"
-        rows="4"
-        [disabled]="isLoading()"
-        required
-      ></textarea>
-    </div>
-
-    <div class="form-group">
-      <label for="edad">Edad:</label>
-      <input
-        type="number"
-        id="edad"
-        [value]="edad() ?? ''"
-        (input)="updateEdad($any($event.target).value)"
-        placeholder="Ejemplo: 50"
-        min="1"
-        max="120"
-        [disabled]="isLoading()"
-        required
-      />
-    </div>
-
-    <div class="form-group">
-      <label for="genero">Género:</label>
-      <select
-        id="genero"
-        [value]="genero()"
-        (change)="updateGenero($any($event.target).value)"
-        [disabled]="isLoading()"
-        required
-      >
-        <option value="">Seleccione...</option>
-        <option value="m">Masculino</option>
-        <option value="f">Femenino</option>
-      </select>
-    </div>
-
-    @if (error()) {
-      <div class="error-message">
-        {{ error() }}
+<div class="consultation-container">
+  <div class="consultation-form">
+    <h2>Iniciar Consulta</h2>
+    
+    <form (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="motivoConsulta">Motivo de Consulta:</label>
+        <textarea
+          id="motivoConsulta"
+          [value]="motivoConsulta()"
+          (input)="updateMotivoConsulta($any($event.target).value)"
+          placeholder="Ejemplo: Dolor rodilla"
+          rows="4"
+          [disabled]="isLoading() || showOptionsSelector()"
+          required
+        ></textarea>
       </div>
-    }
 
-    @if (response()) {
-      <div class="success-message">
-        <h3>Consulta iniciada exitosamente</h3>
-        <pre>{{ response() | json }}</pre>
+      <div class="form-group">
+        <label for="edad">Edad:</label>
+        <input
+          type="number"
+          id="edad"
+          [value]="edad() ?? ''"
+          (input)="updateEdad($any($event.target).value)"
+          placeholder="Ejemplo: 50"
+          min="1"
+          max="120"
+          [disabled]="isLoading() || showOptionsSelector()"
+          required
+        />
       </div>
-    }
 
-    <button 
-      type="submit" 
-      [disabled]="isLoading() || !motivoConsulta().trim() || !edad() || !genero()"
-      class="submit-button"
-    >
-      @if (isLoading()) {
-        <span>Enviando...</span>
-      } @else {
-        <span>Iniciar Consulta</span>
+      <div class="form-group">
+        <label for="genero">Género:</label>
+        <select
+          id="genero"
+          [value]="genero()"
+          (change)="updateGenero($any($event.target).value)"
+          [disabled]="isLoading() || showOptionsSelector()"
+          required
+        >
+          <option value="">Seleccione...</option>
+          <option value="m">Masculino</option>
+          <option value="f">Femenino</option>
+        </select>
+      </div>
+
+      @if (error()) {
+        <div class="error-message">
+          {{ error() }}
+        </div>
       }
-    </button>
-  </form>
+
+      @if (response() && !showOptionsSelector()) {
+        <div class="success-message">
+          <h3>Consulta iniciada exitosamente</h3>
+          <p>Patient ID: {{ response()?.patientID }}</p>
+        </div>
+      }
+
+      <div class="button-group">
+        <button 
+          type="submit" 
+          [disabled]="isLoading() || !motivoConsulta().trim() || !edad() || !genero() || showOptionsSelector()"
+          class="submit-button"
+        >
+          @if (isLoading()) {
+            <span>Enviando...</span>
+          } @else {
+            <span>Iniciar Consulta</span>
+          }
+        </button>
+
+        @if (showOptionsSelector()) {
+          <button 
+            type="button"
+            (click)="resetForm()"
+            class="reset-button"
+          >
+            Nueva Consulta
+          </button>
+        }
+      </div>
+    </form>
+  </div>
+
+  @if (showOptionsSelector()) {
+    <app-options-selector (dataSubmitted)="onDataSubmitted($event)" />
+  }
 </div>

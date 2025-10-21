@@ -8,12 +8,24 @@ export interface ConsultationRequest {
   genero: string;
 }
 
+export interface Opcion {
+  label: string;
+  checked: boolean;
+}
+
 export interface ConsultationResponse {
-  // Define the response structure based on what your API returns
-  // For example:
-  // id?: string;
-  // message?: string;
-  // Add other fields as needed
+  patientID: string;
+  pasoActual: string;
+  opciones: Opcion[];
+}
+
+export interface CollectRequest {
+  patientID: string;
+  opciones: string[];
+  additional: string;
+}
+
+export interface CollectResponse {
   [key: string]: any;
 }
 
@@ -43,6 +55,30 @@ export class ConsultationService {
     ).pipe(
       catchError(err => {
         console.error('Failed to start consultation', err);
+        return throwError(() => err);
+      })
+    );
+  }
+
+  collectData(patientID: string, selectedOptions: string[], additional: string = ''): Observable<CollectResponse> {
+    const headers = new HttpHeaders({
+      'accept': 'application/json',
+      'Content-Type': 'application/json'
+    });
+
+    const body: CollectRequest = {
+      patientID: patientID,
+      opciones: selectedOptions,
+      additional: additional
+    };
+
+    return this.http.post<CollectResponse>(
+      `${this.apiUrl}/api/collect`,
+      body,
+      { headers }
+    ).pipe(
+      catchError(err => {
+        console.error('Failed to collect data', err);
         return throwError(() => err);
       })
     );

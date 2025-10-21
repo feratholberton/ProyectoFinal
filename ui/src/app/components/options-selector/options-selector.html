@@ -1,0 +1,70 @@
+<div class="options-selector">
+  <!-- Debug info -->
+  <div style="background: #f0f0f0; padding: 10px; margin-bottom: 10px; font-size: 12px;">
+    <strong>Debug Info:</strong><br>
+    Has Data: {{ hasData() }}<br>
+    Opciones Length: {{ opciones().length }}<br>
+    Patient ID: {{ patientID() }}<br>
+    Paso Actual: {{ pasoActual() }}
+  </div>
+
+  @if (hasData()) {
+    <div class="selector-content">
+      <h2>{{ pasoActual() }}</h2>
+      <p class="patient-id">Paciente ID: {{ patientID() }}</p>
+
+      <form (ngSubmit)="onSubmit()">
+        <div class="options-group">
+          <h3>Seleccione las opciones aplicables:</h3>
+          <div class="checkbox-list">
+            @for (option of opciones(); track option.label; let i = $index) {
+              <label class="checkbox-item">
+                <input
+                  type="checkbox"
+                  [checked]="option.checked"
+                  (change)="toggleOption(i)"
+                  [disabled]="isLoading()"
+                />
+                <span>{{ option.label }}</span>
+              </label>
+            }
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="additional">Información adicional (opcional):</label>
+          <textarea
+            id="additional"
+            [value]="additional()"
+            (input)="updateAdditional($any($event.target).value)"
+            placeholder="Ingrese información adicional si es necesario..."
+            rows="3"
+            [disabled]="isLoading()"
+          ></textarea>
+        </div>
+
+        @if (error()) {
+          <div class="error-message">
+            {{ error() }}
+          </div>
+        }
+
+        <button 
+          type="submit" 
+          [disabled]="isLoading()"
+          class="submit-button"
+        >
+          @if (isLoading()) {
+            <span>Enviando...</span>
+          } @else {
+            <span>Enviar</span>
+          }
+        </button>
+      </form>
+    </div>
+  } @else {
+    <div class="no-data">
+      <p>No hay datos para mostrar</p>
+    </div>
+  }
+</div>
