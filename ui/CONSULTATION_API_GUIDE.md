@@ -23,9 +23,12 @@ A complete example component showing how to use the service.
 
 **Features:**
 - Form with textarea for "motivo de consulta"
+- Number input for age (edad)
+- Select dropdown for gender (genero)
 - Loading state management
 - Error handling and display
 - Success message with response data
+- Form validation for all required fields
 - Uses Angular signals for reactive state management
 
 ## Quick Start
@@ -40,7 +43,11 @@ export class YourComponent {
   private consultationService = inject(ConsultationService);
 
   startConsultation() {
-    this.consultationService.startConsultation('Dolor primer dedo pie').subscribe({
+    this.consultationService.startConsultation(
+      'Dolor rodilla',  // motivo_consulta
+      50,               // edad
+      'm'               // genero: 'm' or 'f'
+    ).subscribe({
       next: (response) => {
         console.log('Success:', response);
         // Handle success
@@ -85,9 +92,16 @@ import { ConsultationForm } from './components/consultation-form/consultation-fo
 **Request Body:**
 ```json
 {
-  "motivo_consulta": "Dolor primer dedo pie"
+  "motivo_consulta": "Dolor rodilla",
+  "edad": 50,
+  "genero": "m"
 }
 ```
+
+**Parameters:**
+- `motivo_consulta` (string, required): Reason for consultation
+- `edad` (number, required): Patient's age
+- `genero` (string, required): Patient's gender - "m" for male, "f" for female
 
 ## Customization
 
