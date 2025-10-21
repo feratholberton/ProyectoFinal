@@ -14,14 +14,14 @@
 
 Este sistema permite realizar una anamnesis médica completa de forma estructurada y sistemática. El flujo consiste en iniciar una consulta, recopilar antecedentes, realizar preguntas específicas sobre el motivo de consulta y generar un informe final.
 
-**URL del Swagger:** https://backend-w6ii.onrender.com/docs
+**URL del Swagger:** [https://backend-w6ii.onrender.com/docs](https://backend-w6ii.onrender.com/docs)
 
 ---
 
 ## Acceso al Swagger
 
 1. Abre tu navegador web
-2. Ingresa a: https://backend-w6ii.onrender.com/docs
+2. Ingresa a: [https://backend-w6ii.onrender.com/docs](https://backend-w6ii.onrender.com/docs)
 3. Verás la interfaz de Swagger con todos los endpoints disponibles
 
 ---
