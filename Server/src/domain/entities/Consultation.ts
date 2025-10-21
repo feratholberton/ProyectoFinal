@@ -28,7 +28,6 @@ export class Consultation {
     if (currentIndex < this.steps.length - 1) {
       this.pasoActual = this.steps[currentIndex + 1];
     } else {
-      // Do not wrap around: 'resumen' is the last step and advancing further is invalid
       throw new ValidationError("No se puede avanzar la consulta: ya está en el último paso 'resumen'");
     }
   }

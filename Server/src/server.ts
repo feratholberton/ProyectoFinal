@@ -1,5 +1,6 @@
 import Fastify from 'fastify';
 import cors from '@fastify/cors';
+import { logger } from './infrastructure/logging/logger.ts';
 import registerRoutes from './infrastructure/http/routes/index.ts';
 import 'dotenv/config';
 
@@ -31,9 +32,9 @@ const fastify = Fastify({ logger: true });
 	await registerRoutes(fastify);
 
 	await fastify.listen({ port, host: '0.0.0.0' });
-	console.log(`Server listening at http://0.0.0.0:${port}`);
+		logger.info && logger.info(`Server listening at http://0.0.0.0:${port}`);
   } catch (err) {
-	console.error('Error starting server:', err);
+	logger.error('Error starting server:', err);
 	process.exit(1);
   }
 })();

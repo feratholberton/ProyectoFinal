@@ -11,7 +11,6 @@ export class GenerateSummaryUseCase {
       throw new NotFoundError('No existe la sesi\u00f3n');
     }
 
-    // Ensure the consultation is at the 'resumen' step before generating a summary
   const currentStep = typeof consultation.getCurrentStep === 'function' ? consultation.getCurrentStep() : null;
     if (currentStep !== 'resumen') {
       const { ValidationError } = await import('../../domain/errors/ValidationError.ts');

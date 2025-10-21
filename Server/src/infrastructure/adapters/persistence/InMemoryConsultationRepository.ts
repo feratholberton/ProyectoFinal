@@ -1,5 +1,5 @@
 import type { Consultation } from '../../../domain/entities/Consultation.ts';
-import { IConsultationRepository } from './IConsultationRepository.ts';
+import type { IConsultationRepository } from '../../../domain/ports/IConsultationRepository.ts';
 import { logger, safeSnippet } from '../../logging/logger.ts';
 
 export class InMemoryConsultationRepository implements IConsultationRepository {
@@ -11,10 +11,9 @@ export class InMemoryConsultationRepository implements IConsultationRepository {
     this.store.set(id, session);
     try {
       const nextState = session.getPartialState?.() ?? null;
-
-  logger.debug('[InMemoryRepo] save', safeSnippet(JSON.stringify({ id, prev: prevState, next: nextState }, null, 2), 1000));
+      logger.debug('[InMemoryRepo] save', safeSnippet(JSON.stringify({ id, prev: prevState, next: nextState }, null, 2), 1000));
     } catch (e) {
-
+      logger.error('[InMemoryRepo] save logging failure', e);
     }
   }
 
