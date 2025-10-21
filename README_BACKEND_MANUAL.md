@@ -410,8 +410,3 @@ El sistema maneja diferentes tipos de respuestas:
 ## Contacto y Soporte
 
 - **Swagger URL:** https://backend-w6ii.onrender.com/docs
-- **Usuario GitHub:** @alearecuest
-
----
-
-**Última actualización:** 2025-10-20
