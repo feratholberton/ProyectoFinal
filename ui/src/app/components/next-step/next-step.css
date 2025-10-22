@@ -1,4 +1,4 @@
-.options-selector {
+.next-step {
   max-width: 700px;
   margin: 2rem auto;
   padding: 2rem;
@@ -7,11 +7,7 @@
   background-color: #fff;
 }
 
-.selector-content {
-  width: 100%;
-}
-
-h2 {
+.step-header h2 {
   margin-bottom: 0.5rem;
   color: #333;
   text-transform: capitalize;
@@ -22,6 +18,24 @@ h2 {
   color: #666;
   margin-bottom: 1.5rem;
   font-family: monospace;
+}
+
+.loading-message {
+  text-align: center;
+  padding: 20px;
+  background: #fffbea;
+  border: 1px solid #ffc107;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.error-message {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background-color: #fee;
+  border: 1px solid #fcc;
+  border-radius: 4px;
+  color: #c33;
 }
 
 .previous-selections {
@@ -142,7 +156,7 @@ textarea:disabled {
 .submit-button {
   width: 100%;
   padding: 0.75rem;
-  background-color: #007bff;
+  background-color: #28a745;
   color: white;
   border: none;
   border-radius: 4px;
@@ -153,25 +167,10 @@ textarea:disabled {
 }
 
 .submit-button:hover:not(:disabled) {
-  background-color: #0056b3;
+  background-color: #218838;
 }
 
 .submit-button:disabled {
   background-color: #ccc;
   cursor: not-allowed;
-}
-
-.error-message {
-  padding: 1rem;
-  margin-bottom: 1rem;
-  background-color: #fee;
-  border: 1px solid #fcc;
-  border-radius: 4px;
-  color: #c33;
-}
-
-.no-data {
-  text-align: center;
-  padding: 2rem;
-  color: #999;
 }

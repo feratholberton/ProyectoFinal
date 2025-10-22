@@ -88,4 +88,8 @@
   @if (showOptionsSelector()) {
     <app-options-selector (dataSubmitted)="onDataSubmitted($event)" />
   }
+  
+  @if (showNextStep()) {
+    <app-next-step />
+  }
 </div>

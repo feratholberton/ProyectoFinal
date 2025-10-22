@@ -3,19 +3,21 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ConsultationService, ConsultationResponse } from '../../services/consultation.service';
 import { OptionsSelector } from '../options-selector/options-selector';
+import { NextStep } from '../next-step/next-step';
 
 @Component({
   selector: 'app-consultation-form',
   standalone: true,
-  imports: [CommonModule, FormsModule, OptionsSelector],
+  imports: [CommonModule, FormsModule, OptionsSelector, NextStep],
   templateUrl: './consultation-form.html',
   styleUrl: './consultation-form.css'
 })
 export class ConsultationForm {
   private consultationService = inject(ConsultationService);
   
-  // Reference to the options selector component
+  // References to both components
   optionsSelector = viewChild(OptionsSelector);
+  nextStepComponent = viewChild(NextStep);
   
   motivoConsulta = signal('');
   edad = signal<number | null>(null);
@@ -24,6 +26,7 @@ export class ConsultationForm {
   error = signal<string | null>(null);
   response = signal<ConsultationResponse | null>(null);
   showOptionsSelector = signal(false);
+  showNextStep = signal(false);
 
   constructor() {
     // Effect to load data when both selector is ready and we have response
@@ -32,7 +35,7 @@ export class ConsultationForm {
       const responseData = this.response();
       
       if (selector && responseData && responseData.opciones && this.showOptionsSelector()) {
-        console.log('Loading data into selector:', responseData);
+        console.log('Loading data into first step selector:', responseData);
         selector.loadData(responseData);
       }
     });
@@ -81,12 +84,17 @@ export class ConsultationForm {
     });
   }
 
-  onDataSubmitted(result: any) {
-    console.log('Options submitted, new data received:', result);
-    // Handle the next step if needed
-    const selector = this.optionsSelector();
-    if (selector && result['patientID'] && result['opciones']) {
-      selector.loadData(result as ConsultationResponse);
+  onDataSubmitted(patientID: string) {
+    console.log('First step submitted, loading next step for patient:', patientID);
+    // Hide the first step
+    this.showOptionsSelector.set(false);
+    // Show the next step component
+    this.showNextStep.set(true);
+    
+    // Load the next step
+    const nextStep = this.nextStepComponent();
+    if (nextStep) {
+      nextStep.loadStep(patientID);
     }
   }
 
