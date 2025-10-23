@@ -2,12 +2,12 @@ export function extractFirstJSONArray(text: string): string | null {
   const start = text.indexOf('[');
   if (start === -1) return null;
   let depth = 0;
-  for (let i = start; i < text.length; i++) {
-    const ch = text[i];
+  for (let iterator = start; iterator < text.length; iterator++) {
+    const ch = text[iterator];
     if (ch === '[') depth++;
     else if (ch === ']') {
       depth--;
-      if (depth === 0) return text.slice(start, i + 1);
+      if (depth === 0) return text.slice(start, iterator + 1);
     }
   }
   return null;

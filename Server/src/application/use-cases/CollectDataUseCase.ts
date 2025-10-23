@@ -18,7 +18,7 @@ export class CollectDataUseCase {
 
     // build incoming list normalized and filtered, keep original label casing for storage
     const incomingList = (opciones ?? [])
-      .map((lbl: any) => ({ raw: String(lbl ?? ''), label: String(lbl ?? '').trim() }))
+      .map((label: any) => ({ raw: String(label ?? ''), label: String(label ?? '').trim() }))
       .filter((x: any) => x.label.length > 0);
 
     // include additional as last of incoming if allowed
@@ -47,24 +47,24 @@ export class CollectDataUseCase {
       const result: Array<{ label: string; checked: boolean }> = [];
       const seen = new Set<string>();
 
-      for (const inc of incomingList) {
-        const key = normalize(inc.label);
+      for (const incoming of incomingList) {
+        const key = normalize(incoming.label);
         if (seen.has(key)) continue; // dedupe incoming duplicates
         seen.add(key);
         const existing = existingMap.get(key);
         const checked = true; // incoming are selections
         // prefer existing casing if present, else use incoming label
-        const label = existing ? existing.label : inc.label;
+        const label = existing ? existing.label : incoming.label;
         result.push({ label, checked });
       }
 
       // preserve previously checked items not present in incoming (append after incoming)
-      for (const ex of existingOpciones) {
-        const key = normalize(ex.label);
+      for (const existente of existingOpciones) {
+        const key = normalize(existente.label);
         if (seen.has(key)) continue;
-        if (ex.checked) {
+        if (existente.checked) {
           seen.add(key);
-          result.push({ label: ex.label, checked: true });
+          result.push({ label: existente.label, checked: true });
         }
       }
 

@@ -14,33 +14,33 @@ export class CollectAnamnesisUseCase {
 
   const update: Record<string, any> = {};
 
-    const applyAnswer = (a: AnamnesisAnswer) => {
-      const key = a.key;
+    const applyAnswer = (answer: AnamnesisAnswer) => {
+      const key = answer.key;
       try {
-        switch (a.type) {
+        switch (answer.type) {
           case 'boolean':
-            update[key] = Boolean(a.value);
+            update[key] = Boolean(answer.value);
             break;
           case 'number':
-            update[key] = typeof a.value === 'number' ? a.value : Number(a.value);
+            update[key] = typeof answer.value === 'number' ? answer.value : Number(answer.value);
             break;
           case 'multi':
-            update[key] = Array.isArray(a.value) ? a.value.map((v: any) => String(v)) : String(a.value).split(',').map((s: string) => s.trim());
+            update[key] = Array.isArray(answer.value) ? answer.value.map((v: any) => String(v)) : String(answer.value).split(',').map((s: string) => s.trim());
             break;
           case 'date':
-            update[key] = String(a.value);
+            update[key] = String(answer.value);
             break;
           case 'single':
           case 'text':
           default:
-            update[key] = a.value != null ? String(a.value) : '';
+            update[key] = answer.value != null ? String(answer.value) : '';
         }
       } catch (e) {
         // best-effort: skip invalid conversion
       }
     };
 
-    for (const a of req.answers ?? []) applyAnswer(a as AnamnesisAnswer);
+  for (const answerItem of req.answers ?? []) applyAnswer(answerItem as AnamnesisAnswer);
 
     consultation.savePartialState({ ...existing, ...update });
     await this.repo.save(req.patientID, consultation);
