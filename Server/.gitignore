@@ -1,0 +1,96 @@
+# Node.js dependencies
+node_modules/
+Google-Gemini-Api/node_modules/
+
+# npm logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Operating System files
+.DS_Store
+Thumbs.db
+
+# IDE/Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Build outputs
+dist/
+build/
+*.tsbuildinfo
+
+# Logs
+logs
+*.log
+
+# Coverage
+coverage/
+lcov-report/
+coverage-final.json
+.nyc_output/
+
+# Test caches / temp
+.vitest/
+.vitest-cache/
+.test-cache/
+
+# Cache / temp directories
+.cache/
+.parcel-cache/
+.tmp/
+.next/
+.turbo/
+
+# Server logs
+server.log
+
+# Runtime logs produced by the Server/ process
+/server.log
+/*.log
+
+# Misc
+*.tgz
+*.local
+
+# Ignore Google Gemini API keys file
+Google-Gemini-Api/keys.json
+# Ignore Node.js dependencies in the Google Gemini API directory
+Google-Gemini-Api/node_modules/
+# ignore node_modules at the root level
+/node_modules/
+
+# Ignore node_modules anywhere (safe catch-all)
+node_modules/
+
+# Ignore test directories
+test/
+/test/
+**/test/
+
+/.github/workflows/
+
+/test-gemini.ts
+
+*.pid
+
+test.pid
+
+# test jsons
+test-*.json
+*.test.json
+
+# Allow deployment files to be committed (if present)
+!Dockerfile
+!Procfile
+!render.yaml
+!tsconfig.json
