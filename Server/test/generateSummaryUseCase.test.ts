@@ -12,6 +12,7 @@ describe('GenerateSummaryUseCase', () => {
   it('returns resumen and partialState', async () => {
     const fakeConsultation: any = {
       getPartialState: () => ({ motivo_consulta: 'x' }),
+      getCurrentStep: () => 'resumen',
     };
     const repo: any = { get: async (id: string) => fakeConsultation };
     const ai: any = { generateSummary: async (state: any) => 'resumen!' };

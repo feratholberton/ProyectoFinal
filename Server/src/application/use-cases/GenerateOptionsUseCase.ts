@@ -16,8 +16,14 @@ export class GenerateOptionsUseCase {
 
     const opcionesRaw = await this.aiService.generateOptions(state, tipo);
     const opciones = opcionesRaw
-      .map((label: any) => ({ label: String(label ?? '').trim(), checked: false }))
-      .filter(o => o.label.length > 0);
+      .map((label: any) => {
+        if (label && typeof label === 'object') {
+          const maybe = (label as any).label ?? (label as any).text ?? JSON.stringify(label);
+          return { label: String(maybe ?? '').trim(), checked: false };
+        }
+        return { label: String(label ?? '').trim(), checked: false };
+      })
+      .filter(o => o && typeof o.label === 'string' && o.label.length > 0);
 
     return { opciones };
   }

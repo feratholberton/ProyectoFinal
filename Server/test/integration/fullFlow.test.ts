@@ -88,7 +88,13 @@ describe('integration - full flow', () => {
     expect(consultaBody.partialState).toBeDefined();
 
     // 5) End -> generate summary
-  const endRes = await fastify.inject({ method: 'POST', url: '/api/end', payload: { id } });
+    // Advance the session until 'resumen' step by calling the consulta endpoint repeatedly
+    // (the flow implementation advances through predefined steps)
+    for (let i = 0; i < 16; i++) {
+      await fastify.inject({ method: 'POST', url: `/consulta/${id}`, payload: {} });
+    }
+
+    const endRes = await fastify.inject({ method: 'POST', url: '/api/end', payload: { id } });
     expect(endRes.statusCode).toBe(200);
     const endBody = JSON.parse(endRes.payload);
     expect(endBody.resumen).toBeTypeOf('string');

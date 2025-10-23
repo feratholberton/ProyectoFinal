@@ -19,7 +19,7 @@ export function createContainer() {
   const collectAnamnesisUseCase = new CollectAnamnesisUseCase(repo);
   const generateOptionsUseCase = new GenerateOptionsUseCase(repo, aiService);
   const generateSummaryUseCase = new GenerateSummaryUseCase(repo, aiService);
-  const advanceStepUseCase = new AdvanceStepUseCase(repo);
+  const advanceStepUseCase = new AdvanceStepUseCase(repo, generateOptionsUseCase);
   const getConsultationUseCase = new GetConsultationUseCase(repo);
 
 
