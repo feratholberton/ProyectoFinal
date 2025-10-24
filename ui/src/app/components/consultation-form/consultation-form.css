@@ -66,7 +66,7 @@ select:disabled {
 
 .submit-button,
 .reset-button {
-  flex: 1;
+  /* flex: 1; */
   padding: 0.75rem;
   border: none;
   border-radius: 4px;
@@ -106,6 +106,7 @@ select:disabled {
   border: 1px solid #fcc;
   border-radius: 4px;
   color: #c33;
+  flex-basis: 100%;
 }
 
 .success-message {
@@ -115,6 +116,7 @@ select:disabled {
   border: 1px solid #cfc;
   border-radius: 4px;
   color: #363;
+  flex-basis: 100%;
 }
 
 .success-message h3 {
@@ -127,4 +129,27 @@ select:disabled {
   padding: 0.5rem;
   border-radius: 4px;
   overflow-x: auto;
+}
+
+@media (min-width: 40rem) {
+	.consultation-form {
+    width: 100%;
+    max-width: 48rem;
+  }
+
+  form {
+    display: flex;
+    gap: 1rem 2rem;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .form-group--gender,
+  .form-group--age {
+    flex-basis: 47%;
+  }
+
+  .form-group--chief-complaints {
+    flex-basis: 100%;
+  }
 }

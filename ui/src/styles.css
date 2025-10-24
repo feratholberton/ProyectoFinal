@@ -65,7 +65,7 @@ main {
   min-height: 100%;
   display: grid;
   gap: 2.5rem;
-  justify-content: center;
+  /* justify-content: center; */
   align-items: center;
   padding: 1rem;
   box-sizing: inherit;
