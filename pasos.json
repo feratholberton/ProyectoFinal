@@ -1,0 +1,344 @@
+{
+  "formulario_clinico": [
+    {
+      "id": 1,
+      "nombre": "INICIO_CUADRO",
+      "preguntas": [
+        {
+          "texto": "¿Cuándo comenzó el problema?",
+          "tipo": "datetime",
+          "nota": "fecha y hora específica si es agudo; para escribir por el especialista"
+        },
+        {
+          "texto": "¿Cómo fue el inicio?",
+          "tipo": "opciones",
+          "opciones": ["brusco", "gradual"]
+        },
+        {
+          "texto": "¿Hace cuánto tiempo presenta los síntomas?",
+          "tipo": "texto",
+          "nota": "horas / días / semanas / meses / años; para escribir por el especialista"
+        },
+        {
+          "texto": "¿Hubo algún evento desencadenante?",
+          "tipo": "opciones_multiple",
+          "opciones": ["esfuerzo", "comida", "estrés", "traumatismo"]
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "nombre": "EVOLUCIÓN_Y_PATRÓN_TEMPORAL",
+      "preguntas": [
+        {
+          "texto": "¿Cómo ha evolucionado desde que comenzó?",
+          "tipo": "opciones",
+          "opciones": ["progresivo", "estable", "intermitente", "en mejoría", "en empeoramiento"]
+        },
+        {
+          "texto": "¿Es continuo o tiene períodos de remisión?",
+          "tipo": "texto",
+          "nota": "para escribir por el especialista"
+        },
+        {
+          "texto": "¿Hay un patrón horario?",
+          "tipo": "opciones",
+          "opciones": ["matutino", "vespertino", "nocturno"]
+        },
+        {
+          "texto": "¿Ha recibido algún tratamiento? ¿Mejoró, empeoró o no hubo cambios?",
+          "tipo": "opciones",
+          "opciones": ["mejoró", "empeoró", "sin cambios"]
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "nombre": "LOCALIZACIÓN_Y_CARACTERÍSTICAS_ESPACIALES",
+      "preguntas": [
+        {
+          "texto": "¿Dónde siente el síntoma principal?",
+          "tipo": "texto",
+          "nota": "señalar con el dedo si es dolor; para escribir por el especialista"
+        },
+        {
+          "texto": "¿Se irradia hacia algún otro lugar? ¿Hacia dónde?",
+          "tipo": "texto",
+          "nota": "para escribir por el especialista"
+        },
+        {
+          "texto": "¿Es siempre en el mismo sitio o cambia de localización?",
+          "tipo": "texto"
+        },
+        {
+          "texto": "¿Es focal (puntual) o difuso?",
+          "tipo": "opciones",
+          "opciones": ["focal", "difuso"]
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "nombre": "CARACTERÍSTICAS_DEL_SÍNTOMA",
+      "preguntas": [
+        {
+          "texto": "¿Cómo lo describiría?",
+          "tipo": "opciones_multiple",
+          "opciones": ["punzante", "opresivo", "cólico", "urente", "pulsátil", "difuso", "lancinante"]
+        },
+        {
+          "texto": "¿Qué intensidad tiene en una escala del 1 al 10?",
+          "tipo": "numero",
+          "min": 1,
+          "max": 10,
+          "nota": "1 = mínimo, 10 = máximo imaginable"
+        },
+        {
+          "texto": "¿Cuánto dura cada episodio?",
+          "tipo": "texto",
+          "nota": "segundos / minutos / horas / constante; para escribir por el especialista"
+        },
+        {
+          "texto": "¿Qué lo alivia?",
+          "tipo": "opciones_multiple",
+          "opciones": ["reposo", "posición", "medicación", "comida", "no se alivia"]
+        },
+        {
+          "texto": "¿Qué lo empeora?",
+          "tipo": "opciones_multiple",
+          "opciones": ["movimiento", "respiración", "comida", "esfuerzo", "estrés"]
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "nombre": "SÍNTOMAS_ASOCIADOS",
+      "preguntas": [
+        {
+          "texto": "Generales",
+          "tipo": "texto",
+          "nota": "Fiebre, escalofríos, astenia, pérdida de peso, sudoración nocturna; para escribir por el especialista"
+        },
+        {
+          "texto": "Cardiovascular",
+          "tipo": "opciones_multiple",
+          "opciones": ["Palpitaciones", "Dolor torácico", "Disnea", "Edemas en piernas", "Ninguno"]
+        },
+        {
+          "texto": "Respiratorio",
+          "tipo": "opciones_multiple",
+          "opciones": ["Tos", "Expectoración", "Disnea", "Dolor torácico con la respiración"]
+        },
+        {
+          "texto": "Digestivo",
+          "tipo": "opciones_multiple",
+          "opciones": ["Náuseas", "Vómitos", "Diarrea", "Constipación", "Dolor abdominal"]
+        },
+        {
+          "texto": "Urinario",
+          "tipo": "opciones_multiple",
+          "opciones": ["Disuria", "Polaquiuria", "Hematuria", "Cambios en color de orina", "Sin cambios"]
+        },
+        {
+          "texto": "Neurológico",
+          "tipo": "opciones_multiple",
+          "opciones": ["Cefalea", "Mareos", "Vértigo", "Alteraciones visuales", "Parestesias"]
+        },
+        {
+          "texto": "Otros",
+          "tipo": "texto",
+          "nota": "Especificar según motivo de consulta"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "nombre": "FACTORES_DESENCADENANTES_Y_CONTEXTO",
+      "preguntas": [
+        {
+          "texto": "¿Hubo algún factor que precipitó los síntomas?",
+          "tipo": "opciones_multiple",
+          "opciones": [
+            "Traumatismo",
+            "Ejercicio físico",
+            "Alimento específico",
+            "Medicamento nuevo",
+            "Estrés emocional",
+            "Exposición ambiental (frío, calor, humedad)",
+            "Picadura de insecto (considerar dengue en verano en Uruguay)"
+          ],
+          "nota": "todos pueden ser check"
+        },
+        {
+          "texto": "¿Se relaciona con alguna actividad específica?",
+          "tipo": "texto",
+          "nota": "si no, cuál"
+        },
+        {
+          "texto": "¿Varía con el momento del día?",
+          "tipo": "texto",
+          "nota": "si no, cuál"
+        },
+        {
+          "texto": "¿Varía con las comidas?",
+          "tipo": "texto",
+          "nota": "si no, cuál"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "nombre": "ANTECEDENTES_RECIENTES_Y_CONTACTOS",
+      "preguntas": [
+        {
+          "texto": "¿Alguien cercano presentó síntomas similares?",
+          "tipo": "texto",
+          "nota": "familia, trabajo; si no, cuál"
+        },
+        {
+          "texto": "¿Ha tenido cuadros parecidos antes?",
+          "tipo": "texto",
+          "nota": "si no, ¿cuándo? ¿cómo se resolvieron?"
+        },
+        {
+          "texto": "¿Tuvo infecciones recientes?",
+          "tipo": "opciones",
+          "opciones": ["Respiratoria", "Urinaria", "Gastrointestinal"]
+        },
+        {
+          "texto": "¿Ha viajado recientemente? ¿A dónde?",
+          "tipo": "texto",
+          "nota": "considerar enfermedades endémicas"
+        },
+        {
+          "texto": "¿Exposición a mosquitos?",
+          "tipo": "opciones",
+          "opciones": ["Sí", "No"],
+          "nota": "dengue, zika, chikungunya - relevante en Uruguay"
+        },
+        {
+          "texto": "¿Contacto con animales?",
+          "tipo": "texto",
+          "nota": "leptospirosis, brucelosis"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "nombre": "REPERCUSIÓN_FUNCIONAL_Y_CALIDAD_DE_VIDA",
+      "preguntas": [
+        {
+          "texto": "¿Le impide realizar sus actividades habituales?",
+          "tipo": "boolean"
+        },
+        {
+          "texto": "¿Tuvo que quedarse en cama o faltar al trabajo/estudio?",
+          "tipo": "boolean"
+        },
+        {
+          "texto": "¿Ha afectado su sueño?",
+          "tipo": "boolean"
+        },
+        {
+          "texto": "¿Ha afectado su apetito?",
+          "tipo": "boolean"
+        },
+        {
+          "texto": "¿Ha afectado su estado de ánimo?",
+          "tipo": "boolean"
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "nombre": "TRATAMIENTOS_PREVIOS_Y_AUTOMEDICACIÓN",
+      "preguntas": [
+        {
+          "texto": "¿Tomó alguna medicación para aliviarlo? ¿Cuál? ¿Dosis?",
+          "tipo": "texto",
+          "nota": "todo para escribir por el especialista"
+        },
+        {
+          "texto": "¿Le hizo efecto? ¿Cuánto tiempo después de tomarlo?",
+          "tipo": "texto"
+        },
+        {
+          "texto": "¿Recibió atención médica antes de esta consulta? ¿Dónde?",
+          "tipo": "texto"
+        },
+        {
+          "texto": "¿Le indicaron estudios? ¿Tiene los resultados?",
+          "tipo": "texto"
+        },
+        {
+          "texto": "¿Usa remedios caseros o medicina alternativa?",
+          "tipo": "texto"
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "nombre": "SÍNTOMAS_DE_ALARMA_RED_FLAGS",
+      "preguntas": [
+        {
+          "texto": "Fiebre alta persistente (>38.5°C)",
+          "tipo": "opciones",
+          "opciones": ["Sí", "No"],
+          "nota": "indicar cantidad de días (número) si 'Sí'"
+        },
+        {
+          "texto": "Sangrados (hemoptisis, hematemesis, melena, hematuria)",
+          "tipo": "opciones_multiple",
+          "opciones": ["hemoptisis", "hematemesis", "melena", "hematuria", "ninguno"]
+        },
+        {
+          "texto": "Dificultad respiratoria severa o disnea de reposo",
+          "tipo": "opciones",
+          "opciones": ["Sí", "No"]
+        },
+        {
+          "texto": "Dolor torácico intenso, opresivo, con irradiación",
+          "tipo": "opciones",
+          "opciones": ["Sí", "No"]
+        },
+        {
+          "texto": "Pérdida de peso no intencional significativa (>5% en 1 mes)",
+          "tipo": "opciones",
+          "opciones": ["Sí", "No"]
+        },
+        {
+          "texto": "Pérdida de conciencia, síncope o lipotimia",
+          "tipo": "opciones",
+          "opciones": ["Sí", "No"]
+        },
+        {
+          "texto": "Convulsiones",
+          "tipo": "opciones",
+          "opciones": ["Sí", "No"]
+        },
+        {
+          "texto": "Alteraciones neurológicas agudas (paresia, parestesias, afasia, alteración visual súbita)",
+          "tipo": "opciones",
+          "opciones": ["Sí", "No"],
+          "nota": "detallar si 'Sí'"
+        },
+        {
+          "texto": "Deshidratación severa (en contexto de vómitos/diarrea)",
+          "tipo": "opciones",
+          "opciones": ["Sí", "No"],
+          "nota": "para escribir por el especialista"
+        },
+        {
+          "texto": "Ictericia (piel/ojos amarillos)",
+          "tipo": "opciones",
+          "opciones": ["Sí", "No"]
+        },
+        {
+          "texto": "Signos de sangrado activo o petequias (considerar dengue)",
+          "tipo": "opciones",
+          "opciones": ["Sí", "No"]
+        }
+      ]
+    }
+  ]
+}
