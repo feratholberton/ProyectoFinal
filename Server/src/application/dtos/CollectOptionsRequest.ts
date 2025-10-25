@@ -8,27 +8,21 @@ import { ValidationError } from '../../domain/errors/ValidationError.ts';
 
 function sanitizeAdditional(value: any, max = 200): string | undefined {
   if (value === undefined || value === null) return undefined;
-  const s = String(value).trim();
-  if (!s) return undefined;
-  const stripped = s.replace(/<[^>]*>/g, '');
-  const trimmed = stripped.slice(0, max).trim();
-  if (!trimmed) return undefined;
+  const textStr = String(value).trim();
+  if (!textStr) return undefined;
+  const withoutHtml = textStr.replace(/<[^>]*>/g, '');
+  const finalTrimmed = withoutHtml.slice(0, max).trim();
+  if (!finalTrimmed) return undefined;
   const PLACEHOLDERS = new Set([
     'string',
-    'placeholder',
-    'n/a',
-    'na',
-    'x',
+    ' ',
     '-',
     '_',
-    'test',
-    'abc',
-    'lorem',
-    'todo',
+    'test'
   ]);
-  if (PLACEHOLDERS.has(trimmed.toLowerCase())) return undefined;
-  if (trimmed.length < 2) return undefined;
-  return trimmed;
+  if (PLACEHOLDERS.has(finalTrimmed.toLowerCase())) return undefined;
+  if (finalTrimmed.length < 2) return undefined;
+  return finalTrimmed;
 }
 
 export function CollectOptionsRequestFromHttp(body: any): CollectOptionsRequest {
@@ -37,26 +31,20 @@ export function CollectOptionsRequestFromHttp(body: any): CollectOptionsRequest 
   const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
   if (!uuidRegex.test(patientID)) throw new ValidationError('patientID inválido');
   const PLACEHOLDERS = new Set([
-    'string',
-    'placeholder',
-    'n/a',
-    'na',
-    'x',
+     'string',
+    ' ',
     '-',
     '_',
-    'test',
-    'abc',
-    'lorem',
-    'todo',
+    'test'
   ]);
 
-  const raw = Array.isArray(body?.opciones) ? body.opciones.map((s: any) => String(s ?? '').trim()) : [];
+  const raw = Array.isArray(body?.opciones) ? body.opciones.map((rawOpt: any) => String(rawOpt ?? '').trim()) : [];
 
   const cleaned = raw
-    .map((s: string) => s.replace(/<[^>]*>/g, ''))
-    .map((s: string) => (PLACEHOLDERS.has(s.toLowerCase()) ? '' : s))
-    .map((s: string) => s.slice(0, 100))
-    .filter((s: string) => s.length >= 2);
+    .map((opt: string) => opt.replace(/<[^>]*>/g, ''))
+    .map((opt: string) => (PLACEHOLDERS.has(opt.toLowerCase()) ? '' : opt))
+    .map((opt: string) => opt.slice(0, 100))
+    .filter((opt: string) => opt.length >= 2);
 
   const opciones = Array.from(new Set(cleaned)) as string[];
   const additional = sanitizeAdditional(body?.additional);

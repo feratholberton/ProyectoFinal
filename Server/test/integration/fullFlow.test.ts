@@ -45,7 +45,6 @@ describe('integration - full flow', () => {
 
   // register routes with our test use-cases
   await import('../../src/infrastructure/http/routes/start.ts').then(m => m.default(fastify, startUseCase));
-  await import('../../src/infrastructure/http/routes/generator.ts').then(m => m.default(fastify, generateOptionsUseCase));
   await import('../../src/infrastructure/http/routes/collect.ts').then(m => m.default(fastify, collectUseCase));
   await import('../../src/infrastructure/http/routes/consulta.ts').then(m => m.default(fastify, repo, advanceStepUseCase, getConsultationUseCase));
   await import('../../src/infrastructure/http/routes/end.ts').then(m => m.default(fastify, generateSummaryUseCase));

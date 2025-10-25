@@ -28,8 +28,10 @@ export function parseOptionsFromText(raw: string): string[] {
   }
   return cleaned
     .split(/\r?\n/)
-    .map(l => l.replace(/^\s*[-\d\.\)\s]*/, '').trim())
+    // remove bullets, leading numbering and trim whitespace
+    .map((line) => line.replace(/^\s*[-\d\.\)\s]*/, '').trim())
     .filter(Boolean)
-    .map(l => l.replace(/^['"]|['"]$/g, ''))
-    .filter(l => l.length > 0);
+    // strip surrounding quotes
+    .map((line) => line.replace(/^['"]|['"]$/g, ''))
+    .filter((line) => line.length > 0);
 }

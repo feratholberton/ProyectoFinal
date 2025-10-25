@@ -2,9 +2,9 @@ export const isProduction = (): boolean => (process.env.NODE_ENV || '').toLowerC
 
 export function safeSnippet(text: string | undefined | null, max = 300): string {
   if (!text) return '';
-  const s = String(text);
-  if (!isProduction()) return s.slice(0, max);
-  return `<redacted length=${s.length}>`;
+  const textStr = String(text);
+  if (!isProduction()) return textStr.slice(0, max);
+  return `<redacted length=${textStr.length}>`;
 }
 
 export const logger = {

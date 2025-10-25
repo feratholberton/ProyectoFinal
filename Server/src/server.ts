@@ -11,14 +11,14 @@ const fastify = Fastify({ logger: true });
 
 	let corsOrigin: any = true;
 	if (typeof process.env.CORS_ORIGIN === 'string') {
-		const v = process.env.CORS_ORIGIN.trim();
-		if (v === '' || v === '*' || v.toLowerCase() === 'true') {
+		const corsEnvValue = process.env.CORS_ORIGIN.trim();
+		if (corsEnvValue === '' || corsEnvValue === '*' || corsEnvValue.toLowerCase() === 'true') {
 			corsOrigin = true;
-		} else if (v.toLowerCase() === 'false') {
+		} else if (corsEnvValue.toLowerCase() === 'false') {
 			corsOrigin = false;
 		} else {
 
-			corsOrigin = v.split(',').map(s => s.trim()).filter(Boolean);
+			corsOrigin = corsEnvValue.split(',').map(s => s.trim()).filter(Boolean);
 		}
 	}
 	await fastify.register(cors, { origin: corsOrigin });

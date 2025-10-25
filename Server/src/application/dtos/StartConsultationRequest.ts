@@ -9,7 +9,7 @@ import { ValidationError } from '../../domain/errors/ValidationError.ts';
 export const StartConsultationRequest = {
   fromHttp(body: any): StartConsultationRequest {
     const motivo_consulta = String(body?.motivo_consulta ?? '');
-    const forbiddenPlaceholders = ['string', 'test', 'prueba', 'dummy', 'placeholder'];
+    const forbiddenPlaceholders = ['string', ' '];
     if (typeof motivo_consulta === 'string' && forbiddenPlaceholders.includes(motivo_consulta.trim().toLowerCase())) {
       throw new ValidationError('motivo_consulta contiene un valor inválido');
     }
@@ -24,15 +24,15 @@ export const StartConsultationRequest = {
 
     let genero: string | undefined = undefined;
     if (body?.genero != null) {
-      const g = String(body.genero).trim();
-      if (g === '') {
+      const rawGeneroStr = String(body.genero).trim();
+      if (rawGeneroStr === '') {
         genero = undefined;
       } else {
-        const GU = g.toUpperCase();
-        if (GU !== 'F' && GU !== 'M') {
+        const generoUpper = rawGeneroStr.toUpperCase();
+        if (generoUpper !== 'F' && generoUpper !== 'M') {
           throw new ValidationError('genero invalido');
         }
-        genero = GU;
+        genero = generoUpper;
       }
     }
 

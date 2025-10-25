@@ -9,9 +9,9 @@ export const ConsultationResponse = {
     return {
       patientID: result.patientID,
       pasoActual: result.pasoActual,
-      opciones: (result.opciones ?? []).map((o: any) => ({
-        label: String(o?.label ?? '').trim(),
-        checked: Boolean(o?.checked),
+      opciones: (result.opciones ?? []).map((optionItem: any) => ({
+        label: String(optionItem?.label ?? '').trim(),
+        checked: Boolean(optionItem?.checked),
       })),
     };
   },

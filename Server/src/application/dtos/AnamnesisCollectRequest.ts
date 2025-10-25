@@ -20,11 +20,11 @@ export const AnamnesisCollectRequestFromHttp = (body: any): AnamnesisCollectRequ
     throw new ValidationError('answers debe ser un array');
   }
 
-  const answers: AnamnesisAnswer[] = body.answers.map((a: any, idx: number) => {
-    const key = String(a?.key ?? '').trim();
+  const answers: AnamnesisAnswer[] = body.answers.map((answerItem: any, idx: number) => {
+    const key = String(answerItem?.key ?? '').trim();
     if (!key) throw new ValidationError(`answers[${idx}].key requerido`);
-    const type = String(a?.type ?? 'text') as AnswerType;
-    const value = a?.value;
+    const type = String(answerItem?.type ?? 'text') as AnswerType;
+    const value = answerItem?.value;
     return { key, type, value } as AnamnesisAnswer;
   });
 

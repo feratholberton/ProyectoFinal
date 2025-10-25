@@ -8,11 +8,11 @@ export class CollectDataUseCase {
     const MAX_RETRIES = 3;
     const allowedForAdditional = new Set(['antecedentes', 'alergias', 'farmacos']);
 
-    const normalize = (s: any) => {
+    const normalize = (value: any) => {
       try {
-        return String(s ?? '').trim().normalize('NFKC').replace(/\s+/g, ' ');
+        return String(value ?? '').trim().normalize('NFKC').replace(/\s+/g, ' ');
       } catch (e) {
-        return String(s ?? '').trim();
+        return String(value ?? '').trim();
       }
     };
 
@@ -24,9 +24,9 @@ export class CollectDataUseCase {
     // include additional as last of incoming if allowed
     if (additional) {
       const addLabel = String(additional).trim();
-      const low = addLabel.toLowerCase();
+      const addLabelLower = addLabel.toLowerCase();
       const PLACEHOLDERS = new Set(['string', 'placeholder', 'n/a', 'na', 'x', '-', '_', 'test', 'abc', 'lorem', 'todo']);
-      if (addLabel.length > 1 && !PLACEHOLDERS.has(low)) incomingList.push({ raw: addLabel, label: addLabel });
+      if (addLabel.length > 1 && !PLACEHOLDERS.has(addLabelLower)) incomingList.push({ raw: addLabel, label: addLabel });
     }
 
     // read-modify-write with retry: re-read before save to handle concurrent updates
@@ -40,42 +40,42 @@ export class CollectDataUseCase {
       const existingOpciones = Array.isArray(existingPartial.opciones) ? existingPartial.opciones : [];
 
       // maps for quick normalization-based lookup
-      const existingMap = new Map<string, { label: string; checked: boolean }>();
-      existingOpciones.forEach((o: any) => existingMap.set(normalize(o.label), { label: o.label, checked: !!o.checked }));
+  const existingMap = new Map<string, { label: string; checked: boolean }>();
+  existingOpciones.forEach((savedOpt: any) => existingMap.set(normalize(savedOpt.label), { label: savedOpt.label, checked: !!savedOpt.checked }));
 
       // Build result: start with incoming in order (normalized dedupe), then append existing checked that are not in incoming
-      const result: Array<{ label: string; checked: boolean }> = [];
+      const mergedOpciones: Array<{ label: string; checked: boolean }> = [];
       const seen = new Set<string>();
 
-      for (const incoming of incomingList) {
-        const key = normalize(incoming.label);
+      for (const incomingItem of incomingList) {
+        const key = normalize(incomingItem.label);
         if (seen.has(key)) continue; // dedupe incoming duplicates
         seen.add(key);
-        const existing = existingMap.get(key);
+        const existingEntry = existingMap.get(key);
         const checked = true; // incoming are selections
         // prefer existing casing if present, else use incoming label
-        const label = existing ? existing.label : incoming.label;
-        result.push({ label, checked });
+        const finalLabel = existingEntry ? existingEntry.label : incomingItem.label;
+        mergedOpciones.push({ label: finalLabel, checked });
       }
 
       // preserve previously checked items not present in incoming (append after incoming)
-      for (const existente of existingOpciones) {
-        const key = normalize(existente.label);
+      for (const existingOption of existingOpciones) {
+        const key = normalize(existingOption.label);
         if (seen.has(key)) continue;
-        if (existente.checked) {
+        if (existingOption.checked) {
           seen.add(key);
-          result.push({ label: existente.label, checked: true });
+          mergedOpciones.push({ label: existingOption.label, checked: true });
         }
       }
 
       // Persist only opciones as source of truth
-      consultation.savePartialState({ opciones: result });
+      consultation.savePartialState({ opciones: mergedOpciones });
       await this.repo.save(patientID, consultation);
 
       // Verify saved state matches expected result (simple equality on labels+checked)
       const after = await this.repo.get(patientID);
-      const afterOpc = Array.isArray(after?.getPartialState()?.opciones) ? after!.getPartialState()!.opciones! : [];
-      const equal = JSON.stringify(afterOpc) === JSON.stringify(result);
+      const afterOpciones = Array.isArray(after?.getPartialState()?.opciones) ? after!.getPartialState()!.opciones! : [];
+      const equal = JSON.stringify(afterOpciones) === JSON.stringify(mergedOpciones);
       if (equal) {
         return { patientID, pasoActual: consultation.getCurrentStep(), partialState: consultation.getPartialState() };
       }

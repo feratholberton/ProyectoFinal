@@ -4,10 +4,10 @@ export class ExamenFisico {
   private readonly value: string;
 
   constructor(value: string) {
-    const v = String(value ?? '').trim();
-    if (!v) throw new ValidationError('Examen físico vacío');
-    if (v.length > 2000) throw new ValidationError('Examen físico demasiado largo');
-    this.value = v;
+    const trimmedValue = String(value ?? '').trim();
+    if (!trimmedValue) throw new ValidationError('Examen físico vacío');
+    if (trimmedValue.length > 2000) throw new ValidationError('Examen físico demasiado largo');
+    this.value = trimmedValue;
   }
 
   toString() {

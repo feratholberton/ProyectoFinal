@@ -4,10 +4,10 @@ export class FarmacoHabitual {
   private readonly value: string;
 
   constructor(value: string) {
-    const v = String(value ?? '').trim();
-    if (!v) throw new ValidationError('Fármaco vacío');
-    if (v.length > 200) throw new ValidationError('Fármaco demasiado largo');
-    this.value = v;
+    const trimmedValue = String(value ?? '').trim();
+    if (!trimmedValue) throw new ValidationError('Fármaco vacío');
+    if (trimmedValue.length > 200) throw new ValidationError('Fármaco demasiado largo');
+    this.value = trimmedValue;
   }
 
   toString() {
