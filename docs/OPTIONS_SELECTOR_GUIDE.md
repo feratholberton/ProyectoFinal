@@ -1,21 +1,21 @@
-# Options Selector Component - Usage Guide
+# Options Selector Component Guide
 
 ## Overview
-The Options Selector component displays checkboxes for multiple options returned from the backend and sends back only the selected options to the `/api/collect` endpoint.
+
+The Options Selector component displays checkboxes for multiple options returned from the backend. Only the selected options are sent to the `/api/collect` endpoint.
 
 ## Flow
 
-1. User fills out consultation form (motivo, edad, sexo)
-2. Submit to `/start` endpoint
-3. Backend returns response with `patientID`, `pasoActual`, and `opciones` array
-4. Options Selector component displays checkboxes
-5. User selects applicable options and optionally adds additional information
-6. Submit to `/api/collect` endpoint with only selected options
+1. User completes consultation form (`motivo_consulta`, `edad`, `sexo`)
+2. Form is submitted to `/start` endpoint
+3. Backend responds with `patientID`, `pasoActual`, and `opciones` array
+4. Options Selector component renders checkboxes for each option
+5. User selects applicable options and may add additional information
+6. Selected options are submitted to `/api/collect` endpoint
 
 ## Component Structure
 
-### Files Created
-
+**Files:**
 ```
 src/app/components/options-selector/
 ├── options-selector.ts         # Component logic
@@ -24,12 +24,11 @@ src/app/components/options-selector/
 └── options-selector.spec.ts    # Unit tests
 ```
 
-### Updated Files
-
-- `consultation.service.ts` - Added interfaces and `collectData()` method
-- `consultation-form.ts` - Integrated with options selector
-- `consultation-form.html` - Added options selector display
-- `consultation-form.css` - Updated layout styles
+**Updated Files:**
+- `consultation.service.ts` — add interfaces and `collectData()` method
+- `consultation-form.ts` — integrate Options Selector
+- `consultation-form.html` — display Options Selector
+- `consultation-form.css` — update layout styles
 
 ## API Integration
 
@@ -54,11 +53,7 @@ src/app/components/options-selector/
   "opciones": [
     { "label": "Artrosis", "checked": false },
     { "label": "Cirugía rodilla", "checked": false },
-    { "label": "Sobrepeso", "checked": false },
-    { "label": "Diabetes", "checked": false },
-    { "label": "Hipertensión", "checked": false },
-    { "label": "Gota", "checked": false },
-    { "label": "Tabaquismo", "checked": false }
+    { "label": "Sobrepeso", "checked": false }
   ]
 }
 ```
@@ -72,13 +67,13 @@ src/app/components/options-selector/
 {
   "patientID": "1f9607e4-3fd6-494b-93fe-916c36b0c726",
   "opciones": ["Artrosis", "Sobrepeso"],
-  "additional": "string"
+  "additional": "Notes or details"
 }
 ```
 
 ## Usage Examples
 
-### Standalone Usage
+**Standalone Usage:**
 
 ```typescript
 import { Component, inject, viewChild } from '@angular/core';
@@ -88,9 +83,7 @@ import { ConsultationService } from './services/consultation.service';
 @Component({
   selector: 'app-my-component',
   imports: [OptionsSelector],
-  template: `
-    <app-options-selector (dataSubmitted)="onDataSubmitted($event)" />
-  `
+  template: `<app-options-selector (dataSubmitted)="onDataSubmitted($event)" />`
 })
 export class MyComponent {
   optionsSelector = viewChild(OptionsSelector);
@@ -107,8 +100,7 @@ export class MyComponent {
   }
 
   onDataSubmitted(result: any) {
-    console.log('Data submitted:', result);
-    // Handle next step if the response contains new options
+    // Handle next step if new options are received
     if (result['patientID'] && result['opciones']) {
       const selector = this.optionsSelector();
       if (selector) {
@@ -119,75 +111,41 @@ export class MyComponent {
 }
 ```
 
-### Integrated with Consultation Form
-
-The consultation form component automatically handles the integration:
-
+**Integrated with Consultation Form:**
 1. User submits initial consultation
-2. Options selector appears with checkboxes
+2. Options selector appears
 3. User selects options and submits
-4. If backend returns new options, they're loaded automatically
+4. New options are loaded automatically if returned by backend
 
 ## Component API
 
 ### OptionsSelector
 
 **Inputs:**
-- `consultationData` - Optional input to pre-load data
+- `consultationData` — pre-load data (optional)
 
 **Outputs:**
-- `dataSubmitted` - Emits when data is successfully submitted to the server
+- `dataSubmitted` — emitted when data is submitted
 
 **Public Methods:**
-- `loadData(data: ConsultationResponse)` - Load consultation response data
-- `getSelectedOptions()` - Get array of selected option labels
-- `toggleOption(index: number)` - Toggle checkbox state
-- `hasData()` - Check if component has data to display
+- `loadData(data: ConsultationResponse)`
+- `getSelectedOptions()`
+- `toggleOption(index: number)`
+- `hasData()`
 
 **Signals:**
-- `patientID` - Current patient ID
-- `pasoActual` - Current step name
-- `opciones` - Array of options with checked state
-- `additional` - Additional information text
-- `isLoading` - Loading state
-- `error` - Error message
+- `patientID`, `pasoActual`, `opciones`, `additional`, `isLoading`, `error`
 
 ## Features
 
-### Checkbox Management
-- Display multiple options as checkboxes
+- Display options as checkboxes
 - Track checked/unchecked state
-- Only send selected options to server
-
-### Validation
-- Requires at least one option to be selected
-- Shows error message if no options selected
-
-### Additional Information
-- Optional textarea for additional details
-- Sent with selected options
-
-### Loading States
-- Disables form during submission
-- Shows loading indicator on submit button
-
-### Error Handling
-- Displays error messages
-- Logs errors to console
-- Allows retry after error
-
-### Multi-Step Support
-- Automatically loads new options if returned from server
-- Supports chained consultation steps
-- Maintains patient ID across steps
-
-## Styling
-
-The component uses a clean, modern design:
-- Responsive layout
-- Hover effects on checkboxes
-- Clear visual feedback
-- Accessible form controls
+- Send selected options only
+- Validation (at least one option required)
+- Additional information field
+- Loading indicators and error handling
+- Multi-step support (chained options)
+- Responsive, accessible design
 
 ## Testing
 
@@ -195,8 +153,7 @@ Run tests with:
 ```bash
 npm test
 ```
-
-Tests verify:
+Tests cover:
 - Component creation
 - Service integration
 - HTTP requests
@@ -204,51 +161,42 @@ Tests verify:
 
 ## Customization
 
-### Change Checkbox Layout
-
-Modify `options-selector.css`:
+**Change Checkbox Layout:**
 ```css
 .checkbox-list {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* Two columns */
+  grid-template-columns: repeat(2, 1fr);
   gap: 0.75rem;
 }
 ```
 
-### Add Custom Validation
-
-In `options-selector.ts`:
+**Add Custom Validation:**
 ```typescript
 onSubmit() {
   const selectedOptions = this.getSelectedOptions();
-  
-  // Custom validation
   if (selectedOptions.length > 5) {
-    this.error.set('No puede seleccionar más de 5 opciones');
+    this.error.set('You cannot select more than 5 options');
     return;
   }
-  
-  // Continue with submission...
 }
 ```
 
-### Handle Response Data
-
-Update `CollectResponse` interface in `consultation.service.ts`:
+**Handle Response Data:**
 ```typescript
 export interface CollectResponse {
   patientID: string;
   pasoActual: string;
   opciones?: Opcion[];
   message?: string;
-  // Add your fields
 }
 ```
 
 ## Next Steps
 
 1. Test the complete flow from consultation to data collection
-2. Add more validation rules if needed
+2. Add more validation as needed
 3. Customize styling to match your design system
 4. Add analytics/tracking if needed
 5. Implement navigation to next steps after submission
+
+---
