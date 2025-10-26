@@ -1,0 +1,128 @@
+<div class="options-selector">
+  <!-- Debug info -->
+  <div style="background: #f0f0f0; padding: 10px; margin-bottom: 10px; font-size: 12px;">
+    <strong>Debug Info:</strong><br>
+    Has Data: {{ hasData() }}<br>
+    Opciones Length: {{ opciones().length }}<br>
+    Patient ID: {{ patientID() }}<br>
+    Paso Actual: {{ pasoActual() }}<br>
+    Previous Selections: {{ previousSelections().length }}<br>
+    Is Loading: {{ isLoading() }}<br>
+    <br>
+    <strong>Manual Tests:</strong><br>
+    <button type="button" (click)="testConsultaFlow()" style="margin-right: 5px; padding: 5px 10px; font-size: 11px;">
+      Test /consulta
+    </button>
+    <button type="button" (click)="testGeneratorFlow()" style="margin-right: 5px; padding: 5px 10px; font-size: 11px;">
+      Test /generator
+    </button>
+    <button type="button" (click)="testFullFlow()" style="padding: 5px 10px; font-size: 11px; background: #28a745; color: white; border: none; border-radius: 3px; font-weight: bold;">
+      Test FULL Flow
+    </button>
+  </div>
+
+  @if (isLoading()) {
+    <div style="text-align: center; padding: 20px; background: #fffbea; border: 1px solid #ffc107; border-radius: 4px; margin-bottom: 10px;">
+      <strong>⏳ Cargando siguiente paso...</strong>
+    </div>
+  }
+
+  <div class="selector-content">
+    <h2>{{ pasoActual() || 'Cargando...' }}</h2>
+    <p class="patient-id">Paciente ID: {{ patientID() }}</p>
+
+    <!-- Show previous selections if any -->
+    @if (previousSelections().length > 0) {
+      <div class="previous-selections">
+        <h3>Selecciones anteriores:</h3>
+        <div class="selection-list">
+          @for (selection of previousSelections(); track $index) {
+            @if (selection.checked) {
+              <span class="selection-badge">{{ selection.label }}</span>
+            }
+          }
+        </div>
+      </div>
+    }
+
+    <form (ngSubmit)="onSubmit()">
+      <div class="options-group">
+        <h3>Seleccione las opciones aplicables:</h3>
+        
+        <!-- Debug: Show raw data -->
+        <div style="background: #fff3cd; padding: 10px; margin-bottom: 10px; font-size: 11px; border: 1px solid #ffc107;">
+          <strong>Raw Opciones Data:</strong><br>
+          Length: {{ opciones().length }}<br>
+          Data: <pre style="margin: 5px 0; max-height: 100px; overflow: auto;">{{ opciones() | json }}</pre>
+        </div>
+        
+        <!-- Always show the checkbox list, even if empty -->
+        <div class="checkbox-list" [attr.data-step-counter]="stepCounter()">
+          @if (opciones().length === 0) {
+            <p style="color: #999; font-style: italic;">No hay opciones disponibles en este momento.</p>
+          }
+          
+          <!-- Test: Show count -->
+          <p style="background: #e3f2fd; padding: 5px; margin: 5px 0;">
+            Paso: {{ pasoActual() }} (Counter: {{ stepCounter() }}) - Intentando renderizar {{ opciones().length }} opciones...
+          </p>
+          
+          <!-- Force recreation with @if wrapper keyed to step counter -->
+          @if (stepCounter() >= 0) {
+            <div [attr.data-step]="pasoActual()" [attr.data-counter]="stepCounter()">
+              @for (option of opciones(); track option.label + $index + stepCounter(); let i = $index) {
+                <label class="checkbox-item" [attr.data-index]="i" [attr.data-step]="stepCounter()">
+                  <input
+                    type="checkbox"
+                    [checked]="option.checked"
+                    (change)="toggleOption(i)"
+                    [disabled]="isLoading()"
+                    [id]="'option-' + stepCounter() + '-' + i"
+                  />
+                  <span>{{ option.label }}</span>
+                </label>
+              }
+            </div>
+          }
+          
+          <!-- Test: Show if loop finished -->
+          @if (opciones().length > 0) {
+            <p style="background: #c8e6c9; padding: 5px; margin: 5px 0;">
+              ✓ Loop completado (debería haber {{ opciones().length }} checkboxes arriba)
+            </p>
+          }
+        </div>
+      </div>
+
+        <div class="form-group">
+          <label for="additional">Información adicional (opcional):</label>
+          <textarea
+            id="additional"
+            [value]="additional()"
+            (input)="updateAdditional($any($event.target).value)"
+            placeholder="Ingrese información adicional si es necesario..."
+            rows="3"
+            [disabled]="isLoading()"
+          ></textarea>
+        </div>
+
+        @if (error()) {
+          <div class="error-message">
+            {{ error() }}
+          </div>
+        }
+
+        <button 
+          type="submit" 
+          [disabled]="isLoading()"
+          class="submit-button"
+        >
+          @if (isLoading()) {
+            <span>Enviando...</span>
+          } @else {
+            <span>Enviar</span>
+          }
+        </button>
+      </form>
+    </div>
+</div>
