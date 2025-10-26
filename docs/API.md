@@ -1,257 +1,131 @@
-# ELIO API Documentation
+# ELIO API Reference
 
-Complete reference for the REST API endpoints.
+This document describes the real REST API endpoints implemented in ELIO.
 
-## Base URL
+## Base URLs
 
-```
-Development: http://localhost:10000
-Production: https://api.yourdomain.com
-```
+- Development: `http://localhost:10000`
+- Production: Set in deployment environment
 
-## Authentication
+---
 
-Currently, the API uses session-based authentication. Future versions will implement JWT tokens.
-
-### Headers
-
-All requests should include:
-
-```http
-Content-Type: application/json
-Accept: application/json
-```
-
-## API Endpoints
+## Endpoints
 
 ### Health Check
 
-Check if the API server is running.
+- **GET /health**
+  - Checks API server status.
+  - **Response:**
+    ```json
+    {
+      "status": "ok",
+      "timestamp": "<ISO8601>",
+      "uptime": <seconds>
+    }
+    ```
 
-#### Endpoint
+---
 
-```http
-GET /health
+### Consultation Intake Steps
+
+All consultation steps are implemented as dedicated endpoints under `server/src/routes/`.
+
+#### Initial Consultation
+
+- **POST /start**
+  - Starts a new consultation.
+  - **Request:**
+    ```json
+    {
+      "motivo_consulta": "Pain in right knee",
+      "edad": 50,
+      "sexo": "m"
+    }
+    ```
+  - **Response:**
+    ```json
+    {
+      "patientID": "<uuid>",
+      "pasoActual": "antecedents",
+      "opciones": [
+        { "label": "Diabetes", "checked": false },
+        { "label": "Hypertension", "checked": false }
+      ]
+    }
+    ```
+
+#### Step Endpoints
+
+For each clinical intake step, there is a dedicated endpoint.  
+(Examples — see `server/src/routes/` for full list):
+
+- **POST /antecedents**
+- **POST /allergies**
+- **POST /drugs**
+- **POST /characteristics**
+- **POST /location**
+- **POST /red-flags**
+- ... (continue with other folders in `routes/`)
+
+Each request typically expects:
+
+```json
+{
+  "patientID": "<uuid>",
+  "opciones": ["Diabetes", "Hypertension"],
+  "additional": "Any notes"
+}
 ```
 
-#### Response
+Each response typically includes:
 
 ```json
 {
   "status": "ok",
-  "timestamp": "2025-10-19T00:02:26Z",
-  "uptime": 12345
+  "nextStep": "allergies",
+  "opciones": [
+    { "label": "Penicillin allergy", "checked": false }
+  ]
 }
 ```
 
-### Consultation Endpoints
+---
 
-The consultation API integrates with Google's Generative AI for intelligent responses.
+### API Documentation
 
-#### Create Consultation
+Swagger is enabled at:  
+`http://localhost:10000/api/docs` (when backend is running)
 
-```http
-POST /api/consultations
-```
-
-**Request Body:**
-
-```json
-{
-  "message": "What are the best practices for REST API design?",
-  "context": "software development"
-}
-```
-
-**Response:**
-
-```json
-{
-  "id": "123e4567-e89b-12d3-a456-426614174000",
-  "response": "Here are the best practices for REST API design...",
-  "timestamp": "2025-10-19T00:02:26Z",
-  "tokensUsed": 150
-}
-```
-
-**Status Codes:**
-
-- `200 OK`: Successful request
-- `400 Bad Request`: Invalid input
-- `401 Unauthorized`: Authentication required
-- `429 Too Many Requests`: Rate limit exceeded
-- `500 Internal Server Error`: Server error
-
-#### Get Consultation History
-
-```http
-GET /api/consultations
-```
-
-**Query Parameters:**
-
-- `limit` (optional): Number of results (default: 10, max: 100)
-- `offset` (optional): Pagination offset (default: 0)
-
-**Response:**
-
-```json
-{
-  "consultations": [
-    {
-      "id": "123e4567-e89b-12d3-a456-426614174000",
-      "message": "What are the best practices...",
-      "response": "Here are the best practices...",
-      "timestamp": "2025-10-19T00:02:26Z"
-    }
-  ],
-  "total": 25,
-  "limit": 10,
-  "offset": 0
-}
-```
-
-#### Get Single Consultation
-
-```http
-GET /api/consultations/:id
-```
-
-**Parameters:**
-
-- `id`: Consultation UUID
-
-**Response:**
-
-```json
-{
-  "id": "123e4567-e89b-12d3-a456-426614174000",
-  "message": "What are the best practices for REST API design?",
-  "response": "Here are the best practices...",
-  "timestamp": "2025-10-19T00:02:26Z",
-  "tokensUsed": 150
-}
-```
-
-**Status Codes:**
-
-- `200 OK`: Consultation found
-- `404 Not Found`: Consultation not found
+---
 
 ## Error Handling
 
-### Error Response Format
-
-All errors follow this structure:
+All errors return:
 
 ```json
 {
   "error": {
     "code": "ERROR_CODE",
-    "message": "Human-readable error message",
-    "details": {
-      "field": "Additional context"
-    },
-    "timestamp": "2025-10-19T00:02:26Z"
+    "message": "Description",
+    "timestamp": "<ISO8601>"
   }
 }
 ```
 
-### Common Error Codes
+Common codes: `VALIDATION_ERROR`, `NOT_FOUND`, `INTERNAL_ERROR`
 
-| Code | HTTP Status | Description |
-|------|-------------|-------------|
-| `VALIDATION_ERROR` | 400 | Invalid request data |
-| `UNAUTHORIZED` | 401 | Authentication required |
-| `FORBIDDEN` | 403 | Insufficient permissions |
-| `NOT_FOUND` | 404 | Resource not found |
-| `RATE_LIMIT_EXCEEDED` | 429 | Too many requests |
-| `INTERNAL_ERROR` | 500 | Server error |
-| `SERVICE_UNAVAILABLE` | 503 | External service down |
+---
 
 ## Rate Limiting
 
-API requests are rate-limited to prevent abuse:
+Configurable in backend environment.
 
-- **Limit**: 100 requests per minute per IP
-- **Headers**: Rate limit info included in response headers
+---
 
-```http
-X-RateLimit-Limit: 100
-X-RateLimit-Remaining: 95
-X-RateLimit-Reset: 1634567890
-```
+## CORS
 
-## Swagger Documentation
+Configurable via `CORS_ORIGIN` in backend `.env`.
 
-Interactive API documentation is available at:
+---
 
-```
-http://localhost:10000/api/docs
-```
-
-This provides:
-- Interactive API testing
-- Request/response schemas
-- Authentication flows
-- Example requests
-
-## SDK and Client Libraries
-
-### JavaScript/TypeScript
-
-```typescript
-import { ApiClient } from 'your-repo-client';
-
-const client = new ApiClient({
-  baseUrl: 'http://localhost:10000',
-  apiKey: 'your-api-key'
-});
-
-const response = await client.consultations.create({
-  message: 'Hello, AI!',
-  context: 'general'
-});
-```
-
-## Versioning
-
-The API uses URL versioning:
-
-```
-/api/v1/consultations
-/api/v2/consultations
-```
-
-Current version: `v1`
-
-## CORS Configuration
-
-CORS is configured via environment variables:
-
-```env
-# Allow all origins
-CORS_ORIGIN=*
-
-# Allow specific origins
-CORS_ORIGIN=http://localhost:4200,https://yourdomain.com
-
-# Disable CORS
-CORS_ORIGIN=false
-```
-
-## WebSocket Support (Future)
-
-Future versions will support WebSocket connections for real-time updates:
-
-```javascript
-const ws = new WebSocket('ws://localhost:10000/ws');
-
-ws.onmessage = (event) => {
-  console.log('Received:', event.data);
-};
-```
-
-## Best Practices
-
-1. **Always handle errors gracefully**
+---
