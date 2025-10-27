@@ -240,7 +240,6 @@ const functionalImpactRoute: FastifyPluginAsync = async (fastify) => {
         answer: answersById.get(q.id) ?? q.answer ?? ''
       }))
 
-      // Define default next section questions (Prior therapies and self-treatment)
       const defaultPriorTherapiesQuestions: SymptomOnsetQuestion[] = [
         { id: 'medicacion-alivio', prompt: '¿Tomó alguna medicación para aliviarlo? ¿Cuál? ¿Dosis?', answer: '' },
         { id: 'le-hizo-efecto', prompt: '¿Le hizo efecto? ¿Cuánto tiempo después de tomarlo?', answer: '' },
