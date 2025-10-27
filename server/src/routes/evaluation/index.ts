@@ -162,7 +162,6 @@ const evaluationRoute: FastifyPluginAsync = async (fastify) => {
         answer: answersById.get(q.id) ?? q.answer ?? ''
       }))
 
-      // Define default next section questions (Location & Characteristics)
       const defaultLocationQuestions: SymptomOnsetQuestion[] = [
         { id: 'donde-siente', prompt: '¿Dónde siente el síntoma principal?', answer: '' },
         { id: 'se-irradia', prompt: '¿Se irradia hacia algún otro lugar? ¿Hacia dónde?', answer: '' },
