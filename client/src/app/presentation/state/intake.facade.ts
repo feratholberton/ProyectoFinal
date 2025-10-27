@@ -53,7 +53,6 @@ export class IntakeFacade {
   public readonly allergyGroup = new SelectionGroup();
   public readonly drugGroup = new SelectionGroup();
 
-  // Antecedent signals
   public readonly antecedentOptions = this.antecedentGroup.options;
   public readonly selectedAntecedents = this.antecedentGroup.selected;
   public readonly customAntecedentText = this.antecedentGroup.customText;
@@ -62,7 +61,6 @@ export class IntakeFacade {
   public readonly antecedentSaveMessage = this.antecedentGroup.saveMessage;
   public readonly antecedentSaveError = this.antecedentGroup.saveError;
 
-  // Allergy signals
   public readonly allergyOptions = this.allergyGroup.options;
   public readonly selectedAllergies = this.allergyGroup.selected;
   public readonly customAllergyText = this.allergyGroup.customText;
@@ -73,7 +71,6 @@ export class IntakeFacade {
   public readonly allergySaveError = this.allergyGroup.saveError;
   public readonly hasSavedAllergies = signal(false);
 
-  // Drug signals
   public readonly drugOptions = this.drugGroup.options;
   public readonly selectedDrugs = this.drugGroup.selected;
   public readonly customDrugText = this.drugGroup.customText;
@@ -83,7 +80,6 @@ export class IntakeFacade {
   public readonly drugSaveMessage = this.drugGroup.saveMessage;
   public readonly drugSaveError = this.drugGroup.saveError;
 
-  // Question Sections
   public readonly symptomOnsetSection: QuestionSection<QuestionStepResult>;
   public readonly evaluationSection: QuestionSection<QuestionStepResult>;
   public readonly locationSection: QuestionSection<QuestionStepResult>;
