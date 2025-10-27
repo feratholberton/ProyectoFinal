@@ -251,7 +251,6 @@ const redFlagsRoute: FastifyPluginAsync = async (fastify) => {
 
       request.log.debug({ key, updatedQuestions }, 'Saved red flag symptoms answers')
 
-      // Build review summary text
       const lines: string[] = []
       lines.push('Resumen de respuestas del formulario clínico')
       lines.push('')
