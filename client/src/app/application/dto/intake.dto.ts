@@ -93,4 +93,5 @@ export interface QuestionStepResult {
 
 export interface RedFlagsStepResult extends QuestionStepResult {
   readonly reviewSummary: string;
+  readonly naturalSummary?: string;
 }

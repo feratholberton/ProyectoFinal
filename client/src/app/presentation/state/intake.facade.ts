@@ -96,6 +96,7 @@ export class IntakeFacade {
   public readonly redFlagsSection: QuestionSection<RedFlagsStepResult>;
 
   public readonly reviewSummary = signal<string | null>(null);
+  public readonly naturalSummary = signal<string | null>(null);
   public readonly isCopyingReview = signal(false);
   public readonly copyMessage = signal<string | null>(null);
   public readonly copyError = signal<string | null>(null);
@@ -134,8 +135,21 @@ export class IntakeFacade {
     this.functionalImpactSection = new QuestionSection(saveFunctionalImpactUseCase, { form: this.intakeForm });
     this.priorTherapiesSection = new QuestionSection(savePriorTherapiesUseCase, { form: this.intakeForm });
     this.redFlagsSection = new QuestionSection(saveRedFlagsUseCase, { form: this.intakeForm }, (result) => {
+      // set the base review summary (deterministic)
       if (result.reviewSummary) {
         this.reviewSummary.set(result.reviewSummary);
+      }
+
+      // if the server returned an AI-generated natural summary, store it and
+      // also append it to the review text so the existing review panel shows it
+      const aiNote = (result as RedFlagsStepResult).naturalSummary;
+      if (typeof aiNote === 'string' && aiNote.trim().length > 0) {
+        this.naturalSummary.set(aiNote);
+        const current = this.reviewSummary() ?? '';
+        const appended = current
+          ? `${current}\n\nNota (IA): ${aiNote}`
+          : `Nota (IA): ${aiNote}`;
+        this.reviewSummary.set(appended);
       }
     });
   }
@@ -538,6 +552,7 @@ export class IntakeFacade {
 
   private resetReviewState(): void {
     this.reviewSummary.set(null);
+    this.naturalSummary.set(null);
     this.isCopyingReview.set(false);
     this.copyMessage.set(null);
     this.copyError.set(null);
