@@ -175,7 +175,6 @@ const locationRoute: FastifyPluginAsync = async (fastify) => {
         answer: answersById.get(q.id) ?? q.answer ?? ''
       }))
 
-      // Define default next section questions (Symptom characteristics)
       const defaultCharacteristicsQuestions: SymptomOnsetQuestion[] = [
         { id: 'descripcion', prompt: '¿Cómo lo describiría?', answer: '' },
         { id: 'intensidad-escala', prompt: '¿Qué intensidad tiene en una escala del 1 al 10?', answer: '' },
