@@ -1,6 +1,6 @@
 <form class="form" [formGroup]="intakeForm()" (ngSubmit)="onSubmit()" novalidate>
   <div class="form__group">
-    <label class="form__label" for="age">Age</label>
+    <label class="form__label" for="age">Edad</label>
     <input
       id="age"
       type="number"
@@ -27,7 +27,7 @@
   </div>
 
   <div class="form__group">
-    <label class="form__label" for="gender">Gender</label>
+    <label class="form__label" for="gender">Sexo</label>
     <select
       id="gender"
       formControlName="gender"
@@ -46,7 +46,7 @@
   </div>
 
   <div class="form__group">
-    <label class="form__label" for="chiefComplaint">Chief Complaint</label>
+    <label class="form__label" for="chiefComplaint">Motivo de consulta</label>
     <textarea
       id="chiefComplaint"
       formControlName="chiefComplaint"
