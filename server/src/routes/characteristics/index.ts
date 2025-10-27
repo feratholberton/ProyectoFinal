@@ -188,7 +188,6 @@ const characteristicsRoute: FastifyPluginAsync = async (fastify) => {
         answer: answersById.get(q.id) ?? q.answer ?? ''
       }))
 
-      // Define default next section questions (Associated symptoms categories)
       const defaultAssociatedQuestions: SymptomOnsetQuestion[] = [
         { id: 'generales', prompt: 'Generales', answer: '' },
         { id: 'cardiovascular', prompt: 'Cardiovascular', answer: '' },
