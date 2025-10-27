@@ -30,8 +30,8 @@ See [INSTALL.md](INSTALL.md) for installation and setup instructions.
 
 All documentation is in the root.  
 Main guides:
-- [User Guide](USER_GUIDE.md)
-- [Architecture](ARCHITECTURE.md)
+- [User Guide]([USER_GUIDE.md](https://github.com/feratholberton/ProyectoFinal/blob/main/docs/USER_GUIDE.md))
+- [Architecture]([ARCHITECTURE.md](https://github.com/feratholberton/ProyectoFinal/blob/main/docs/ARCHITECTURE.md))
 - [API Reference](API.md)
 - [Deployment Guide](DEPLOYMENT.md)
 - [Security Guide](SECURITY.md)
