@@ -6,7 +6,6 @@ export const parseStringArrayFromModelAnswer = (answer: string): string[] => {
         return parsed;
       }
     } catch {
-      // Ignore parse errors; fall through to other strategies.
     }
     return [];
   };
