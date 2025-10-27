@@ -227,7 +227,6 @@ const recentExposuresRoute: FastifyPluginAsync = async (fastify) => {
         answer: answersById.get(q.id) ?? q.answer ?? ''
       }))
 
-      // Define default next section questions (Functional impact and quality of life)
       const defaultFunctionalImpactQuestions: SymptomOnsetQuestion[] = [
         { id: 'impide-actividades', prompt: '¿Le impide realizar sus actividades habituales?', answer: '' },
         { id: 'quedo-en-cama-falto', prompt: '¿Tuvo que quedarse en cama o faltar al trabajo/estudio?', answer: '' },
