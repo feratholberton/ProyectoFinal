@@ -32,10 +32,9 @@ All documentation is in the root.
 Main guides:
 - [User Guide](https://github.com/feratholberton/ProyectoFinal/blob/main/docs/USER_GUIDE.md))
 - [Architecture](https://github.com/feratholberton/ProyectoFinal/blob/main/docs/ARCHITECTURE.md))
-- [API Reference](API.md)
-- [Deployment Guide](DEPLOYMENT.md)
-- [Security Guide](SECURITY.md)
-- [Project Charter](manELIO.md)
+- [API Reference](https://github.com/feratholberton/ProyectoFinal/blob/main/docs/API.md)
+- [Deployment Guide](https://github.com/feratholberton/ProyectoFinal/edit/main/docs/DEPLOYMENT.md)
+- [Security Guide](https://github.com/feratholberton/ProyectoFinal/blob/main/docs/SECURITY.md)
 
 ## Support
 
