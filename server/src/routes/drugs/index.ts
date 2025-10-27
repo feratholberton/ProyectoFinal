@@ -144,7 +144,7 @@ const drugsRoute: FastifyPluginAsync = async (fastify) => {
                 ],
                 properties: {
                   age: { type: 'integer' },
-                  gender: { type: 'string', enum: ['Male', 'Female'] },
+                  gender: { type: 'string', enum: ['Masculino', 'Femenino'] },
                   chiefComplaint: { type: 'string' },
                   selectedAntecedents: {
                     type: 'array',
@@ -239,7 +239,7 @@ const drugsRoute: FastifyPluginAsync = async (fastify) => {
           required: ['age', 'gender', 'chiefComplaint'],
           properties: {
             age: { type: 'integer', minimum: 0, maximum: 140 },
-            gender: { type: 'string', enum: ['Male', 'Female'] },
+            gender: { type: 'string', enum: ['Masculino', 'Femenino'] },
             chiefComplaint: { type: 'string', minLength: 1 },
             selectedAntecedents: {
               type: 'array',
@@ -289,7 +289,7 @@ const drugsRoute: FastifyPluginAsync = async (fastify) => {
                 ],
                 properties: {
                   age: { type: 'integer' },
-                  gender: { type: 'string', enum: ['Male', 'Female'] },
+                  gender: { type: 'string', enum: ['Masculino', 'Femenino'] },
                   chiefComplaint: { type: 'string' },
                   selectedAntecedents: {
                     type: 'array',
