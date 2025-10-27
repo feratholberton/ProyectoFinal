@@ -214,7 +214,6 @@ const precipitatingRoute: FastifyPluginAsync = async (fastify) => {
         answer: answersById.get(q.id) ?? q.answer ?? ''
       }))
 
-      // Define default next section questions (Recent exposures and contacts)
       const defaultRecentExposuresQuestions: SymptomOnsetQuestion[] = [
         { id: 'similares-cercanos', prompt: '¿Alguien cercano presentó síntomas similares?', answer: '' },
         { id: 'cuadros-parecidos-antes', prompt: '¿Ha tenido cuadros parecidos antes?', answer: '' },
