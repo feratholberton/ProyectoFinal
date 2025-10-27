@@ -253,7 +253,6 @@ const priorTherapiesRoute: FastifyPluginAsync = async (fastify) => {
         answer: answersById.get(q.id) ?? q.answer ?? ''
       }))
 
-      // Default next section questions (Red flag symptoms)
       const defaultRedFlagsQuestions: SymptomOnsetQuestion[] = [
         { id: 'fiebre-alta', prompt: 'Fiebre alta persistente (>38.5°C)', answer: '' },
         { id: 'sangrados', prompt: 'Sangrados (hemoptisis, hematemesis, melena, hematuria)', answer: '' },
