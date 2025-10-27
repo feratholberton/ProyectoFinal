@@ -24,7 +24,7 @@ Built for healthcare professionals, it features a modern Angular frontend (`clie
 
 ## Quick Start
 
-See [INSTALL.md](INSTALL.md) for installation and setup instructions.
+See [INSTALL.md](https://github.com/feratholberton/ProyectoFinal/blob/main/docs/INSTALL.md) for installation and setup instructions.
 
 ## Documentation
 
