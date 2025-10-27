@@ -253,14 +253,14 @@ const redFlagsRoute: FastifyPluginAsync = async (fastify) => {
 
       // Build review summary text
       const lines: string[] = []
-      lines.push('# Resumen de respuestas del formulario clínico')
+      lines.push('Resumen de respuestas del formulario clínico')
       lines.push('')
       lines.push(`Edad: ${record.age}`)
       lines.push(`Género: ${record.gender}`)
       lines.push(`Motivo de consulta: ${record.chiefComplaint}`)
       lines.push('')
       const list = (title: string, items: string[]) => {
-        lines.push(`## ${title}`)
+        lines.push(`${title}`)
         lines.push(items.length ? `- ${items.join(', ')}` : '- (sin datos)')
         lines.push('')
       }
@@ -270,7 +270,7 @@ const redFlagsRoute: FastifyPluginAsync = async (fastify) => {
 
       const qa = (title: string, qs?: SymptomOnsetQuestion[]) => {
         if (!qs || qs.length === 0) return
-        lines.push(`## ${title}`)
+        lines.push(`${title}`)
         for (const q of qs) {
           lines.push(`- ${q.prompt}`)
           lines.push(`  Respuesta: ${q.answer ?? ''}`)
