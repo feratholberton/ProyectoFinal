@@ -1,4 +1,4 @@
-b **Sprints Planning**
+# **Sprints Planning**
 
 ## **Week 1**
 Set up server and deploy.
