@@ -201,7 +201,6 @@ const associatedRoute: FastifyPluginAsync = async (fastify) => {
         answer: answersById.get(q.id) ?? q.answer ?? ''
       }))
 
-      // Define default next section questions (Precipitating factors and context)
       const defaultPrecipitatingQuestions: SymptomOnsetQuestion[] = [
         { id: 'factor-precipito', prompt: '¿Hubo algún factor que precipitó los síntomas?', answer: '' },
         { id: 'actividad-especifica', prompt: '¿Se relaciona con alguna actividad específica?', answer: '' },
