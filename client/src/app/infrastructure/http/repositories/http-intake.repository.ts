@@ -58,13 +58,9 @@ import {
 } from '../../../models/intake.models';
 
 const endpoint = (path: string): string => {
-  try {
-    // Use URL to join base and path correctly (handles trailing/leading slashes)
-    return new URL(path, API_BASE_URL).toString();
-  } catch (e) {
-    // Fallback: manual normalization
-    return `${API_BASE_URL.replace(/\/+$/,'')}/${path.replace(/^\/+/, '')}`;
-  }
+  const baseUrl = API_BASE_URL.replace(/\/$/, '');
+  const normalizedPath = path.startsWith('/') ? path : `/${path}`;
+  return `${baseUrl}${normalizedPath}`;
 };
 
 @Injectable({ providedIn: 'root' })

@@ -2,9 +2,7 @@
   margin-top: 2.5rem;
   padding: 1.75rem;
   border-radius: 12px;
-  background-color: #fefce8;
   border: 1px solid rgba(202, 138, 4, 0.3);
-  color: #422006;
 }
 
 .drugs__header {
@@ -31,29 +29,11 @@
 .drugs__legend {
   font-weight: 600;
   margin-bottom: 0.75rem;
-  color: #b45309;
 }
 
 .drugs__grid {
   display: grid;
   gap: 0.75rem;
-}
-
-.drugs__option {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.5rem;
-  padding: 0.6rem 0.75rem;
-  border-radius: 10px;
-  border: 1px solid rgba(217, 119, 6, 0.3);
-  background-color: rgba(254, 240, 138, 0.75);
-  transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.drugs__option:hover {
-  border-color: rgba(217, 119, 6, 0.5);
-  background-color: rgba(254, 215, 102, 0.85);
-  box-shadow: 0 6px 18px rgba(217, 119, 6, 0.16);
 }
 
 .drugs__option input {
@@ -132,7 +112,7 @@
   padding: 0.65rem 1.25rem;
   border-radius: 8px;
   border: none;
-  background: linear-gradient(135deg, #f59e0b, #ec4899);
+  background: var(--cl-main-800);
   color: #ffffff;
   font-weight: 600;
   cursor: pointer;
@@ -223,7 +203,7 @@
   padding: 0.75rem 1.5rem;
   border-radius: 8px;
   border: none;
-  background: linear-gradient(135deg, #22c55e, #f97316);
+  background: var(--cl-main-800);
   color: #ffffff;
   font-weight: 600;
   cursor: pointer;

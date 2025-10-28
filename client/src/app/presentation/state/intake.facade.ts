@@ -44,7 +44,7 @@ import {
 
 @Injectable({ providedIn: 'root' })
 export class IntakeFacade {
-  public readonly genders = signal<Gender[]>(['Male', 'Female']);
+  public readonly genders = signal<Gender[]>(['Masculino', 'Femenino']);
   public readonly isSubmitting = signal(false);
   public readonly submissionError = signal<string | null>(null);
   public readonly submissionResult = signal<StartIntakeResult | null>(null);
@@ -53,6 +53,7 @@ export class IntakeFacade {
   public readonly allergyGroup = new SelectionGroup();
   public readonly drugGroup = new SelectionGroup();
 
+  // Antecedent signals
   public readonly antecedentOptions = this.antecedentGroup.options;
   public readonly selectedAntecedents = this.antecedentGroup.selected;
   public readonly customAntecedentText = this.antecedentGroup.customText;
@@ -61,6 +62,7 @@ export class IntakeFacade {
   public readonly antecedentSaveMessage = this.antecedentGroup.saveMessage;
   public readonly antecedentSaveError = this.antecedentGroup.saveError;
 
+  // Allergy signals
   public readonly allergyOptions = this.allergyGroup.options;
   public readonly selectedAllergies = this.allergyGroup.selected;
   public readonly customAllergyText = this.allergyGroup.customText;
@@ -71,6 +73,7 @@ export class IntakeFacade {
   public readonly allergySaveError = this.allergyGroup.saveError;
   public readonly hasSavedAllergies = signal(false);
 
+  // Drug signals
   public readonly drugOptions = this.drugGroup.options;
   public readonly selectedDrugs = this.drugGroup.selected;
   public readonly customDrugText = this.drugGroup.customText;
@@ -80,6 +83,7 @@ export class IntakeFacade {
   public readonly drugSaveMessage = this.drugGroup.saveMessage;
   public readonly drugSaveError = this.drugGroup.saveError;
 
+  // Question Sections
   public readonly symptomOnsetSection: QuestionSection<QuestionStepResult>;
   public readonly evaluationSection: QuestionSection<QuestionStepResult>;
   public readonly locationSection: QuestionSection<QuestionStepResult>;
@@ -92,7 +96,6 @@ export class IntakeFacade {
   public readonly redFlagsSection: QuestionSection<RedFlagsStepResult>;
 
   public readonly reviewSummary = signal<string | null>(null);
-  public readonly naturalSummary = signal<string | null>(null);
   public readonly isCopyingReview = signal(false);
   public readonly copyMessage = signal<string | null>(null);
   public readonly copyError = signal<string | null>(null);
@@ -131,21 +134,8 @@ export class IntakeFacade {
     this.functionalImpactSection = new QuestionSection(saveFunctionalImpactUseCase, { form: this.intakeForm });
     this.priorTherapiesSection = new QuestionSection(savePriorTherapiesUseCase, { form: this.intakeForm });
     this.redFlagsSection = new QuestionSection(saveRedFlagsUseCase, { form: this.intakeForm }, (result) => {
-      // set the base review summary (deterministic)
       if (result.reviewSummary) {
         this.reviewSummary.set(result.reviewSummary);
-      }
-
-      // if the server returned an AI-generated natural summary, store it and
-      // also append it to the review text so the existing review panel shows it
-      const aiNote = (result as RedFlagsStepResult).naturalSummary;
-      if (typeof aiNote === 'string' && aiNote.trim().length > 0) {
-        this.naturalSummary.set(aiNote);
-        const current = this.reviewSummary() ?? '';
-        const appended = current
-          ? `${current}\n\nNota (IA): ${aiNote}`
-          : `Nota (IA): ${aiNote}`;
-        this.reviewSummary.set(appended);
       }
     });
   }
@@ -548,7 +538,6 @@ export class IntakeFacade {
 
   private resetReviewState(): void {
     this.reviewSummary.set(null);
-    this.naturalSummary.set(null);
     this.isCopyingReview.set(false);
     this.copyMessage.set(null);
     this.copyError.set(null);

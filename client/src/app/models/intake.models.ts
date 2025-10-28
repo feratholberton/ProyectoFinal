@@ -1,6 +1,6 @@
 // Centralized types and API response interfaces for the intake flow
 
-export type Gender = 'Male' | 'Female';
+export type Gender = 'Masculino' | 'Femenino';
 
 export interface StartResponse {
   answer: string;
@@ -334,5 +334,4 @@ export interface SaveRedFlagsResponse {
   };
   redFlagsQuestions: SymptomOnsetQuestion[];
   reviewSummary: string;
-  naturalSummary?: string;
 }
