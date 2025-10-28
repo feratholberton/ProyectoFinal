@@ -98,7 +98,7 @@ const antecedentsRoute: FastifyPluginAsync = async (fastify) => {
 
       const chosenModel = fastify.genAIDefaultModel;
       const prompt = [
-        'Genera hasta 8 alergias farmacológicas o ambientales relevantes para investigar en este paciente.',
+        'Genera hasta 7 alergias farmacológicas o ambientales relevantes para investigar en este paciente. Genera una opcion que se llame Sin alergias.',
         '- Responde ÚNICAMENTE con UN SOLO array JSON válido de strings.',
         '- No añadas texto, explicaciones ni encabezados. Si no hay elementos relevantes, responde con []. No inventes información ni fechas.',
         '',

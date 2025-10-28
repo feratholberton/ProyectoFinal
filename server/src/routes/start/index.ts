@@ -62,7 +62,7 @@ const startRoute: FastifyPluginAsync = async (fastify) => {
       const prompt = [
         '- Eres un médico clínico.',
         '- Utiliza rigor clínico y epidemiológico, con foco en el Contexto de Uruguay (T=0)',
-        '- Basandote en los datos provistos: Edad, Género, Motivo de consulta, genera hasta 8 antecedentes personales RELEVANTES para este caso. Incluye (cuando correspondan): enfermedades crónicas, cirugías, hospitalizaciones y hábitos tóxicos (por ejemplo: tabaquismo, alcoholismo). Cada antecedente debe tener como máximo 4 palabras cuando sea posible.',
+        '- Basandote en los datos provistos: Edad, Género, Motivo de consulta, genera hasta 7 Antecedentes personales RELEVANTES para este caso y una opcion que se llame Sin Antecedentes. Incluye (cuando correspondan): enfermedades crónicas, cirugías, hospitalizaciones y hábitos tóxicos (por ejemplo: tabaquismo, alcoholismo). Cada antecedente debe tener como máximo 4 palabras cuando sea posible.',
         '',
         '- Responde ÚNICAMENTE con UN SOLO array JSON válido de strings.',
         '- No añadas texto, explicaciones ni encabezados. Si no hay elementos relevantes, responde con []. No inventes información ni fechas.',

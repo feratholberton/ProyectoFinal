@@ -138,7 +138,7 @@ const allergiesRoute: FastifyPluginAsync = async (fastify) => {
       const prompt = [
         '- Eres un médico clínico.',
         '- Utiliza rigor clínico y epidemiológico, con foco en el Contexto de Uruguay (T=0)',
-        '- Basandote en los datos provistos: Edad, Género, Motivo de consulta, Antecedentes, Alergias. Genera hasta 8 medicamentos que podrían ser razonablemente considerados para este caso. SOLO EL NOMBRE. Prioriza nombres genéricos cuando sea posible.',
+        '- Basandote en los datos provistos: Edad, Género, Motivo de consulta, Antecedentes, Alergias. Genera hasta 7 medicamentos que podrían ser razonablemente considerados para este caso. SOLO EL NOMBRE. Prioriza nombres genéricos cuando sea posible. Genera una opcion  que se llame Sin medicamentos',
         '- Responde ÚNICAMENTE con un array JSON válido de strings.',
         '- No añadas texto, explicaciones ni encabezados. Si no hay elementos relevantes, responde con []. No inventes información ni fechas.',
         '- Si la información clínica es insuficiente para proponer fármacos específicos, devuelve sugerencias generales de clases (por ejemplo: \"AINEs\", \"Antibiótico tópico para conjuntivitis\")',
