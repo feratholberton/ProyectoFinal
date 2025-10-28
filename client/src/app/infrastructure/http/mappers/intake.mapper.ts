@@ -308,6 +308,7 @@ export const mapRedFlagsResponse = (response: SaveRedFlagsResponse): RedFlagsSte
   );
   return {
     ...result,
-    reviewSummary: response.reviewSummary
+    reviewSummary: response.reviewSummary,
+    naturalSummary: typeof response.naturalSummary === 'string' ? response.naturalSummary : undefined
   };
 };

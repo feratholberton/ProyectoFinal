@@ -96,6 +96,7 @@ export class IntakeFacade {
   public readonly redFlagsSection: QuestionSection<RedFlagsStepResult>;
 
   public readonly reviewSummary = signal<string | null>(null);
+  public readonly naturalSummary = signal<string | null>(null);
   public readonly isCopyingReview = signal(false);
   public readonly copyMessage = signal<string | null>(null);
   public readonly copyError = signal<string | null>(null);
@@ -136,6 +137,16 @@ export class IntakeFacade {
     this.redFlagsSection = new QuestionSection(saveRedFlagsUseCase, { form: this.intakeForm }, (result) => {
       if (result.reviewSummary) {
         this.reviewSummary.set(result.reviewSummary);
+      }
+
+      const aiNote = (result as RedFlagsStepResult).naturalSummary;
+      if (typeof aiNote === 'string' && aiNote.trim().length > 0) {
+        this.naturalSummary.set(aiNote);
+        const current = this.reviewSummary() ?? '';
+        const appended = current
+          ? `${current}\n\nResumen Final: ${aiNote}`
+          : `Resumen Final: ${aiNote}`;
+        this.reviewSummary.set(appended);
       }
     });
   }
