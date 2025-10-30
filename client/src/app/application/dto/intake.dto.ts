@@ -51,6 +51,7 @@ export interface ConfirmAllergiesResult {
   readonly message: string;
   readonly record: IntakeRecord;
   readonly suggestedDrugs: ReadonlyArray<string>;
+  readonly symptomOnsetQuestions: IntakeQuestionList;
   readonly model: string;
 }
 

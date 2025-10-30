@@ -57,6 +57,7 @@ export interface SaveAllergiesResponse {
     updatedAt: string;
   };
   suggestedDrugs: string[];
+  symptomOnsetQuestions: SymptomOnsetQuestion[];
   model: string;
 }
 

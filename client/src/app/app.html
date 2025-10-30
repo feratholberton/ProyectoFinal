@@ -55,34 +55,6 @@
       />
     }
 
-    @if (
-      facade.hasSavedAllergies() && (
-        facade.drugOptions().length > 0 ||
-        facade.drugGroup.customList().length > 0 ||
-        facade.drugGroup.selectedList().length > 0 ||
-        facade.drugSaveMessage() ||
-        facade.drugSaveError()
-      )
-    ) {
-      <app-drugs-section
-        [options]="facade.drugOptions()"
-        [selected]="facade.drugGroup.selectedList()"
-        [customList]="facade.drugGroup.customList()"
-        [customText]="facade.customDrugText()"
-        [canRequestMore]="facade.canRequestMoreDrugs()"
-        [isFetching]="facade.isFetchingDrugs()"
-        [isSaving]="facade.isSavingDrugs()"
-        [saveMessage]="facade.drugSaveMessage()"
-        [saveError]="facade.drugSaveError()"
-        (toggleOption)="facade.onDrugToggle($event.option, $event.checked)"
-        (requestMore)="facade.requestMoreDrugs()"
-        (addCustom)="facade.addCustomDrug()"
-        (customTextChange)="facade.updateCustomDrugText($event)"
-        (removeCustom)="facade.removeCustomDrug($event)"
-        (saveConfirmed)="facade.saveConfirmedDrugs()"
-      />
-    }
-
     @if (facade.symptomOnsetSection.questions().length > 0) {
       <app-symptom-onset-section
         [questions]="facade.symptomOnsetSection.questions()"

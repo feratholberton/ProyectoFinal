@@ -3,9 +3,7 @@ import { FormGroup, Validators } from '@angular/forms';
 import {
   ConfirmAllergiesUseCase,
   ConfirmAntecedentsUseCase,
-  ConfirmDrugsUseCase,
   RequestAllergySuggestionsUseCase,
-  RequestDrugSuggestionsUseCase,
   SaveAssociatedUseCase,
   SaveCharacteristicsUseCase,
   SaveEvaluationUseCase,
@@ -28,8 +26,6 @@ import {
   CONFIRM_ANTECEDENTS_USE_CASE,
   REQUEST_ALLERGY_SUGGESTIONS_USE_CASE,
   CONFIRM_ALLERGIES_USE_CASE,
-  REQUEST_DRUG_SUGGESTIONS_USE_CASE,
-  CONFIRM_DRUGS_USE_CASE,
   SAVE_SYMPTOM_ONSET_USE_CASE,
   SAVE_EVALUATION_USE_CASE,
   SAVE_LOCATION_USE_CASE,
@@ -51,7 +47,6 @@ export class IntakeFacade {
 
   public readonly antecedentGroup = new SelectionGroup();
   public readonly allergyGroup = new SelectionGroup();
-  public readonly drugGroup = new SelectionGroup();
 
   // Antecedent signals
   public readonly antecedentOptions = this.antecedentGroup.options;
@@ -72,16 +67,6 @@ export class IntakeFacade {
   public readonly allergySaveMessage = this.allergyGroup.saveMessage;
   public readonly allergySaveError = this.allergyGroup.saveError;
   public readonly hasSavedAllergies = signal(false);
-
-  // Drug signals
-  public readonly drugOptions = this.drugGroup.options;
-  public readonly selectedDrugs = this.drugGroup.selected;
-  public readonly customDrugText = this.drugGroup.customText;
-  public readonly canRequestMoreDrugs = this.drugGroup.canRequestMore;
-  public readonly isFetchingDrugs = this.drugGroup.isFetching;
-  public readonly isSavingDrugs = this.drugGroup.isSaving;
-  public readonly drugSaveMessage = this.drugGroup.saveMessage;
-  public readonly drugSaveError = this.drugGroup.saveError;
 
   // Question Sections
   public readonly symptomOnsetSection: QuestionSection<QuestionStepResult>;
@@ -108,8 +93,6 @@ export class IntakeFacade {
   private readonly confirmAntecedentsUseCase = inject(CONFIRM_ANTECEDENTS_USE_CASE);
   private readonly requestAllergySuggestionsUseCase = inject(REQUEST_ALLERGY_SUGGESTIONS_USE_CASE);
   private readonly confirmAllergiesUseCase = inject(CONFIRM_ALLERGIES_USE_CASE);
-  private readonly requestDrugSuggestionsUseCase = inject(REQUEST_DRUG_SUGGESTIONS_USE_CASE);
-  private readonly confirmDrugsUseCase = inject(CONFIRM_DRUGS_USE_CASE);
   
   constructor() {
     this.intakeForm = this.formService.createIntakeForm();
@@ -224,13 +207,6 @@ export class IntakeFacade {
       });
 
       this.allergyGroup.syncSelection(response.suggestedAllergies, response.record.selectedAllergies);
-      this.drugGroup.syncSelection(response.suggestedDrugs, response.record.selectedDrugs);
-      
-      this.drugSaveMessage.set(
-        response.suggestedDrugs.length > 0
-          ? 'Se sugirieron nuevos medicamentos para evaluar.'
-          : 'No se sugirieron medicamentos. Puedes agregar los necesarios manualmente.'
-      );
 
       const baseMessage = response.message;
       const allergyDetails =
@@ -275,10 +251,6 @@ export class IntakeFacade {
       }),
       (response) => response.message
     );
-  }
-
-  public onDrugToggle(option: string, checked: boolean): void {
-    this.drugGroup.toggleSelection(option, checked);
   }
 
   public updateSymptomOnsetAnswer(id: string, value: string): void {
@@ -394,58 +366,6 @@ export class IntakeFacade {
     }
   }
 
-  public addCustomDrug(): void {
-    this.drugGroup.addCustomValue();
-  }
-
-  public updateCustomDrugText(value: string): void {
-    this.drugGroup.customText.set(value);
-  }
-
-  public removeCustomDrug(value: string): void {
-    this.drugGroup.removeCustomValue(value);
-  }
-
-  public async requestMoreDrugs(): Promise<void> {
-    await this.drugGroup.requestMoreOptions(
-      () => this.requestDrugSuggestionsUseCase.execute({
-        ...this.intakeForm.getRawValue(),
-        selectedAntecedents: Array.from(this.selectedAntecedents()),
-        selectedAllergies: Array.from(this.selectedAllergies()),
-        selectedDrugs: Array.from(this.selectedDrugs()),
-        excludeDrugs: Array.from(this.drugGroup.seen())
-      }),
-      (response) => response.suggestedDrugs,
-      (response) => ({
-        suggested: response.record.suggestedDrugs,
-        selected: response.record.selectedDrugs
-      }),
-      (response) => response.message
-    );
-  }
-
-  public async saveConfirmedDrugs(): Promise<void> {
-    await this.drugGroup.saveConfirmation(
-      (selections) => this.confirmDrugsUseCase.execute({
-        ...this.intakeForm.getRawValue(),
-        selectedAntecedents: Array.from(this.selectedAntecedents()),
-        selectedAllergies: Array.from(this.selectedAllergies()),
-        selectedDrugs: selections
-      }),
-      (response) => ({
-        suggested: response.record.suggestedDrugs,
-        selected: response.record.selectedDrugs
-      }),
-      (response) => response.message,
-      {
-        emptyError: 'Selecciona o agrega al menos un medicamento antes de guardar.',
-        onSuccess: (response) => {
-          this.symptomOnsetSection.questions.set(response.symptomOnsetQuestions.map(q => ({ ...q, answer: '' })));
-        }
-      }
-    );
-  }
-
   public async saveConfirmedAllergies(): Promise<void> {
     await this.allergyGroup.saveConfirmation(
       (selections) => this.confirmAllergiesUseCase.execute({
@@ -461,9 +381,11 @@ export class IntakeFacade {
       {
         emptyError: 'Selecciona o agrega al menos una alergia antes de guardar.',
         onSuccess: (response) => {
-          this.drugGroup.syncSelection(response.suggestedDrugs, response.record.selectedDrugs);
           this.hasSavedAllergies.set(true);
           this.resetQuestionWorkflowState();
+          if (response.symptomOnsetQuestions && response.symptomOnsetQuestions.length > 0) {
+            this.symptomOnsetSection.questions.set(response.symptomOnsetQuestions.map(q => ({ ...q, answer: '' })));
+          }
         }
       }
     );
@@ -528,7 +450,6 @@ export class IntakeFacade {
     this.submissionResult.set(null);
     this.antecedentGroup.reset();
     this.allergyGroup.reset();
-    this.drugGroup.reset();
     this.resetQuestionWorkflowState();
     this.resetReviewState();
     this.hasSavedAllergies.set(false);

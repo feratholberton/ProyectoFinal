@@ -267,7 +267,6 @@ const redFlagsRoute: FastifyPluginAsync = async (fastify) => {
       }
       list('Antecedentes', record.selectedAntecedents ?? [])
       list('Alergias', record.selectedAllergies ?? [])
-      list('Medicamentos', record.selectedDrugs ?? [])
 
       const qa = (title: string, qs?: SymptomOnsetQuestion[]) => {
         if (!qs || qs.length === 0) return
@@ -300,14 +299,13 @@ const redFlagsRoute: FastifyPluginAsync = async (fastify) => {
         fallbackLines.push(`Acude por motivo de consulta: ${record.chiefComplaint}.`)
         fallbackLines.push(record.selectedAntecedents?.length ? `Antecedentes relevantes: ${record.selectedAntecedents.join(', ')}.` : 'No se registraron antecedentes relevantes.')
         fallbackLines.push(record.selectedAllergies?.length ? `Alergias: ${record.selectedAllergies.join(', ')}.` : 'No se registraron alergias conocidas.')
-        fallbackLines.push(record.selectedDrugs?.length ? `Medicamentos actuales: ${record.selectedDrugs.join(', ')}.` : 'No se registraron medicamentos actuales.')
         naturalSummary = fallbackLines.join(' ')
       } else {
         const chosenModel = fastify.genAIDefaultModel
         const prompt = [
           'Eres un médico clínico. A partir de la información que sigue, genera UN SOLO resumen clínico en español en lenguaje natural, respetando el ORDEN y SIN INVENTAR datos. Si falta información, escribe "(sin datos)" para ese campo. No añadas hipótesis diagnósticas nuevas ni fechas.',
           '',
-          'INSTRUCCIONES DE SALIDA: 1) Identificación (edad, género). 2) Motivo de consulta. 3) Antecedentes relevantes. 4) Alergias. 5) Medicamentos actuales. 6) Síntomas principales (inicio, evolución, localización). 7) Evaluación y curso. 8). Entrega el texto en español, en párrafos cortos, sin listas JSON ni metadatos.',
+          'INSTRUCCIONES DE SALIDA: 1) Identificación (edad, género). 2) Motivo de consulta. 3) Antecedentes relevantes. 4) Alergias. 5) Síntomas principales (inicio, evolución, localización). 6) Evaluación y curso. 7) Factores asociados. Entrega el texto en español, en párrafos cortos, sin listas JSON ni metadatos.',
           '',
           'INFORMACIÓN: ',
           reviewSummary

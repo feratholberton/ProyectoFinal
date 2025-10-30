@@ -1,6 +1,7 @@
 import { FastifyPluginAsync } from 'fastify'
 import {
   PatientIntakeRecord,
+  SymptomOnsetQuestion,
   buildPatientKey,
   normalizeAntecedents,
   normalizeAllergies,
@@ -9,6 +10,14 @@ import {
   getPatientIntake
 } from '../../stores/patient-intake-store.js'
 import { parseStringArrayFromModelAnswer } from '../../utils/parse-string-array.js'
+
+const defaultSymptomOnsetQuestions: SymptomOnsetQuestion[] = [
+  { id: 'cuando-comenzo', prompt: '¿Cuándo comenzó el problema?', answer: '' },
+  { id: 'como-inicio', prompt: '¿Cómo fue el inicio?', answer: '' },
+  { id: 'hace-cuanto', prompt: '¿Hace cuánto tiempo presenta los síntomas?', answer: '' },
+  { id: 'evento-desencadenante', prompt: '¿Hubo algún evento desencadenante?', answer: '' },
+  { id: 'nota-personalizada', prompt: 'Nota personalizada', answer: '' }
+];
 
 interface SaveAllergiesRequestBody {
   age: number;
@@ -22,6 +31,7 @@ interface SaveAllergiesResponseBody {
   message: string;
   record: PatientIntakeRecord;
   suggestedDrugs: string[];
+  symptomOnsetQuestions: SymptomOnsetQuestion[];
   model: string;
 }
 
@@ -68,7 +78,7 @@ const allergiesRoute: FastifyPluginAsync = async (fastify) => {
         response: {
           200: {
             type: 'object',
-            required: ['message', 'record', 'suggestedDrugs', 'model'],
+            required: ['message', 'record', 'suggestedDrugs', 'symptomOnsetQuestions', 'model'],
             properties: {
               message: { type: 'string' },
               record: {
@@ -115,6 +125,18 @@ const allergiesRoute: FastifyPluginAsync = async (fastify) => {
                 type: 'array',
                 items: { type: 'string' }
               },
+              symptomOnsetQuestions: {
+                type: 'array',
+                items: {
+                  type: 'object',
+                  required: ['id', 'prompt', 'answer'],
+                  properties: {
+                    id: { type: 'string' },
+                    prompt: { type: 'string' },
+                    answer: { type: 'string' }
+                  }
+                }
+              },
               model: { type: 'string' }
             }
           }
@@ -122,10 +144,6 @@ const allergiesRoute: FastifyPluginAsync = async (fastify) => {
       }
     },
     async (request) => {
-      if (!fastify.genAIClient) {
-        throw fastify.httpErrors.serviceUnavailable('Google GenAI client is not configured')
-      }
-
       const { age, gender, chiefComplaint, selectedAntecedents, selectedAllergies } = request.body
       const normalizedChiefComplaint = normalizeChiefComplaint(chiefComplaint)
       const normalizedAntecedentList =
@@ -134,67 +152,24 @@ const allergiesRoute: FastifyPluginAsync = async (fastify) => {
           : undefined
       const normalizedAllergyList = normalizeAllergies(selectedAllergies)
 
-      const chosenModel = fastify.genAIDefaultModel
-      const prompt = [
-        '- Eres un médico clínico.',
-        '- Utiliza rigor clínico y epidemiológico, con foco en el Contexto de Uruguay (T=0)',
-        '- Basandote en los datos provistos: Edad, Género, Motivo de consulta, Antecedentes, Alergias. Genera hasta 7 medicamentos que podrían ser razonablemente considerados para este caso. SOLO EL NOMBRE. Prioriza nombres genéricos cuando sea posible. Genera una opcion  que se llame Sin medicamentos',
-        '- Responde ÚNICAMENTE con un array JSON válido de strings.',
-        '- No añadas texto, explicaciones ni encabezados. Si no hay elementos relevantes, responde con []. No inventes información ni fechas.',
-        '- Si la información clínica es insuficiente para proponer fármacos específicos, devuelve sugerencias generales de clases (por ejemplo: \"AINEs\", \"Antibiótico tópico para conjuntivitis\")',
-        '- NO inventes fármacos.',
-        '',
-        'Datos:',
-        `Edad: ${age}`,
-        `Género: ${gender}`,
-        `Motivo de consulta: ${normalizedChiefComplaint}`,
-        `Antecedentes confirmados: ${
-          normalizedAntecedentList && normalizedAntecedentList.length > 0
-            ? normalizedAntecedentList.join('; ')
-            : 'Ninguno'
-        }`,
-        `Alergias confirmadas: ${
-          normalizedAllergyList.length > 0 ? normalizedAllergyList.join('; ') : 'Ninguna'
-        }`
-      ].join('\n')
+      const record = upsertPatientIntake({
+        age,
+        gender,
+        chiefComplaint: normalizedChiefComplaint,
+        selectedAntecedents: normalizedAntecedentList,
+        selectedAllergies: normalizedAllergyList,
+        suggestedDrugs: [],
+        symptomOnsetQuestions: defaultSymptomOnsetQuestions
+      })
 
-      try {
-        const response = await fastify.genAIClient.models.generateContent({
-          model: chosenModel,
-          contents: prompt
-        })
+      request.log.debug({ record }, 'Saved allergies and initialized symptom onset questions')
 
-        const answer = response.text
-        if (!answer) {
-          request.log.warn({ response }, 'Google GenAI returned an empty drug list')
-          throw fastify.httpErrors.badGateway('El modelo no devolvió medicamentos válidos.')
-        }
-
-        const suggestedDrugs = parseStringArrayFromModelAnswer(answer)
-        if (suggestedDrugs.length === 0) {
-          request.log.warn({ answer }, 'Unable to parse drug suggestions from model response')
-        }
-
-        const record = upsertPatientIntake({
-          age,
-          gender,
-          chiefComplaint: normalizedChiefComplaint,
-          selectedAntecedents: normalizedAntecedentList,
-          selectedAllergies: normalizedAllergyList,
-          suggestedDrugs
-        })
-
-        request.log.debug({ record, suggestedDrugs }, 'Saved allergies and generated drug suggestions')
-
-        return {
-          message: 'Alergias confirmadas guardadas.',
-          record,
-          suggestedDrugs,
-          model: chosenModel
-        }
-      } catch (error) {
-        request.log.error({ err: error }, 'Failed to generate drug suggestions after saving allergies')
-        throw fastify.httpErrors.badGateway('No se pudieron generar medicamentos en este momento.')
+      return {
+        message: 'Alergias confirmadas guardadas.',
+        record,
+        suggestedDrugs: [],
+        symptomOnsetQuestions: record.symptomOnsetQuestions,
+        model: 'none'
       }
     }
   )
@@ -303,7 +278,7 @@ const allergiesRoute: FastifyPluginAsync = async (fastify) => {
 
       const chosenModel = fastify.genAIDefaultModel
       const promptLines = [
-        'Genera hasta 8 alergias farmacológicas o ambientales relevantes para investigar en este paciente.',
+        'Genera hasta 8 alergias farmacológicas o (AINES) relevantes para investigar en este paciente. No incluyas alergias ambientales como pólenes o ácaros del polvo, mohos, etc.',
         '- Responde ÚNICAMENTE con UN SOLO array JSON válido de strings.',
         '- No añadas texto, explicaciones ni encabezados. Si no hay elementos relevantes, responde con []. No inventes información ni fechas.',
         '',

@@ -152,6 +152,7 @@ export const mapSaveAllergiesResponse = (
   message: withDefaultMessage(response.message, 'Alergias confirmadas guardadas.'),
   record: mapRecord(response.record),
   suggestedDrugs: toArray(response.suggestedDrugs),
+  symptomOnsetQuestions: response.symptomOnsetQuestions || [],
   model: response.model
 });
 
