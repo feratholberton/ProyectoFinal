@@ -176,10 +176,9 @@ const characteristicsRoute: FastifyPluginAsync = async (fastify) => {
       }))
 
       const defaultPriorTherapiesQuestions: SymptomOnsetQuestion[] = [
-        { id: 'tratamientos-medicos', prompt: '¿Tratamientos médicos anteriores?', answer: '' },
-        { id: 'medicamentos-actuales', prompt: '¿Medicamentos actuales?', answer: '' },
-        { id: 'automedicacion', prompt: '¿Automedicación reciente?', answer: '' },
-        { id: 'resultados-previos', prompt: '¿Resultado de tratamientos previos?', answer: '' },
+        { id: 'medicacion-tomada', prompt: '¿Tomó alguna medicación para aliviarlo? ¿Cuál? ¿Dosis?', answer: '' },
+        { id: 'efecto-medicacion', prompt: '¿Le hizo efecto? ¿Cuánto tiempo después de tomarlo?', answer: '' },
+        { id: 'atencion-medica-previa', prompt: '¿Recibió atención médica antes de esta consulta? ¿Dónde?', answer: '' },
         { id: 'nota-personalizada-therapies', prompt: 'Nota personalizada', answer: '' }
       ]
 
