@@ -114,6 +114,22 @@ export class IntakeFacade {
     });
   }
 
+  /**
+   * Gets validated form values with age guaranteed to be a number
+   * @throws Error if age is null
+   */
+  private getValidatedFormValue(): { age: number; gender: Gender; chiefComplaint: string } {
+    const rawValue = this.intakeForm.getRawValue();
+    if (rawValue.age === null) {
+      throw new Error('Age is required');
+    }
+    return {
+      age: rawValue.age,
+      gender: rawValue.gender,
+      chiefComplaint: rawValue.chiefComplaint
+    };
+  }
+
   public async submit(): Promise<void> {
     if (!this.formService.isFormValid(this.intakeForm)) {
       return;
@@ -180,7 +196,7 @@ export class IntakeFacade {
     this.hasSavedAllergies.set(false);
 
     try {
-      const formValue = this.intakeForm.getRawValue();
+      const formValue = this.getValidatedFormValue();
       const response = await this.confirmAntecedentsUseCase.execute({
         ...formValue,
         selectedAntecedents: selected
@@ -219,7 +235,7 @@ export class IntakeFacade {
   public async requestMoreAllergies(): Promise<void> {
     await this.allergyGroup.requestMoreOptions(
       () => this.requestAllergySuggestionsUseCase.execute({
-        ...this.intakeForm.getRawValue(),
+        ...this.getValidatedFormValue(),
         selectedAntecedents: Array.from(this.selectedAntecedents()),
         selectedAllergies: Array.from(this.selectedAllergies()),
         excludeAllergies: Array.from(this.allergyGroup.seen())
@@ -317,7 +333,7 @@ export class IntakeFacade {
   public async saveConfirmedAllergies(): Promise<void> {
     await this.allergyGroup.saveConfirmation(
       (selections) => this.confirmAllergiesUseCase.execute({
-        ...this.intakeForm.getRawValue(),
+        ...this.getValidatedFormValue(),
         selectedAntecedents: Array.from(this.selectedAntecedents()),
         selectedAllergies: selections
       }),
@@ -348,17 +364,17 @@ export class IntakeFacade {
       this.resetWorkflowState();
     }
 
-    const basePayload = this.intakeForm.getRawValue();
-    const selectedAntecedents = Array.from(this.selectedAntecedents());
-    const seenList = Array.from(this.antecedentGroup.seen());
-    const excludeAntecedents = resetState
-      ? []
-      : seenList.slice(Math.max(0, seenList.length - 32));
-    const payloadBase = { ...basePayload, selectedAntecedents };
-    const payload =
-      excludeAntecedents.length > 0 ? { ...payloadBase, excludeAntecedents } : payloadBase;
-
     try {
+      const basePayload = this.getValidatedFormValue();
+      const selectedAntecedents = Array.from(this.selectedAntecedents());
+      const seenList = Array.from(this.antecedentGroup.seen());
+      const excludeAntecedents = resetState
+        ? []
+        : seenList.slice(Math.max(0, seenList.length - 32));
+      const payloadBase = { ...basePayload, selectedAntecedents };
+      const payload =
+        excludeAntecedents.length > 0 ? { ...payloadBase, excludeAntecedents } : payloadBase;
+
       const response = await this.startIntakeUseCase.execute(payload);
 
       const antecedents = extractAntecedents(response.answer);

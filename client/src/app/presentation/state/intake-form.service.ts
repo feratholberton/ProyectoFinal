@@ -6,7 +6,7 @@ import { Gender } from '../../domain/models/intake';
  * Form controls interface for type-safe intake form
  */
 export interface IntakeFormControls {
-  age: FormControl<number>;
+  age: FormControl<number | null>;
   gender: FormControl<Gender>;
   chiefComplaint: FormControl<string>;
 }
@@ -24,8 +24,8 @@ export class IntakeFormService {
    * @returns Strongly typed FormGroup for patient intake
    */
   createIntakeForm(): FormGroup<IntakeFormControls> {
-    return this.fb.nonNullable.group<IntakeFormControls>({
-      age: this.fb.nonNullable.control(30, [
+    return this.fb.group<IntakeFormControls>({
+      age: this.fb.control<number | null>(null, [
         Validators.required,
         Validators.min(0),
         Validators.max(140)
@@ -46,7 +46,7 @@ export class IntakeFormService {
    */
   resetForm(form: FormGroup<IntakeFormControls>): void {
     form.reset({
-      age: 30,
+      age: null,
       gender: 'Femenino',
       chiefComplaint: ''
     });
