@@ -13,7 +13,6 @@ export interface PatientIntakeRecord {
   evaluationQuestions: SymptomOnsetQuestion[];
   locationQuestions: SymptomOnsetQuestion[];
   characteristicsQuestions: SymptomOnsetQuestion[];
-  functionalImpactQuestions: SymptomOnsetQuestion[];
   priorTherapiesQuestions: SymptomOnsetQuestion[];
   redFlagsQuestions: SymptomOnsetQuestion[];
   updatedAt: string;
@@ -63,7 +62,6 @@ export interface PatientIntakeUpdate {
   evaluationQuestions?: SymptomOnsetQuestion[];
   locationQuestions?: SymptomOnsetQuestion[];
   characteristicsQuestions?: SymptomOnsetQuestion[];
-  functionalImpactQuestions?: SymptomOnsetQuestion[];
   priorTherapiesQuestions?: SymptomOnsetQuestion[];
   redFlagsQuestions?: SymptomOnsetQuestion[];
 }
@@ -85,7 +83,6 @@ export const upsertPatientIntake = (update: PatientIntakeUpdate): PatientIntakeR
     evaluationQuestions: update.evaluationQuestions ?? existing?.evaluationQuestions ?? [],
     locationQuestions: update.locationQuestions ?? existing?.locationQuestions ?? [],
     characteristicsQuestions: update.characteristicsQuestions ?? existing?.characteristicsQuestions ?? [],
-    functionalImpactQuestions: update.functionalImpactQuestions ?? existing?.functionalImpactQuestions ?? [],
     priorTherapiesQuestions: update.priorTherapiesQuestions ?? existing?.priorTherapiesQuestions ?? [],
     redFlagsQuestions: update.redFlagsQuestions ?? existing?.redFlagsQuestions ?? [],
     updatedAt: new Date().toISOString()

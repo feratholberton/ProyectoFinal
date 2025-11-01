@@ -9,7 +9,6 @@ import { SymptomOnsetSectionComponent } from './components/symptom-onset-section
 import { EvaluationSectionComponent } from './components/evaluation-section/evaluation-section.component';
 import { LocationSectionComponent } from './components/location-section/location-section.component';
 import { CharacteristicsSectionComponent } from './components/characteristics-section/characteristics-section.component';
-import { FunctionalImpactSectionComponent } from './components/functional-impact-section/functional-impact-section.component';
 import { PriorTherapiesSectionComponent } from './components/prior-therapies-section/prior-therapies-section.component';
 import { RedFlagsSectionComponent } from './components/red-flags-section/red-flags-section.component';
 import { ReviewPanelComponent } from './components/review-panel/review-panel.component';
@@ -30,7 +29,6 @@ import { Logo } from './components/logo/logo';
     EvaluationSectionComponent,
     LocationSectionComponent,
     CharacteristicsSectionComponent,
-    FunctionalImpactSectionComponent,
     PriorTherapiesSectionComponent,
     RedFlagsSectionComponent,
     ReviewPanelComponent

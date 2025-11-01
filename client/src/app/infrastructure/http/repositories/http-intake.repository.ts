@@ -25,7 +25,6 @@ import {
   mapCharacteristicsResponse,
   mapDrugSuggestionResponse,
   mapEvaluationResponse,
-  mapFunctionalImpactResponse,
   mapLocationResponse,
   mapPriorTherapiesResponse,
   mapRedFlagsResponse,
@@ -43,7 +42,6 @@ import {
   SaveCharacteristicsResponse,
   SaveDrugsResponse,
   SaveEvaluationResponse,
-  SaveFunctionalImpactResponse,
   SaveLocationResponse,
   SavePriorTherapiesResponse,
   SaveRedFlagsResponse,
@@ -181,14 +179,6 @@ export class HttpIntakeRepository extends IntakeRepository {
       this.buildAnswerPayload(command)
     );
     return mapCharacteristicsResponse(response);
-  }
-
-  async saveFunctionalImpact(command: SaveQuestionsCommand): Promise<QuestionStepResult> {
-    const response = await this.post<SaveFunctionalImpactResponse>(
-      '/functional-impact',
-      this.buildAnswerPayload(command)
-    );
-    return mapFunctionalImpactResponse(response);
   }
 
   async savePriorTherapies(command: SaveQuestionsCommand): Promise<QuestionStepResult> {

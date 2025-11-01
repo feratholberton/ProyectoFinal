@@ -33,7 +33,6 @@ export abstract class IntakeRepository {
   abstract saveEvaluation(command: SaveQuestionsCommand): Promise<QuestionStepResult>;
   abstract saveLocation(command: SaveQuestionsCommand): Promise<QuestionStepResult>;
   abstract saveCharacteristics(command: SaveQuestionsCommand): Promise<QuestionStepResult>;
-  abstract saveFunctionalImpact(command: SaveQuestionsCommand): Promise<QuestionStepResult>;
   abstract savePriorTherapies(command: SaveQuestionsCommand): Promise<QuestionStepResult>;
   abstract saveRedFlags(command: SaveQuestionsCommand): Promise<RedFlagsStepResult>;
 }

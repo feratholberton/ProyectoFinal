@@ -99,17 +99,6 @@
       />
     }
 
-    @if (facade.functionalImpactSection.questions().length > 0) {
-      <app-functional-impact-section
-        [questions]="facade.functionalImpactSection.questions()"
-        [isSaving]="facade.functionalImpactSection.isSaving()"
-        [saveMessage]="facade.functionalImpactSection.saveMessage()"
-        [saveError]="facade.functionalImpactSection.saveError()"
-        (answerChange)="facade.updateFunctionalImpactAnswer($event.id, $event.value)"
-        (saveConfirmed)="facade.saveFunctionalImpact()"
-      />
-    }
-
     @if (facade.priorTherapiesSection.questions().length > 0) {
       <app-prior-therapies-section
         [questions]="facade.priorTherapiesSection.questions()"

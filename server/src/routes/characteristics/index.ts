@@ -19,7 +19,7 @@ interface SaveCharacteristicsResponseBody {
   message: string;
   record: PatientIntakeRecord;
   characteristicsQuestions: SymptomOnsetQuestion[];
-  functionalImpactQuestions: SymptomOnsetQuestion[];
+  priorTherapiesQuestions: SymptomOnsetQuestion[];
 }
 
 const characteristicsRoute: FastifyPluginAsync = async (fastify) => {
@@ -51,7 +51,7 @@ const characteristicsRoute: FastifyPluginAsync = async (fastify) => {
         response: {
           200: {
             type: 'object',
-            required: ['message', 'record', 'characteristicsQuestions', 'functionalImpactQuestions'],
+            required: ['message', 'record', 'characteristicsQuestions', 'priorTherapiesQuestions'],
             properties: {
               message: { type: 'string' },
               record: {
@@ -143,7 +143,7 @@ const characteristicsRoute: FastifyPluginAsync = async (fastify) => {
                   }
                 }
               },
-              functionalImpactQuestions: {
+              priorTherapiesQuestions: {
                 type: 'array',
                 items: {
                   type: 'object',
@@ -175,12 +175,12 @@ const characteristicsRoute: FastifyPluginAsync = async (fastify) => {
         answer: answersById.get(q.id) ?? q.answer ?? ''
       }))
 
-      const defaultFunctionalImpactQuestions: SymptomOnsetQuestion[] = [
-        { id: 'actividades-limitadas', prompt: '¿Qué actividades cotidianas se han visto limitadas?', answer: '' },
-        { id: 'trabajo-estudio', prompt: '¿Afectación en el trabajo o estudio?', answer: '' },
-        { id: 'sueno-descanso', prompt: '¿Impacto en el sueño y descanso?', answer: '' },
-        { id: 'relaciones-sociales', prompt: '¿Cambios en relaciones sociales o familiares?', answer: '' },
-        { id: 'nota-personalizada-impact', prompt: 'Nota personalizada', answer: '' }
+      const defaultPriorTherapiesQuestions: SymptomOnsetQuestion[] = [
+        { id: 'tratamientos-medicos', prompt: '¿Tratamientos médicos anteriores?', answer: '' },
+        { id: 'medicamentos-actuales', prompt: '¿Medicamentos actuales?', answer: '' },
+        { id: 'automedicacion', prompt: '¿Automedicación reciente?', answer: '' },
+        { id: 'resultados-previos', prompt: '¿Resultado de tratamientos previos?', answer: '' },
+        { id: 'nota-personalizada-therapies', prompt: 'Nota personalizada', answer: '' }
       ]
 
       const record = upsertPatientIntake({
@@ -188,7 +188,7 @@ const characteristicsRoute: FastifyPluginAsync = async (fastify) => {
         gender,
         chiefComplaint: normalizedChiefComplaint,
         characteristicsQuestions: updatedQuestions,
-        functionalImpactQuestions: existing?.functionalImpactQuestions?.length ? existing.functionalImpactQuestions : defaultFunctionalImpactQuestions
+        priorTherapiesQuestions: existing?.priorTherapiesQuestions?.length ? existing.priorTherapiesQuestions : defaultPriorTherapiesQuestions
       })
 
       request.log.debug({ key, updatedQuestions }, 'Saved symptom characteristics answers')
@@ -197,7 +197,7 @@ const characteristicsRoute: FastifyPluginAsync = async (fastify) => {
         message: 'Características del síntoma guardadas.',
         record,
         characteristicsQuestions: record.characteristicsQuestions,
-        functionalImpactQuestions: record.functionalImpactQuestions
+        priorTherapiesQuestions: record.priorTherapiesQuestions
       }
     }
   )

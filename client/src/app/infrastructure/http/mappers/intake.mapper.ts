@@ -6,7 +6,6 @@ import {
   SaveCharacteristicsResponse,
   SaveDrugsResponse,
   SaveEvaluationResponse,
-  SaveFunctionalImpactResponse,
   SaveLocationResponse,
   SavePriorTherapiesResponse,
   SaveRedFlagsResponse,
@@ -35,7 +34,6 @@ type ApiRecord =
   | SaveEvaluationResponse['record']
   | SaveLocationResponse['record']
   | SaveCharacteristicsResponse['record']
-  | SaveFunctionalImpactResponse['record']
   | SavePriorTherapiesResponse['record']
   | SaveRedFlagsResponse['record'];
 
@@ -84,7 +82,6 @@ const mapRecord = (record: ApiRecord): IntakeRecord => ({
   evaluationQuestions: toOptionalQuestions(readQuestionList(record, 'evaluationQuestions')),
   locationQuestions: toOptionalQuestions(readQuestionList(record, 'locationQuestions')),
   characteristicsQuestions: toOptionalQuestions(readQuestionList(record, 'characteristicsQuestions')),
-  functionalImpactQuestions: toOptionalQuestions(readQuestionList(record, 'functionalImpactQuestions')),
   priorTherapiesQuestions: toOptionalQuestions(readQuestionList(record, 'priorTherapiesQuestions')),
   redFlagsQuestions: toOptionalQuestions(readQuestionList(record, 'redFlagsQuestions'))
 });
@@ -218,22 +215,9 @@ export const mapCharacteristicsResponse = (
     response.message,
     response.record,
     response.characteristicsQuestions,
-    response.functionalImpactQuestions,
+    response.priorTherapiesQuestions,
     'Características del síntoma guardadas.',
     (record) => readQuestionList(record, 'characteristicsQuestions'),
-    (record) => readQuestionList(record, 'functionalImpactQuestions')
-  );
-
-export const mapFunctionalImpactResponse = (
-  response: SaveFunctionalImpactResponse
-): QuestionStepResult =>
-  ensureQuestionResult(
-    response.message,
-    response.record,
-    response.functionalImpactQuestions,
-    response.priorTherapiesQuestions,
-    'Impacto funcional y calidad de vida guardados.',
-    (record) => readQuestionList(record, 'functionalImpactQuestions'),
     (record) => readQuestionList(record, 'priorTherapiesQuestions')
   );
 

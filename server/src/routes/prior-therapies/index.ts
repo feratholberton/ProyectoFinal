@@ -69,7 +69,6 @@ const priorTherapiesRoute: FastifyPluginAsync = async (fastify) => {
                   'evaluationQuestions',
                   'locationQuestions',
                   'characteristicsQuestions',
-                  'functionalImpactQuestions',
                   'priorTherapiesQuestions',
                   'redFlagsQuestions',
                   'updatedAt'
@@ -120,18 +119,6 @@ const priorTherapiesRoute: FastifyPluginAsync = async (fastify) => {
                     }
                   },
                   characteristicsQuestions: {
-                    type: 'array',
-                    items: {
-                      type: 'object',
-                      required: ['id', 'prompt', 'answer'],
-                      properties: {
-                        id: { type: 'string' },
-                        prompt: { type: 'string' },
-                        answer: { type: 'string' }
-                      }
-                    }
-                  },
-                  functionalImpactQuestions: {
                     type: 'array',
                     items: {
                       type: 'object',
