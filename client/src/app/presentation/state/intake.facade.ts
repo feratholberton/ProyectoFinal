@@ -4,7 +4,6 @@ import {
   ConfirmAllergiesUseCase,
   ConfirmAntecedentsUseCase,
   RequestAllergySuggestionsUseCase,
-  SaveAssociatedUseCase,
   SaveCharacteristicsUseCase,
   SaveEvaluationUseCase,
   SaveFunctionalImpactUseCase,
@@ -30,7 +29,6 @@ import {
   SAVE_EVALUATION_USE_CASE,
   SAVE_LOCATION_USE_CASE,
   SAVE_CHARACTERISTICS_USE_CASE,
-  SAVE_ASSOCIATED_USE_CASE,
   SAVE_PRECIPITATING_USE_CASE,
   SAVE_RECENT_EXPOSURES_USE_CASE,
   SAVE_FUNCTIONAL_IMPACT_USE_CASE,
@@ -73,7 +71,6 @@ export class IntakeFacade {
   public readonly evaluationSection: QuestionSection<QuestionStepResult>;
   public readonly locationSection: QuestionSection<QuestionStepResult>;
   public readonly characteristicsSection: QuestionSection<QuestionStepResult>;
-  public readonly associatedSection: QuestionSection<QuestionStepResult>;
   public readonly precipitatingSection: QuestionSection<QuestionStepResult>;
   public readonly recentExposuresSection: QuestionSection<QuestionStepResult>;
   public readonly functionalImpactSection: QuestionSection<QuestionStepResult>;
@@ -101,7 +98,6 @@ export class IntakeFacade {
     const saveEvaluationUseCase = inject(SAVE_EVALUATION_USE_CASE);
     const saveLocationUseCase = inject(SAVE_LOCATION_USE_CASE);
     const saveCharacteristicsUseCase = inject(SAVE_CHARACTERISTICS_USE_CASE);
-    const saveAssociatedUseCase = inject(SAVE_ASSOCIATED_USE_CASE);
     const savePrecipitatingUseCase = inject(SAVE_PRECIPITATING_USE_CASE);
     const saveRecentExposuresUseCase = inject(SAVE_RECENT_EXPOSURES_USE_CASE);
     const saveFunctionalImpactUseCase = inject(SAVE_FUNCTIONAL_IMPACT_USE_CASE);
@@ -112,7 +108,6 @@ export class IntakeFacade {
     this.evaluationSection = new QuestionSection(saveEvaluationUseCase, { form: this.intakeForm });
     this.locationSection = new QuestionSection(saveLocationUseCase, { form: this.intakeForm });
     this.characteristicsSection = new QuestionSection(saveCharacteristicsUseCase, { form: this.intakeForm });
-    this.associatedSection = new QuestionSection(saveAssociatedUseCase, { form: this.intakeForm });
     this.precipitatingSection = new QuestionSection(savePrecipitatingUseCase, { form: this.intakeForm });
     this.recentExposuresSection = new QuestionSection(saveRecentExposuresUseCase, { form: this.intakeForm });
     this.functionalImpactSection = new QuestionSection(saveFunctionalImpactUseCase, { form: this.intakeForm });
@@ -282,15 +277,7 @@ export class IntakeFacade {
   }
 
   public async saveCharacteristics(): Promise<void> {
-    await this.characteristicsSection.save(this.associatedSection.questions);
-  }
-
-  public updateAssociatedAnswer(id: string, value: string): void {
-    this.associatedSection.updateAnswer(id, value);
-  }
-
-  public async saveAssociated(): Promise<void> {
-    await this.associatedSection.save(this.precipitatingSection.questions);
+    await this.characteristicsSection.save(this.precipitatingSection.questions);
   }
 
   public updatePrecipitatingAnswer(id: string, value: string): void {
@@ -460,7 +447,6 @@ export class IntakeFacade {
     this.evaluationSection.reset();
     this.locationSection.reset();
     this.characteristicsSection.reset();
-    this.associatedSection.reset();
     this.precipitatingSection.reset();
     this.recentExposuresSection.reset();
     this.functionalImpactSection.reset();

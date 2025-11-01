@@ -9,7 +9,6 @@ import { SymptomOnsetSectionComponent } from './components/symptom-onset-section
 import { EvaluationSectionComponent } from './components/evaluation-section/evaluation-section.component';
 import { LocationSectionComponent } from './components/location-section/location-section.component';
 import { CharacteristicsSectionComponent } from './components/characteristics-section/characteristics-section.component';
-import { AssociatedSymptomsSectionComponent } from './components/associated-symptoms-section/associated-symptoms-section.component';
 import { PrecipitatingFactorsSectionComponent } from './components/precipitating-factors-section/precipitating-factors-section.component';
 import { RecentExposuresSectionComponent } from './components/recent-exposures-section/recent-exposures-section.component';
 import { FunctionalImpactSectionComponent } from './components/functional-impact-section/functional-impact-section.component';
@@ -33,7 +32,6 @@ import { Logo } from './components/logo/logo';
     EvaluationSectionComponent,
     LocationSectionComponent,
     CharacteristicsSectionComponent,
-    AssociatedSymptomsSectionComponent,
     PrecipitatingFactorsSectionComponent,
     RecentExposuresSectionComponent,
     FunctionalImpactSectionComponent,

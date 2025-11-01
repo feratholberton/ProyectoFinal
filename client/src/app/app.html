@@ -99,17 +99,6 @@
       />
     }
 
-    @if (facade.associatedSection.questions().length > 0) {
-      <app-associated-symptoms-section
-        [questions]="facade.associatedSection.questions()"
-        [isSaving]="facade.associatedSection.isSaving()"
-        [saveMessage]="facade.associatedSection.saveMessage()"
-        [saveError]="facade.associatedSection.saveError()"
-        (answerChange)="facade.updateAssociatedAnswer($event.id, $event.value)"
-        (saveConfirmed)="facade.saveAssociated()"
-      />
-    }
-
     @if (facade.precipitatingSection.questions().length > 0) {
       <app-precipitating-factors-section
         [questions]="facade.precipitatingSection.questions()"

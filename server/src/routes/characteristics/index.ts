@@ -19,7 +19,7 @@ interface SaveCharacteristicsResponseBody {
   message: string;
   record: PatientIntakeRecord;
   characteristicsQuestions: SymptomOnsetQuestion[];
-  associatedSymptomsQuestions: SymptomOnsetQuestion[];
+  precipitatingQuestions: SymptomOnsetQuestion[];
 }
 
 const characteristicsRoute: FastifyPluginAsync = async (fastify) => {
@@ -51,7 +51,7 @@ const characteristicsRoute: FastifyPluginAsync = async (fastify) => {
         response: {
           200: {
             type: 'object',
-            required: ['message', 'record', 'characteristicsQuestions', 'associatedSymptomsQuestions'],
+            required: ['message', 'record', 'characteristicsQuestions', 'precipitatingQuestions'],
             properties: {
               message: { type: 'string' },
               record: {
@@ -69,7 +69,6 @@ const characteristicsRoute: FastifyPluginAsync = async (fastify) => {
                   'evaluationQuestions',
                   'locationQuestions',
                   'characteristicsQuestions',
-                  'associatedSymptomsQuestions',
                   'updatedAt'
                 ],
                 properties: {
@@ -129,18 +128,6 @@ const characteristicsRoute: FastifyPluginAsync = async (fastify) => {
                       }
                     }
                   },
-                  associatedSymptomsQuestions: {
-                    type: 'array',
-                    items: {
-                      type: 'object',
-                      required: ['id', 'prompt', 'answer'],
-                      properties: {
-                        id: { type: 'string' },
-                        prompt: { type: 'string' },
-                        answer: { type: 'string' }
-                      }
-                    }
-                  },
                   updatedAt: { type: 'string' }
                 }
               },
@@ -156,7 +143,7 @@ const characteristicsRoute: FastifyPluginAsync = async (fastify) => {
                   }
                 }
               },
-              associatedSymptomsQuestions: {
+              precipitatingQuestions: {
                 type: 'array',
                 items: {
                   type: 'object',
@@ -188,14 +175,12 @@ const characteristicsRoute: FastifyPluginAsync = async (fastify) => {
         answer: answersById.get(q.id) ?? q.answer ?? ''
       }))
 
-      const defaultAssociatedQuestions: SymptomOnsetQuestion[] = [
-        { id: 'generales', prompt: 'Generales', answer: '' },
-        { id: 'cardiovascular', prompt: 'Cardiovascular', answer: '' },
-        { id: 'respiratorio', prompt: 'Respiratorio', answer: '' },
-        { id: 'digestivo', prompt: 'Digestivo', answer: '' },
-        { id: 'urinario', prompt: 'Urinario', answer: '' },
-        { id: 'neurologico', prompt: 'Neurológico', answer: '' },
-        { id: 'nota-personalizada-asoc', prompt: 'Nota personalizada', answer: '' }
+      const defaultPrecipitatingQuestions: SymptomOnsetQuestion[] = [
+        { id: 'actividades-fisicas', prompt: '¿Actividades físicas que lo desencadenan?', answer: '' },
+        { id: 'alimentos-bebidas', prompt: '¿Alimentos o bebidas que lo desencadenan?', answer: '' },
+        { id: 'sustancias-quimicas', prompt: '¿Sustancias químicas o ambientales?', answer: '' },
+        { id: 'estres-emocional', prompt: '¿Situaciones de estrés emocional?', answer: '' },
+        { id: 'nota-personalizada-prec', prompt: 'Nota personalizada', answer: '' }
       ]
 
       const record = upsertPatientIntake({
@@ -203,7 +188,7 @@ const characteristicsRoute: FastifyPluginAsync = async (fastify) => {
         gender,
         chiefComplaint: normalizedChiefComplaint,
         characteristicsQuestions: updatedQuestions,
-        associatedSymptomsQuestions: existing?.associatedSymptomsQuestions?.length ? existing.associatedSymptomsQuestions : defaultAssociatedQuestions
+        precipitatingFactorsQuestions: existing?.precipitatingFactorsQuestions?.length ? existing.precipitatingFactorsQuestions : defaultPrecipitatingQuestions
       })
 
       request.log.debug({ key, updatedQuestions }, 'Saved symptom characteristics answers')
@@ -212,7 +197,7 @@ const characteristicsRoute: FastifyPluginAsync = async (fastify) => {
         message: 'Características del síntoma guardadas.',
         record,
         characteristicsQuestions: record.characteristicsQuestions,
-        associatedSymptomsQuestions: record.associatedSymptomsQuestions
+        precipitatingQuestions: record.precipitatingFactorsQuestions
       }
     }
   )

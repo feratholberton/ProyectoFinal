@@ -22,7 +22,6 @@ import { IntakeRepository } from '../../../application/ports/intake.repository';
 import { API_BASE_URL } from '../../../config';
 import {
   mapAllergySuggestionResponse,
-  mapAssociatedResponse,
   mapCharacteristicsResponse,
   mapDrugSuggestionResponse,
   mapEvaluationResponse,
@@ -43,7 +42,6 @@ import {
   DrugSuggestionResponse,
   SaveAllergiesResponse,
   SaveAntecedentsResponse,
-  SaveAssociatedResponse,
   SaveCharacteristicsResponse,
   SaveDrugsResponse,
   SaveEvaluationResponse,
@@ -187,14 +185,6 @@ export class HttpIntakeRepository extends IntakeRepository {
       this.buildAnswerPayload(command)
     );
     return mapCharacteristicsResponse(response);
-  }
-
-  async saveAssociated(command: SaveQuestionsCommand): Promise<QuestionStepResult> {
-    const response = await this.post<SaveAssociatedResponse>(
-      '/associated',
-      this.buildAnswerPayload(command)
-    );
-    return mapAssociatedResponse(response);
   }
 
   async savePrecipitating(command: SaveQuestionsCommand): Promise<QuestionStepResult> {

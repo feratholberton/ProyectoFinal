@@ -3,7 +3,6 @@ import {
   DrugSuggestionResponse,
   SaveAllergiesResponse,
   SaveAntecedentsResponse,
-  SaveAssociatedResponse,
   SaveCharacteristicsResponse,
   SaveDrugsResponse,
   SaveEvaluationResponse,
@@ -38,7 +37,6 @@ type ApiRecord =
   | SaveEvaluationResponse['record']
   | SaveLocationResponse['record']
   | SaveCharacteristicsResponse['record']
-  | SaveAssociatedResponse['record']
   | SavePrecipitatingResponse['record']
   | SaveRecentExposuresResponse['record']
   | SaveFunctionalImpactResponse['record']
@@ -90,7 +88,6 @@ const mapRecord = (record: ApiRecord): IntakeRecord => ({
   evaluationQuestions: toOptionalQuestions(readQuestionList(record, 'evaluationQuestions')),
   locationQuestions: toOptionalQuestions(readQuestionList(record, 'locationQuestions')),
   characteristicsQuestions: toOptionalQuestions(readQuestionList(record, 'characteristicsQuestions')),
-  associatedSymptomsQuestions: toOptionalQuestions(readQuestionList(record, 'associatedSymptomsQuestions')),
   precipitatingFactorsQuestions: toOptionalQuestions(readQuestionList(record, 'precipitatingFactorsQuestions')),
   recentExposuresQuestions: toOptionalQuestions(readQuestionList(record, 'recentExposuresQuestions')),
   functionalImpactQuestions: toOptionalQuestions(readQuestionList(record, 'functionalImpactQuestions')),
@@ -227,22 +224,9 @@ export const mapCharacteristicsResponse = (
     response.message,
     response.record,
     response.characteristicsQuestions,
-    response.associatedSymptomsQuestions,
+    response.precipitatingQuestions,
     'Características del síntoma guardadas.',
     (record) => readQuestionList(record, 'characteristicsQuestions'),
-    (record) => readQuestionList(record, 'associatedSymptomsQuestions')
-  );
-
-export const mapAssociatedResponse = (
-  response: SaveAssociatedResponse
-): QuestionStepResult =>
-  ensureQuestionResult(
-    response.message,
-    response.record,
-    response.associatedSymptomsQuestions,
-    response.precipitatingFactorsQuestions,
-    'Síntomas asociados guardados.',
-    (record) => readQuestionList(record, 'associatedSymptomsQuestions'),
     (record) => readQuestionList(record, 'precipitatingFactorsQuestions')
   );
 
