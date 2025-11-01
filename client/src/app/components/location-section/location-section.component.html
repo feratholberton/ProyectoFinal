@@ -10,14 +10,42 @@
     @for (question of questions(); track question.id) {
       <div class="location__item">
         <label class="location__label" [for]="question.id">{{ question.prompt }}</label>
-        <textarea
-          class="location__input"
-          rows="2"
-          [id]="question.id"
-          #answerInput
-          [value]="question.answer"
-          (input)="onInputChange(question, answerInput.value)"
-        ></textarea>
+        
+        @if (question.id === 'focal-o-difuso') {
+          <div class="location__radio-group">
+            <label class="location__radio-label">
+              <input
+                type="radio"
+                name="focal-o-difuso"
+                value="Focal"
+                class="location__radio-input"
+                [checked]="question.answer === 'Focal'"
+                (change)="onInputChange(question, 'Focal')"
+              />
+              <span class="location__radio-text">Focal</span>
+            </label>
+            <label class="location__radio-label">
+              <input
+                type="radio"
+                name="focal-o-difuso"
+                value="Difuso"
+                class="location__radio-input"
+                [checked]="question.answer === 'Difuso'"
+                (change)="onInputChange(question, 'Difuso')"
+              />
+              <span class="location__radio-text">Difuso</span>
+            </label>
+          </div>
+        } @else {
+          <textarea
+            class="location__input"
+            rows="2"
+            [id]="question.id"
+            #answerInput
+            [value]="question.answer"
+            (input)="onInputChange(question, answerInput.value)"
+          ></textarea>
+        }
       </div>
     }
   </div>

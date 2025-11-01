@@ -163,9 +163,7 @@ const evaluationRoute: FastifyPluginAsync = async (fastify) => {
       }))
 
       const defaultLocationQuestions: SymptomOnsetQuestion[] = [
-        { id: 'donde-siente', prompt: '¿Dónde siente el síntoma principal?', answer: '' },
         { id: 'se-irradia', prompt: '¿Se irradia hacia algún otro lugar? ¿Hacia dónde?', answer: '' },
-        { id: 'cambia-localizacion', prompt: '¿Es siempre en el mismo sitio o cambia de localización?', answer: '' },
         { id: 'focal-o-difuso', prompt: '¿Es focal (puntual) o difuso?', answer: '' },
         { id: 'nota-personalizada-loc', prompt: 'Nota personalizada', answer: '' }
       ]
