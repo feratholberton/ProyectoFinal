@@ -10,14 +10,42 @@
     @for (question of questions(); track question.id) {
       <div class="symptom-onset__item">
         <label class="symptom-onset__label" [for]="question.id">{{ question.prompt }}</label>
-        <textarea
-          class="symptom-onset__input"
-          rows="2"
-          [id]="question.id"
-          #answerInput
-          [value]="question.answer"
-          (input)="onInputChange(question, answerInput.value)"
-        ></textarea>
+        
+        @if (question.id === 'como-inicio') {
+          <div class="symptom-onset__radio-group">
+            <label class="symptom-onset__radio-label">
+              <input
+                type="radio"
+                name="como-inicio"
+                value="Brusco"
+                class="symptom-onset__radio-input"
+                [checked]="question.answer === 'Brusco'"
+                (change)="onInputChange(question, 'Brusco')"
+              />
+              <span class="symptom-onset__radio-text">Brusco</span>
+            </label>
+            <label class="symptom-onset__radio-label">
+              <input
+                type="radio"
+                name="como-inicio"
+                value="Gradual"
+                class="symptom-onset__radio-input"
+                [checked]="question.answer === 'Gradual'"
+                (change)="onInputChange(question, 'Gradual')"
+              />
+              <span class="symptom-onset__radio-text">Gradual</span>
+            </label>
+          </div>
+        } @else {
+          <textarea
+            class="symptom-onset__input"
+            rows="2"
+            [id]="question.id"
+            #answerInput
+            [value]="question.answer"
+            (input)="onInputChange(question, answerInput.value)"
+          ></textarea>
+        }
       </div>
     }
   </div>
