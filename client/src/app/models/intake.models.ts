@@ -181,30 +181,6 @@ export interface SaveCharacteristicsResponse {
     updatedAt: string;
   };
   characteristicsQuestions: SymptomOnsetQuestion[];
-  precipitatingQuestions: SymptomOnsetQuestion[];
-}
-
-export interface SavePrecipitatingResponse {
-  message: string;
-  record: {
-    age: number;
-    gender: Gender;
-    chiefComplaint: string;
-    selectedAntecedents: string[];
-    selectedAllergies: string[];
-    selectedDrugs: string[];
-    suggestedAllergies: string[];
-    suggestedDrugs: string[];
-    symptomOnsetQuestions: SymptomOnsetQuestion[];
-    evaluationQuestions: SymptomOnsetQuestion[];
-    locationQuestions: SymptomOnsetQuestion[];
-    characteristicsQuestions: SymptomOnsetQuestion[];
-    associatedSymptomsQuestions: SymptomOnsetQuestion[];
-    precipitatingFactorsQuestions: SymptomOnsetQuestion[];
-    recentExposuresQuestions: SymptomOnsetQuestion[];
-    updatedAt: string;
-  };
-  precipitatingFactorsQuestions: SymptomOnsetQuestion[];
   recentExposuresQuestions: SymptomOnsetQuestion[];
 }
 
@@ -248,8 +224,6 @@ export interface SaveFunctionalImpactResponse {
     evaluationQuestions: SymptomOnsetQuestion[];
     locationQuestions: SymptomOnsetQuestion[];
     characteristicsQuestions: SymptomOnsetQuestion[];
-    associatedSymptomsQuestions: SymptomOnsetQuestion[];
-    precipitatingFactorsQuestions: SymptomOnsetQuestion[];
     recentExposuresQuestions: SymptomOnsetQuestion[];
     functionalImpactQuestions: SymptomOnsetQuestion[];
     priorTherapiesQuestions: SymptomOnsetQuestion[];
@@ -274,8 +248,6 @@ export interface SavePriorTherapiesResponse {
     evaluationQuestions: SymptomOnsetQuestion[];
     locationQuestions: SymptomOnsetQuestion[];
     characteristicsQuestions: SymptomOnsetQuestion[];
-    associatedSymptomsQuestions: SymptomOnsetQuestion[];
-    precipitatingFactorsQuestions: SymptomOnsetQuestion[];
     recentExposuresQuestions: SymptomOnsetQuestion[];
     functionalImpactQuestions: SymptomOnsetQuestion[];
     priorTherapiesQuestions: SymptomOnsetQuestion[];
@@ -301,8 +273,6 @@ export interface SaveRedFlagsResponse {
     evaluationQuestions: SymptomOnsetQuestion[];
     locationQuestions: SymptomOnsetQuestion[];
     characteristicsQuestions: SymptomOnsetQuestion[];
-    associatedSymptomsQuestions: SymptomOnsetQuestion[];
-    precipitatingFactorsQuestions: SymptomOnsetQuestion[];
     recentExposuresQuestions: SymptomOnsetQuestion[];
     functionalImpactQuestions: SymptomOnsetQuestion[];
     priorTherapiesQuestions: SymptomOnsetQuestion[];

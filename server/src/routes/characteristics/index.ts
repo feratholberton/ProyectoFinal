@@ -19,7 +19,7 @@ interface SaveCharacteristicsResponseBody {
   message: string;
   record: PatientIntakeRecord;
   characteristicsQuestions: SymptomOnsetQuestion[];
-  precipitatingQuestions: SymptomOnsetQuestion[];
+  recentExposuresQuestions: SymptomOnsetQuestion[];
 }
 
 const characteristicsRoute: FastifyPluginAsync = async (fastify) => {
@@ -51,7 +51,7 @@ const characteristicsRoute: FastifyPluginAsync = async (fastify) => {
         response: {
           200: {
             type: 'object',
-            required: ['message', 'record', 'characteristicsQuestions', 'precipitatingQuestions'],
+            required: ['message', 'record', 'characteristicsQuestions', 'recentExposuresQuestions'],
             properties: {
               message: { type: 'string' },
               record: {
@@ -143,7 +143,7 @@ const characteristicsRoute: FastifyPluginAsync = async (fastify) => {
                   }
                 }
               },
-              precipitatingQuestions: {
+              recentExposuresQuestions: {
                 type: 'array',
                 items: {
                   type: 'object',
@@ -175,12 +175,12 @@ const characteristicsRoute: FastifyPluginAsync = async (fastify) => {
         answer: answersById.get(q.id) ?? q.answer ?? ''
       }))
 
-      const defaultPrecipitatingQuestions: SymptomOnsetQuestion[] = [
-        { id: 'actividades-fisicas', prompt: '¿Actividades físicas que lo desencadenan?', answer: '' },
-        { id: 'alimentos-bebidas', prompt: '¿Alimentos o bebidas que lo desencadenan?', answer: '' },
-        { id: 'sustancias-quimicas', prompt: '¿Sustancias químicas o ambientales?', answer: '' },
-        { id: 'estres-emocional', prompt: '¿Situaciones de estrés emocional?', answer: '' },
-        { id: 'nota-personalizada-prec', prompt: 'Nota personalizada', answer: '' }
+      const defaultRecentExposuresQuestions: SymptomOnsetQuestion[] = [
+        { id: 'exposicion-sustancias', prompt: '¿Exposición reciente a sustancias irritantes o tóxicas?', answer: '' },
+        { id: 'cambios-dieta', prompt: '¿Cambios en la dieta o nuevos alimentos?', answer: '' },
+        { id: 'viajes-recientes', prompt: '¿Viajes recientes o exposiciones ambientales?', answer: '' },
+        { id: 'contacto-enfermos', prompt: '¿Contacto con personas enfermas?', answer: '' },
+        { id: 'nota-personalizada-expo', prompt: 'Nota personalizada', answer: '' }
       ]
 
       const record = upsertPatientIntake({
@@ -188,7 +188,7 @@ const characteristicsRoute: FastifyPluginAsync = async (fastify) => {
         gender,
         chiefComplaint: normalizedChiefComplaint,
         characteristicsQuestions: updatedQuestions,
-        precipitatingFactorsQuestions: existing?.precipitatingFactorsQuestions?.length ? existing.precipitatingFactorsQuestions : defaultPrecipitatingQuestions
+        recentExposuresQuestions: existing?.recentExposuresQuestions?.length ? existing.recentExposuresQuestions : defaultRecentExposuresQuestions
       })
 
       request.log.debug({ key, updatedQuestions }, 'Saved symptom characteristics answers')
@@ -197,7 +197,7 @@ const characteristicsRoute: FastifyPluginAsync = async (fastify) => {
         message: 'Características del síntoma guardadas.',
         record,
         characteristicsQuestions: record.characteristicsQuestions,
-        precipitatingQuestions: record.precipitatingFactorsQuestions
+        recentExposuresQuestions: record.recentExposuresQuestions
       }
     }
   )

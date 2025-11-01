@@ -27,7 +27,6 @@ import {
   mapEvaluationResponse,
   mapFunctionalImpactResponse,
   mapLocationResponse,
-  mapPrecipitatingResponse,
   mapPriorTherapiesResponse,
   mapRecentExposuresResponse,
   mapRedFlagsResponse,
@@ -47,7 +46,6 @@ import {
   SaveEvaluationResponse,
   SaveFunctionalImpactResponse,
   SaveLocationResponse,
-  SavePrecipitatingResponse,
   SavePriorTherapiesResponse,
   SaveRecentExposuresResponse,
   SaveRedFlagsResponse,
@@ -185,14 +183,6 @@ export class HttpIntakeRepository extends IntakeRepository {
       this.buildAnswerPayload(command)
     );
     return mapCharacteristicsResponse(response);
-  }
-
-  async savePrecipitating(command: SaveQuestionsCommand): Promise<QuestionStepResult> {
-    const response = await this.post<SavePrecipitatingResponse>(
-      '/precipitating',
-      this.buildAnswerPayload(command)
-    );
-    return mapPrecipitatingResponse(response);
   }
 
   async saveRecentExposures(command: SaveQuestionsCommand): Promise<QuestionStepResult> {

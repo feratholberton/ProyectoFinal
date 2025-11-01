@@ -99,17 +99,6 @@
       />
     }
 
-    @if (facade.precipitatingSection.questions().length > 0) {
-      <app-precipitating-factors-section
-        [questions]="facade.precipitatingSection.questions()"
-        [isSaving]="facade.precipitatingSection.isSaving()"
-        [saveMessage]="facade.precipitatingSection.saveMessage()"
-        [saveError]="facade.precipitatingSection.saveError()"
-        (answerChange)="facade.updatePrecipitatingAnswer($event.id, $event.value)"
-        (saveConfirmed)="facade.savePrecipitating()"
-      />
-    }
-
     @if (facade.recentExposuresSection.questions().length > 0) {
       <app-recent-exposures-section
         [questions]="facade.recentExposuresSection.questions()"

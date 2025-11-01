@@ -8,7 +8,6 @@ import {
   SaveEvaluationUseCase,
   SaveFunctionalImpactUseCase,
   SaveLocationUseCase,
-  SavePrecipitatingUseCase,
   SavePriorTherapiesUseCase,
   SaveRecentExposuresUseCase,
   SaveRedFlagsUseCase,
@@ -29,7 +28,6 @@ import {
   SAVE_EVALUATION_USE_CASE,
   SAVE_LOCATION_USE_CASE,
   SAVE_CHARACTERISTICS_USE_CASE,
-  SAVE_PRECIPITATING_USE_CASE,
   SAVE_RECENT_EXPOSURES_USE_CASE,
   SAVE_FUNCTIONAL_IMPACT_USE_CASE,
   SAVE_PRIOR_THERAPIES_USE_CASE,
@@ -71,7 +69,6 @@ export class IntakeFacade {
   public readonly evaluationSection: QuestionSection<QuestionStepResult>;
   public readonly locationSection: QuestionSection<QuestionStepResult>;
   public readonly characteristicsSection: QuestionSection<QuestionStepResult>;
-  public readonly precipitatingSection: QuestionSection<QuestionStepResult>;
   public readonly recentExposuresSection: QuestionSection<QuestionStepResult>;
   public readonly functionalImpactSection: QuestionSection<QuestionStepResult>;
   public readonly priorTherapiesSection: QuestionSection<QuestionStepResult>;
@@ -98,7 +95,6 @@ export class IntakeFacade {
     const saveEvaluationUseCase = inject(SAVE_EVALUATION_USE_CASE);
     const saveLocationUseCase = inject(SAVE_LOCATION_USE_CASE);
     const saveCharacteristicsUseCase = inject(SAVE_CHARACTERISTICS_USE_CASE);
-    const savePrecipitatingUseCase = inject(SAVE_PRECIPITATING_USE_CASE);
     const saveRecentExposuresUseCase = inject(SAVE_RECENT_EXPOSURES_USE_CASE);
     const saveFunctionalImpactUseCase = inject(SAVE_FUNCTIONAL_IMPACT_USE_CASE);
     const savePriorTherapiesUseCase = inject(SAVE_PRIOR_THERAPIES_USE_CASE);
@@ -108,7 +104,6 @@ export class IntakeFacade {
     this.evaluationSection = new QuestionSection(saveEvaluationUseCase, { form: this.intakeForm });
     this.locationSection = new QuestionSection(saveLocationUseCase, { form: this.intakeForm });
     this.characteristicsSection = new QuestionSection(saveCharacteristicsUseCase, { form: this.intakeForm });
-    this.precipitatingSection = new QuestionSection(savePrecipitatingUseCase, { form: this.intakeForm });
     this.recentExposuresSection = new QuestionSection(saveRecentExposuresUseCase, { form: this.intakeForm });
     this.functionalImpactSection = new QuestionSection(saveFunctionalImpactUseCase, { form: this.intakeForm });
     this.priorTherapiesSection = new QuestionSection(savePriorTherapiesUseCase, { form: this.intakeForm });
@@ -277,15 +272,7 @@ export class IntakeFacade {
   }
 
   public async saveCharacteristics(): Promise<void> {
-    await this.characteristicsSection.save(this.precipitatingSection.questions);
-  }
-
-  public updatePrecipitatingAnswer(id: string, value: string): void {
-    this.precipitatingSection.updateAnswer(id, value);
-  }
-
-  public async savePrecipitating(): Promise<void> {
-    await this.precipitatingSection.save(this.recentExposuresSection.questions);
+    await this.characteristicsSection.save(this.recentExposuresSection.questions);
   }
 
   public updateRecentExposuresAnswer(id: string, value: string): void {
@@ -447,7 +434,6 @@ export class IntakeFacade {
     this.evaluationSection.reset();
     this.locationSection.reset();
     this.characteristicsSection.reset();
-    this.precipitatingSection.reset();
     this.recentExposuresSection.reset();
     this.functionalImpactSection.reset();
     this.priorTherapiesSection.reset();

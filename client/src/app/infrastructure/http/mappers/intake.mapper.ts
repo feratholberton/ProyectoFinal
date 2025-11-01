@@ -8,7 +8,6 @@ import {
   SaveEvaluationResponse,
   SaveFunctionalImpactResponse,
   SaveLocationResponse,
-  SavePrecipitatingResponse,
   SavePriorTherapiesResponse,
   SaveRecentExposuresResponse,
   SaveRedFlagsResponse,
@@ -37,7 +36,6 @@ type ApiRecord =
   | SaveEvaluationResponse['record']
   | SaveLocationResponse['record']
   | SaveCharacteristicsResponse['record']
-  | SavePrecipitatingResponse['record']
   | SaveRecentExposuresResponse['record']
   | SaveFunctionalImpactResponse['record']
   | SavePriorTherapiesResponse['record']
@@ -88,7 +86,6 @@ const mapRecord = (record: ApiRecord): IntakeRecord => ({
   evaluationQuestions: toOptionalQuestions(readQuestionList(record, 'evaluationQuestions')),
   locationQuestions: toOptionalQuestions(readQuestionList(record, 'locationQuestions')),
   characteristicsQuestions: toOptionalQuestions(readQuestionList(record, 'characteristicsQuestions')),
-  precipitatingFactorsQuestions: toOptionalQuestions(readQuestionList(record, 'precipitatingFactorsQuestions')),
   recentExposuresQuestions: toOptionalQuestions(readQuestionList(record, 'recentExposuresQuestions')),
   functionalImpactQuestions: toOptionalQuestions(readQuestionList(record, 'functionalImpactQuestions')),
   priorTherapiesQuestions: toOptionalQuestions(readQuestionList(record, 'priorTherapiesQuestions')),
@@ -224,22 +221,9 @@ export const mapCharacteristicsResponse = (
     response.message,
     response.record,
     response.characteristicsQuestions,
-    response.precipitatingQuestions,
+    response.recentExposuresQuestions,
     'Características del síntoma guardadas.',
     (record) => readQuestionList(record, 'characteristicsQuestions'),
-    (record) => readQuestionList(record, 'precipitatingFactorsQuestions')
-  );
-
-export const mapPrecipitatingResponse = (
-  response: SavePrecipitatingResponse
-): QuestionStepResult =>
-  ensureQuestionResult(
-    response.message,
-    response.record,
-    response.precipitatingFactorsQuestions,
-    response.recentExposuresQuestions,
-    'Factores precipitantes y contexto guardados.',
-    (record) => readQuestionList(record, 'precipitatingFactorsQuestions'),
     (record) => readQuestionList(record, 'recentExposuresQuestions')
   );
 

@@ -44,12 +44,6 @@ export class SaveCharacteristicsUseCase extends QuestionSectionUseCase<QuestionS
   }
 }
 
-export class SavePrecipitatingUseCase extends QuestionSectionUseCase<QuestionStepResult> {
-  constructor(repository: IntakeRepository) {
-    super((command) => repository.savePrecipitating(command));
-  }
-}
-
 export class SaveRecentExposuresUseCase extends QuestionSectionUseCase<QuestionStepResult> {
   constructor(repository: IntakeRepository) {
     super((command) => repository.saveRecentExposures(command));

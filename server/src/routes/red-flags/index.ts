@@ -70,7 +70,6 @@ const redFlagsRoute: FastifyPluginAsync = async (fastify) => {
                   'evaluationQuestions',
                   'locationQuestions',
                   'characteristicsQuestions',
-                  'precipitatingFactorsQuestions',
                   'recentExposuresQuestions',
                   'functionalImpactQuestions',
                   'priorTherapiesQuestions',
@@ -123,18 +122,6 @@ const redFlagsRoute: FastifyPluginAsync = async (fastify) => {
                     }
                   },
                   characteristicsQuestions: {
-                    type: 'array',
-                    items: {
-                      type: 'object',
-                      required: ['id', 'prompt', 'answer'],
-                      properties: {
-                        id: { type: 'string' },
-                        prompt: { type: 'string' },
-                        answer: { type: 'string' }
-                      }
-                    }
-                  },
-                  precipitatingFactorsQuestions: {
                     type: 'array',
                     items: {
                       type: 'object',
@@ -268,7 +255,6 @@ const redFlagsRoute: FastifyPluginAsync = async (fastify) => {
       qa('Evaluación y curso', record.evaluationQuestions)
       qa('Localización', record.locationQuestions)
       qa('Características del síntoma', record.characteristicsQuestions)
-      qa('Factores precipitantes y contexto', record.precipitatingFactorsQuestions)
       qa('Exposiciones y contactos recientes', record.recentExposuresQuestions)
       qa('Impacto funcional y calidad de vida', record.functionalImpactQuestions)
       qa('Tratamientos previos y automedicación', record.priorTherapiesQuestions)

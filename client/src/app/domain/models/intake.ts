@@ -30,7 +30,6 @@ export interface IntakeRecord extends PatientProfile {
   readonly evaluationQuestions?: IntakeQuestionList;
   readonly locationQuestions?: IntakeQuestionList;
   readonly characteristicsQuestions?: IntakeQuestionList;
-  readonly precipitatingFactorsQuestions?: IntakeQuestionList;
   readonly recentExposuresQuestions?: IntakeQuestionList;
   readonly functionalImpactQuestions?: IntakeQuestionList;
   readonly priorTherapiesQuestions?: IntakeQuestionList;
@@ -45,7 +44,6 @@ export type IntakeSection =
   | 'evaluation'
   | 'location'
   | 'characteristics'
-  | 'precipitating'
   | 'recentExposures'
   | 'functionalImpact'
   | 'priorTherapies'
