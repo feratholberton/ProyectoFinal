@@ -19,7 +19,7 @@ interface SaveCharacteristicsResponseBody {
   message: string;
   record: PatientIntakeRecord;
   characteristicsQuestions: SymptomOnsetQuestion[];
-  recentExposuresQuestions: SymptomOnsetQuestion[];
+  functionalImpactQuestions: SymptomOnsetQuestion[];
 }
 
 const characteristicsRoute: FastifyPluginAsync = async (fastify) => {
@@ -51,7 +51,7 @@ const characteristicsRoute: FastifyPluginAsync = async (fastify) => {
         response: {
           200: {
             type: 'object',
-            required: ['message', 'record', 'characteristicsQuestions', 'recentExposuresQuestions'],
+            required: ['message', 'record', 'characteristicsQuestions', 'functionalImpactQuestions'],
             properties: {
               message: { type: 'string' },
               record: {
@@ -143,7 +143,7 @@ const characteristicsRoute: FastifyPluginAsync = async (fastify) => {
                   }
                 }
               },
-              recentExposuresQuestions: {
+              functionalImpactQuestions: {
                 type: 'array',
                 items: {
                   type: 'object',
@@ -175,12 +175,12 @@ const characteristicsRoute: FastifyPluginAsync = async (fastify) => {
         answer: answersById.get(q.id) ?? q.answer ?? ''
       }))
 
-      const defaultRecentExposuresQuestions: SymptomOnsetQuestion[] = [
-        { id: 'exposicion-sustancias', prompt: '¿Exposición reciente a sustancias irritantes o tóxicas?', answer: '' },
-        { id: 'cambios-dieta', prompt: '¿Cambios en la dieta o nuevos alimentos?', answer: '' },
-        { id: 'viajes-recientes', prompt: '¿Viajes recientes o exposiciones ambientales?', answer: '' },
-        { id: 'contacto-enfermos', prompt: '¿Contacto con personas enfermas?', answer: '' },
-        { id: 'nota-personalizada-expo', prompt: 'Nota personalizada', answer: '' }
+      const defaultFunctionalImpactQuestions: SymptomOnsetQuestion[] = [
+        { id: 'actividades-limitadas', prompt: '¿Qué actividades cotidianas se han visto limitadas?', answer: '' },
+        { id: 'trabajo-estudio', prompt: '¿Afectación en el trabajo o estudio?', answer: '' },
+        { id: 'sueno-descanso', prompt: '¿Impacto en el sueño y descanso?', answer: '' },
+        { id: 'relaciones-sociales', prompt: '¿Cambios en relaciones sociales o familiares?', answer: '' },
+        { id: 'nota-personalizada-impact', prompt: 'Nota personalizada', answer: '' }
       ]
 
       const record = upsertPatientIntake({
@@ -188,7 +188,7 @@ const characteristicsRoute: FastifyPluginAsync = async (fastify) => {
         gender,
         chiefComplaint: normalizedChiefComplaint,
         characteristicsQuestions: updatedQuestions,
-        recentExposuresQuestions: existing?.recentExposuresQuestions?.length ? existing.recentExposuresQuestions : defaultRecentExposuresQuestions
+        functionalImpactQuestions: existing?.functionalImpactQuestions?.length ? existing.functionalImpactQuestions : defaultFunctionalImpactQuestions
       })
 
       request.log.debug({ key, updatedQuestions }, 'Saved symptom characteristics answers')
@@ -197,7 +197,7 @@ const characteristicsRoute: FastifyPluginAsync = async (fastify) => {
         message: 'Características del síntoma guardadas.',
         record,
         characteristicsQuestions: record.characteristicsQuestions,
-        recentExposuresQuestions: record.recentExposuresQuestions
+        functionalImpactQuestions: record.functionalImpactQuestions
       }
     }
   )

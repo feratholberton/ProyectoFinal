@@ -9,7 +9,6 @@ import {
   SaveFunctionalImpactResponse,
   SaveLocationResponse,
   SavePriorTherapiesResponse,
-  SaveRecentExposuresResponse,
   SaveRedFlagsResponse,
   SaveSymptomOnsetResponse,
   StartResponse,
@@ -36,7 +35,6 @@ type ApiRecord =
   | SaveEvaluationResponse['record']
   | SaveLocationResponse['record']
   | SaveCharacteristicsResponse['record']
-  | SaveRecentExposuresResponse['record']
   | SaveFunctionalImpactResponse['record']
   | SavePriorTherapiesResponse['record']
   | SaveRedFlagsResponse['record'];
@@ -86,7 +84,6 @@ const mapRecord = (record: ApiRecord): IntakeRecord => ({
   evaluationQuestions: toOptionalQuestions(readQuestionList(record, 'evaluationQuestions')),
   locationQuestions: toOptionalQuestions(readQuestionList(record, 'locationQuestions')),
   characteristicsQuestions: toOptionalQuestions(readQuestionList(record, 'characteristicsQuestions')),
-  recentExposuresQuestions: toOptionalQuestions(readQuestionList(record, 'recentExposuresQuestions')),
   functionalImpactQuestions: toOptionalQuestions(readQuestionList(record, 'functionalImpactQuestions')),
   priorTherapiesQuestions: toOptionalQuestions(readQuestionList(record, 'priorTherapiesQuestions')),
   redFlagsQuestions: toOptionalQuestions(readQuestionList(record, 'redFlagsQuestions'))
@@ -221,22 +218,9 @@ export const mapCharacteristicsResponse = (
     response.message,
     response.record,
     response.characteristicsQuestions,
-    response.recentExposuresQuestions,
+    response.functionalImpactQuestions,
     'Características del síntoma guardadas.',
     (record) => readQuestionList(record, 'characteristicsQuestions'),
-    (record) => readQuestionList(record, 'recentExposuresQuestions')
-  );
-
-export const mapRecentExposuresResponse = (
-  response: SaveRecentExposuresResponse
-): QuestionStepResult =>
-  ensureQuestionResult(
-    response.message,
-    response.record,
-    response.recentExposuresQuestions,
-    response.functionalImpactQuestions,
-    'Antecedentes recientes y contactos guardados.',
-    (record) => readQuestionList(record, 'recentExposuresQuestions'),
     (record) => readQuestionList(record, 'functionalImpactQuestions')
   );
 

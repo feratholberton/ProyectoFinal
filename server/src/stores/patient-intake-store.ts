@@ -13,7 +13,6 @@ export interface PatientIntakeRecord {
   evaluationQuestions: SymptomOnsetQuestion[];
   locationQuestions: SymptomOnsetQuestion[];
   characteristicsQuestions: SymptomOnsetQuestion[];
-  recentExposuresQuestions: SymptomOnsetQuestion[];
   functionalImpactQuestions: SymptomOnsetQuestion[];
   priorTherapiesQuestions: SymptomOnsetQuestion[];
   redFlagsQuestions: SymptomOnsetQuestion[];
@@ -64,7 +63,6 @@ export interface PatientIntakeUpdate {
   evaluationQuestions?: SymptomOnsetQuestion[];
   locationQuestions?: SymptomOnsetQuestion[];
   characteristicsQuestions?: SymptomOnsetQuestion[];
-  recentExposuresQuestions?: SymptomOnsetQuestion[];
   functionalImpactQuestions?: SymptomOnsetQuestion[];
   priorTherapiesQuestions?: SymptomOnsetQuestion[];
   redFlagsQuestions?: SymptomOnsetQuestion[];
@@ -87,7 +85,6 @@ export const upsertPatientIntake = (update: PatientIntakeUpdate): PatientIntakeR
     evaluationQuestions: update.evaluationQuestions ?? existing?.evaluationQuestions ?? [],
     locationQuestions: update.locationQuestions ?? existing?.locationQuestions ?? [],
     characteristicsQuestions: update.characteristicsQuestions ?? existing?.characteristicsQuestions ?? [],
-    recentExposuresQuestions: update.recentExposuresQuestions ?? existing?.recentExposuresQuestions ?? [],
     functionalImpactQuestions: update.functionalImpactQuestions ?? existing?.functionalImpactQuestions ?? [],
     priorTherapiesQuestions: update.priorTherapiesQuestions ?? existing?.priorTherapiesQuestions ?? [],
     redFlagsQuestions: update.redFlagsQuestions ?? existing?.redFlagsQuestions ?? [],

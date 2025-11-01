@@ -69,9 +69,6 @@ const priorTherapiesRoute: FastifyPluginAsync = async (fastify) => {
                   'evaluationQuestions',
                   'locationQuestions',
                   'characteristicsQuestions',
-                  'associatedSymptomsQuestions',
-                  'precipitatingFactorsQuestions',
-                  'recentExposuresQuestions',
                   'functionalImpactQuestions',
                   'priorTherapiesQuestions',
                   'redFlagsQuestions',
@@ -123,42 +120,6 @@ const priorTherapiesRoute: FastifyPluginAsync = async (fastify) => {
                     }
                   },
                   characteristicsQuestions: {
-                    type: 'array',
-                    items: {
-                      type: 'object',
-                      required: ['id', 'prompt', 'answer'],
-                      properties: {
-                        id: { type: 'string' },
-                        prompt: { type: 'string' },
-                        answer: { type: 'string' }
-                      }
-                    }
-                  },
-                  associatedSymptomsQuestions: {
-                    type: 'array',
-                    items: {
-                      type: 'object',
-                      required: ['id', 'prompt', 'answer'],
-                      properties: {
-                        id: { type: 'string' },
-                        prompt: { type: 'string' },
-                        answer: { type: 'string' }
-                      }
-                    }
-                  },
-                  precipitatingFactorsQuestions: {
-                    type: 'array',
-                    items: {
-                      type: 'object',
-                      required: ['id', 'prompt', 'answer'],
-                      properties: {
-                        id: { type: 'string' },
-                        prompt: { type: 'string' },
-                        answer: { type: 'string' }
-                      }
-                    }
-                  },
-                  recentExposuresQuestions: {
                     type: 'array',
                     items: {
                       type: 'object',

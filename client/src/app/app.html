@@ -99,17 +99,6 @@
       />
     }
 
-    @if (facade.recentExposuresSection.questions().length > 0) {
-      <app-recent-exposures-section
-        [questions]="facade.recentExposuresSection.questions()"
-        [isSaving]="facade.recentExposuresSection.isSaving()"
-        [saveMessage]="facade.recentExposuresSection.saveMessage()"
-        [saveError]="facade.recentExposuresSection.saveError()"
-        (answerChange)="facade.updateRecentExposuresAnswer($event.id, $event.value)"
-        (saveConfirmed)="facade.saveRecentExposures()"
-      />
-    }
-
     @if (facade.functionalImpactSection.questions().length > 0) {
       <app-functional-impact-section
         [questions]="facade.functionalImpactSection.questions()"

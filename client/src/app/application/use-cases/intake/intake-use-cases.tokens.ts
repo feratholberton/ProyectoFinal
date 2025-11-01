@@ -53,10 +53,6 @@ export const SAVE_CHARACTERISTICS_USE_CASE = new InjectionToken<QuestionSectionU
   'SAVE_CHARACTERISTICS_USE_CASE'
 );
 
-export const SAVE_RECENT_EXPOSURES_USE_CASE = new InjectionToken<QuestionSectionUseCase<QuestionStepResult>>(
-  'SAVE_RECENT_EXPOSURES_USE_CASE'
-);
-
 export const SAVE_FUNCTIONAL_IMPACT_USE_CASE = new InjectionToken<QuestionSectionUseCase<QuestionStepResult>>(
   'SAVE_FUNCTIONAL_IMPACT_USE_CASE'
 );

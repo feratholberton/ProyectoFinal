@@ -11,7 +11,6 @@ import {
   SaveEvaluationUseCase,
   SaveLocationUseCase,
   SaveCharacteristicsUseCase,
-  SaveRecentExposuresUseCase,
   SaveFunctionalImpactUseCase,
   SavePriorTherapiesUseCase,
   SaveRedFlagsUseCase
@@ -27,7 +26,6 @@ import {
   SAVE_EVALUATION_USE_CASE,
   SAVE_LOCATION_USE_CASE,
   SAVE_CHARACTERISTICS_USE_CASE,
-  SAVE_RECENT_EXPOSURES_USE_CASE,
   SAVE_FUNCTIONAL_IMPACT_USE_CASE,
   SAVE_PRIOR_THERAPIES_USE_CASE,
   SAVE_RED_FLAGS_USE_CASE
@@ -97,11 +95,6 @@ export function provideIntakeUseCases(): Provider[] {
     {
       provide: SAVE_CHARACTERISTICS_USE_CASE,
       useFactory: (repository: IntakeRepository) => new SaveCharacteristicsUseCase(repository),
-      deps: [IntakeRepository]
-    },
-    {
-      provide: SAVE_RECENT_EXPOSURES_USE_CASE,
-      useFactory: (repository: IntakeRepository) => new SaveRecentExposuresUseCase(repository),
       deps: [IntakeRepository]
     },
     {
