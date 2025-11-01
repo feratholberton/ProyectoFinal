@@ -10,14 +10,89 @@
     @for (question of questions(); track question.id) {
       <div class="evaluation__item">
         <label class="evaluation__label" [for]="question.id">{{ question.prompt }}</label>
-        <textarea
-          class="evaluation__input"
-          rows="2"
-          [id]="question.id"
-          #answerInput
-          [value]="question.answer"
-          (input)="onInputChange(question, answerInput.value)"
-        ></textarea>
+        
+        @if (question.id === 'como-evoluciono') {
+          <div class="evaluation__radio-group">
+            <label class="evaluation__radio-label">
+              <input
+                type="radio"
+                name="como-evoluciono"
+                value="Aumento"
+                class="evaluation__radio-input"
+                [checked]="question.answer === 'Aumento'"
+                (change)="onInputChange(question, 'Aumento')"
+              />
+              <span class="evaluation__radio-text">Aumento</span>
+            </label>
+            <label class="evaluation__radio-label">
+              <input
+                type="radio"
+                name="como-evoluciono"
+                value="Se mantuvo igual"
+                class="evaluation__radio-input"
+                [checked]="question.answer === 'Se mantuvo igual'"
+                (change)="onInputChange(question, 'Se mantuvo igual')"
+              />
+              <span class="evaluation__radio-text">Se mantuvo igual</span>
+            </label>
+            <label class="evaluation__radio-label">
+              <input
+                type="radio"
+                name="como-evoluciono"
+                value="Disminuyó"
+                class="evaluation__radio-input"
+                [checked]="question.answer === 'Disminuyó'"
+                (change)="onInputChange(question, 'Disminuyó')"
+              />
+              <span class="evaluation__radio-text">Disminuyó</span>
+            </label>
+            <label class="evaluation__radio-label">
+              <input
+                type="radio"
+                name="como-evoluciono"
+                value="Desapareció"
+                class="evaluation__radio-input"
+                [checked]="question.answer === 'Desapareció'"
+                (change)="onInputChange(question, 'Desapareció')"
+              />
+              <span class="evaluation__radio-text">Desapareció</span>
+            </label>
+          </div>
+        } @else if (question.id === 'continuo-remision') {
+          <div class="evaluation__radio-group">
+            <label class="evaluation__radio-label">
+              <input
+                type="radio"
+                name="continuo-remision"
+                value="Es continuo"
+                class="evaluation__radio-input"
+                [checked]="question.answer === 'Es continuo'"
+                (change)="onInputChange(question, 'Es continuo')"
+              />
+              <span class="evaluation__radio-text">Es continuo</span>
+            </label>
+            <label class="evaluation__radio-label">
+              <input
+                type="radio"
+                name="continuo-remision"
+                value="Es remitente"
+                class="evaluation__radio-input"
+                [checked]="question.answer === 'Es remitente'"
+                (change)="onInputChange(question, 'Es remitente')"
+              />
+              <span class="evaluation__radio-text">Es remitente</span>
+            </label>
+          </div>
+        } @else {
+          <textarea
+            class="evaluation__input"
+            rows="2"
+            [id]="question.id"
+            #answerInput
+            [value]="question.answer"
+            (input)="onInputChange(question, answerInput.value)"
+          ></textarea>
+        }
       </div>
     }
   </div>

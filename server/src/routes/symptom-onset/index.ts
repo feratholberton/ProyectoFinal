@@ -33,8 +33,6 @@ const defaultSymptomOnsetQuestions: SymptomOnsetQuestion[] = [
 const defaultEvaluationQuestions: SymptomOnsetQuestion[] = [
   { id: 'como-evoluciono', prompt: '¿Cómo ha evolucionado desde que comenzó?', answer: '' },
   { id: 'continuo-remision', prompt: '¿Es continuo o tiene períodos de remisión?', answer: '' },
-  { id: 'patron-horario', prompt: '¿Hay un patrón horario?', answer: '' },
-  { id: 'tratamiento-efecto', prompt: '¿Ha recibido algún tratamiento? ¿Mejoró, empeoró o no hubo cambios?', answer: '' },
   { id: 'nota-personalizada-ev', prompt: 'Nota personalizada', answer: '' }
 ]
 

@@ -54,6 +54,33 @@
   box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.2);
 }
 
+.evaluation__radio-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  padding: 0.5rem 0;
+}
+
+.evaluation__radio-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-weight: 500;
+  color: #1e293b;
+}
+
+.evaluation__radio-input {
+  width: 1.25rem;
+  height: 1.25rem;
+  cursor: pointer;
+  accent-color: var(--cl-main-800);
+}
+
+.evaluation__radio-text {
+  user-select: none;
+}
+
 .evaluation__actions {
   margin-top: 1rem;
   display: flex;
