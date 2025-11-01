@@ -54,6 +54,50 @@
   box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.2);
 }
 
+.characteristics__radio-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  padding: 0.5rem 0;
+}
+
+.characteristics__radio-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-weight: 500;
+  color: #1e293b;
+}
+
+.characteristics__radio-input {
+  width: 1.25rem;
+  height: 1.25rem;
+  cursor: pointer;
+  accent-color: var(--cl-main-800);
+}
+
+.characteristics__radio-text {
+  user-select: none;
+}
+
+.characteristics__select {
+  width: 100%;
+  padding: 0.75rem 0.85rem;
+  border: 1px solid rgba(59, 130, 246, 0.35);
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: white;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.characteristics__select:focus {
+  outline: none;
+  border-color: #1d4ed8;
+  box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.2);
+}
+
 .characteristics__actions {
   margin-top: 1rem;
   display: flex;

@@ -10,14 +10,83 @@
     @for (question of questions(); track question.id) {
       <div class="characteristics__item">
         <label class="characteristics__label" [for]="question.id">{{ question.prompt }}</label>
-        <textarea
-          class="characteristics__input"
-          rows="2"
-          [id]="question.id"
-          #answerInput
-          [value]="question.answer"
-          (input)="onInputChange(question, answerInput.value)"
-        ></textarea>
+        
+        @if (question.id === 'descripcion') {
+          <div class="characteristics__radio-group">
+            <label class="characteristics__radio-label">
+              <input
+                type="radio"
+                name="descripcion"
+                value="Punzante"
+                class="characteristics__radio-input"
+                [checked]="question.answer === 'Punzante'"
+                (change)="onInputChange(question, 'Punzante')"
+              />
+              <span class="characteristics__radio-text">Punzante</span>
+            </label>
+            <label class="characteristics__radio-label">
+              <input
+                type="radio"
+                name="descripcion"
+                value="Lacerante"
+                class="characteristics__radio-input"
+                [checked]="question.answer === 'Lacerante'"
+                (change)="onInputChange(question, 'Lacerante')"
+              />
+              <span class="characteristics__radio-text">Lacerante</span>
+            </label>
+            <label class="characteristics__radio-label">
+              <input
+                type="radio"
+                name="descripcion"
+                value="Sordo"
+                class="characteristics__radio-input"
+                [checked]="question.answer === 'Sordo'"
+                (change)="onInputChange(question, 'Sordo')"
+              />
+              <span class="characteristics__radio-text">Sordo</span>
+            </label>
+            <label class="characteristics__radio-label">
+              <input
+                type="radio"
+                name="descripcion"
+                value="Quemante"
+                class="characteristics__radio-input"
+                [checked]="question.answer === 'Quemante'"
+                (change)="onInputChange(question, 'Quemante')"
+              />
+              <span class="characteristics__radio-text">Quemante</span>
+            </label>
+          </div>
+        } @else if (question.id === 'intensidad-escala') {
+          <select
+            class="characteristics__select"
+            [id]="question.id"
+            [value]="question.answer"
+            (change)="onInputChange(question, $any($event.target).value)"
+          >
+            <option value="">Seleccione una opción</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+          </select>
+        } @else {
+          <textarea
+            class="characteristics__input"
+            rows="2"
+            [id]="question.id"
+            #answerInput
+            [value]="question.answer"
+            (input)="onInputChange(question, answerInput.value)"
+          ></textarea>
+        }
       </div>
     }
   </div>
