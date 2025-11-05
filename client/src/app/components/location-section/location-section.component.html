@@ -9,7 +9,11 @@
   <div class="location__list">
     @for (question of questions(); track question.id) {
       <div class="location__item">
-        <label class="location__label" [for]="question.id">{{ question.prompt }}</label>
+        @if (question.id === 'focal-o-difuso') {
+          <label class="location__label">{{ question.prompt }}</label>
+        } @else {
+          <label class="location__label" [for]="question.id">{{ question.prompt }}</label>
+        }
         
         @if (question.id === 'focal-o-difuso') {
           <div class="location__radio-group">

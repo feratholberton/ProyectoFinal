@@ -9,7 +9,11 @@
   <div class="symptom-onset__list">
     @for (question of questions(); track question.id) {
       <div class="symptom-onset__item">
-        <label class="symptom-onset__label" [for]="question.id">{{ question.prompt }}</label>
+        @if (question.id === 'como-inicio') {
+          <label class="symptom-onset__label">{{ question.prompt }}</label>
+        } @else {
+          <label class="symptom-onset__label" [for]="question.id">{{ question.prompt }}</label>
+        }
         
         @if (question.id === 'como-inicio') {
           <div class="symptom-onset__radio-group">

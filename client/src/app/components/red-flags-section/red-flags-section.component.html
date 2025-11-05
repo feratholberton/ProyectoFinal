@@ -4,7 +4,11 @@
   <div class="questions">
     @for (q of questions(); track q.id) {
       <div class="question">
-        <label class="question__label" [for]="q.id">{{ q.prompt }}</label>
+        @if (q.id === 'convulsiones' || q.id === 'fiebre-alta' || q.id === 'sangrados' || q.id === 'disnea-reposo' || q.id === 'dolor-toracico' || q.id === 'perdida-peso' || q.id === 'sincopes') {
+          <label class="question__label">{{ q.prompt }}</label>
+        } @else {
+          <label class="question__label" [for]="q.id">{{ q.prompt }}</label>
+        }
         
         @if (q.id === 'convulsiones') {
           <!-- Yes/No radio buttons for Convulsiones -->

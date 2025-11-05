@@ -9,7 +9,11 @@
   <div class="evaluation__list">
     @for (question of questions(); track question.id) {
       <div class="evaluation__item">
-        <label class="evaluation__label" [for]="question.id">{{ question.prompt }}</label>
+        @if (question.id === 'como-evoluciono' || question.id === 'continuo-remision') {
+          <label class="evaluation__label">{{ question.prompt }}</label>
+        } @else {
+          <label class="evaluation__label" [for]="question.id">{{ question.prompt }}</label>
+        }
         
         @if (question.id === 'como-evoluciono') {
           <div class="evaluation__radio-group">

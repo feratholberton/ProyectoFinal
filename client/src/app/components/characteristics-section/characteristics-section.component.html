@@ -9,7 +9,11 @@
   <div class="characteristics__list">
     @for (question of questions(); track question.id) {
       <div class="characteristics__item">
-        <label class="characteristics__label" [for]="question.id">{{ question.prompt }}</label>
+        @if (question.id === 'descripcion' || question.id === 'intensidad-escala') {
+          <label class="characteristics__label">{{ question.prompt }}</label>
+        } @else {
+          <label class="characteristics__label" [for]="question.id">{{ question.prompt }}</label>
+        }
         
         @if (question.id === 'descripcion') {
           <div class="characteristics__radio-group">
