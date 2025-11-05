@@ -98,18 +98,10 @@ export class IntakeFacade {
     this.characteristicsSection = new QuestionSection(saveCharacteristicsUseCase, { form: this.intakeForm });
     this.priorTherapiesSection = new QuestionSection(savePriorTherapiesUseCase, { form: this.intakeForm });
     this.redFlagsSection = new QuestionSection(saveRedFlagsUseCase, { form: this.intakeForm }, (result) => {
-      if (result.reviewSummary) {
-        this.reviewSummary.set(result.reviewSummary);
-      }
-
       const aiNote = (result as RedFlagsStepResult).naturalSummary;
       if (typeof aiNote === 'string' && aiNote.trim().length > 0) {
         this.naturalSummary.set(aiNote);
-        const current = this.reviewSummary() ?? '';
-        const appended = current
-          ? `${current}\n\nResumen Final: ${aiNote}`
-          : `Resumen Final: ${aiNote}`;
-        this.reviewSummary.set(appended);
+        this.reviewSummary.set(aiNote);
       }
     });
   }
