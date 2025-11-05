@@ -32,6 +32,163 @@
               </label>
             </div>
           </div>
+        } @else if (q.id === 'fiebre-alta') {
+          <!-- Yes/No radio buttons + number input for Fiebre alta -->
+          <div class="question__yesno">
+            <div class="radio-group">
+              <label class="radio-label">
+                <input
+                  type="radio"
+                  name="fiebre-alta"
+                  value="Sí"
+                  [checked]="getYesNoValue(q.answer) === 'Sí'"
+                  (change)="onYesNoChange(q, 'Sí')"
+                />
+                Sí
+              </label>
+              <label class="radio-label">
+                <input
+                  type="radio"
+                  name="fiebre-alta"
+                  value="No"
+                  [checked]="getYesNoValue(q.answer) === 'No'"
+                  (change)="onYesNoChange(q, 'No')"
+                />
+                No
+              </label>
+            </div>
+            
+            @if (getYesNoValue(q.answer) === 'Sí') {
+              <div class="question__details">
+                <label class="details-label" for="fiebre-alta-temp">Temperatura (°C):</label>
+                <input
+                  type="number"
+                  step="0.1"
+                  class="question__input"
+                  id="fiebre-alta-temp"
+                  [value]="getDetailsValue(q.answer)"
+                  (input)="onDetailsChange(q, $any($event.target).value)"
+                />
+              </div>
+            }
+          </div>
+        } @else if (q.id === 'sangrados') {
+          <!-- Yes/No radio buttons + text input for Sangrados -->
+          <div class="question__yesno">
+            <div class="radio-group">
+              <label class="radio-label">
+                <input
+                  type="radio"
+                  name="sangrados"
+                  value="Sí"
+                  [checked]="getYesNoValue(q.answer) === 'Sí'"
+                  (change)="onYesNoChange(q, 'Sí')"
+                />
+                Sí
+              </label>
+              <label class="radio-label">
+                <input
+                  type="radio"
+                  name="sangrados"
+                  value="No"
+                  [checked]="getYesNoValue(q.answer) === 'No'"
+                  (change)="onYesNoChange(q, 'No')"
+                />
+                No
+              </label>
+            </div>
+            
+            @if (getYesNoValue(q.answer) === 'Sí') {
+              <div class="question__details">
+                <label class="details-label" for="sangrados-desc">Describa:</label>
+                <input
+                  type="text"
+                  class="question__input"
+                  id="sangrados-desc"
+                  [value]="getDetailsValue(q.answer)"
+                  (input)="onDetailsChange(q, $any($event.target).value)"
+                />
+              </div>
+            }
+          </div>
+        } @else if (q.id === 'disnea-reposo') {
+          <!-- Yes/No radio buttons + text input for Dificultad respiratoria -->
+          <div class="question__yesno">
+            <div class="radio-group">
+              <label class="radio-label">
+                <input
+                  type="radio"
+                  name="disnea-reposo"
+                  value="Sí"
+                  [checked]="getYesNoValue(q.answer) === 'Sí'"
+                  (change)="onYesNoChange(q, 'Sí')"
+                />
+                Sí
+              </label>
+              <label class="radio-label">
+                <input
+                  type="radio"
+                  name="disnea-reposo"
+                  value="No"
+                  [checked]="getYesNoValue(q.answer) === 'No'"
+                  (change)="onYesNoChange(q, 'No')"
+                />
+                No
+              </label>
+            </div>
+            
+            @if (getYesNoValue(q.answer) === 'Sí') {
+              <div class="question__details">
+                <label class="details-label" for="disnea-reposo-desc">Describa:</label>
+                <input
+                  type="text"
+                  class="question__input"
+                  id="disnea-reposo-desc"
+                  [value]="getDetailsValue(q.answer)"
+                  (input)="onDetailsChange(q, $any($event.target).value)"
+                />
+              </div>
+            }
+          </div>
+        } @else if (q.id === 'dolor-toracico') {
+          <!-- Yes/No radio buttons + text input for Dolor torácico -->
+          <div class="question__yesno">
+            <div class="radio-group">
+              <label class="radio-label">
+                <input
+                  type="radio"
+                  name="dolor-toracico"
+                  value="Sí"
+                  [checked]="getYesNoValue(q.answer) === 'Sí'"
+                  (change)="onYesNoChange(q, 'Sí')"
+                />
+                Sí
+              </label>
+              <label class="radio-label">
+                <input
+                  type="radio"
+                  name="dolor-toracico"
+                  value="No"
+                  [checked]="getYesNoValue(q.answer) === 'No'"
+                  (change)="onYesNoChange(q, 'No')"
+                />
+                No
+              </label>
+            </div>
+            
+            @if (getYesNoValue(q.answer) === 'Sí') {
+              <div class="question__details">
+                <label class="details-label" for="dolor-toracico-desc">Describa:</label>
+                <input
+                  type="text"
+                  class="question__input"
+                  id="dolor-toracico-desc"
+                  [value]="getDetailsValue(q.answer)"
+                  (input)="onDetailsChange(q, $any($event.target).value)"
+                />
+              </div>
+            }
+          </div>
         } @else if (q.id === 'perdida-peso') {
           <!-- Yes/No radio buttons for Pérdida de peso -->
           <div class="question__yesno">
