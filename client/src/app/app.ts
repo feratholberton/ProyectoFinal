@@ -4,7 +4,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { PatientIntakeFormComponent } from './components/patient-intake-form/patient-intake-form.component';
 import { AntecedentsSectionComponent } from './components/antecedents-section/antecedents-section.component';
 import { AllergiesSectionComponent } from './components/allergies-section/allergies-section.component';
-import { DrugsSectionComponent } from './components/drugs-section/drugs-section.component';
 import { SymptomOnsetSectionComponent } from './components/symptom-onset-section/symptom-onset-section.component';
 import { EvaluationSectionComponent } from './components/evaluation-section/evaluation-section.component';
 import { LocationSectionComponent } from './components/location-section/location-section.component';
@@ -24,7 +23,6 @@ import { Logo } from './components/logo/logo';
     PatientIntakeFormComponent,
     AntecedentsSectionComponent,
     AllergiesSectionComponent,
-    DrugsSectionComponent,
     SymptomOnsetSectionComponent,
     EvaluationSectionComponent,
     LocationSectionComponent,
