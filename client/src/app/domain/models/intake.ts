@@ -11,10 +11,14 @@ export interface PatientProfile {
   readonly chiefComplaint: string;
 }
 
+export type QuestionType = 'text' | 'yesno' | 'yesno-text' | 'yesno-number';
+
 export interface IntakeQuestion {
   readonly id: string;
   readonly prompt: string;
   readonly answer: string;
+  readonly type?: QuestionType;
+  readonly detailsLabel?: string;
 }
 
 export type IntakeQuestionList = ReadonlyArray<IntakeQuestion>;

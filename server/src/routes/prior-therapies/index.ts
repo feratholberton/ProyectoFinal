@@ -202,26 +202,31 @@ const priorTherapiesRoute: FastifyPluginAsync = async (fastify) => {
       }))
 
       const defaultRedFlagsQuestions: SymptomOnsetQuestion[] = [
-        { id: 'fiebre-alta', prompt: 'Fiebre alta persistente (>38.5°C)', answer: '' },
-        { id: 'sangrados', prompt: 'Sangrados (hemoptisis, hematemesis, melena, hematuria)', answer: '' },
-        { id: 'disnea-reposo', prompt: 'Dificultad respiratoria severa o disnea de reposo', answer: '' },
-        { id: 'dolor-toracico', prompt: 'Dolor torácico intenso, opresivo, con irradiación', answer: '' },
-        { id: 'perdida-peso', prompt: 'Pérdida de peso no intencional significativa (>5% en 1 mes)', answer: '' },
-        { id: 'sincopes', prompt: 'Pérdida de conciencia, síncope o lipotimia', answer: '' },
-        { id: 'convulsiones', prompt: 'Convulsiones', answer: '' },
-        { id: 'alteraciones-neurologicas', prompt: 'Alteraciones neurológicas agudas (paresia, parestesias, afasia, alteración visual súbita)', answer: '' },
-        { id: 'deshidratacion-severa', prompt: 'Deshidratación severa (en contexto de vómitos/diarrea)', answer: '' },
-        { id: 'ictericia', prompt: 'Ictericia (piel/ojos amarillos)', answer: '' },
-        { id: 'sangrado-activo-petequias', prompt: 'Signos de sangrado activo o petequias (considerar dengue)', answer: '' },
-        { id: 'nota-personalizada-rf', prompt: 'Nota personalizada', answer: '' }
+        { id: 'fiebre-alta', prompt: 'Fiebre alta persistente (>38.5°C)', answer: '', type: 'yesno-number', detailsLabel: 'Temperatura (°C)' },
+        { id: 'sangrados', prompt: 'Sangrados (hemoptisis, hematemesis, melena, hematuria)', answer: '', type: 'yesno-text', detailsLabel: 'Describa' },
+        { id: 'disnea-reposo', prompt: 'Dificultad respiratoria severa o disnea de reposo', answer: '', type: 'yesno-text', detailsLabel: 'Describa' },
+        { id: 'dolor-toracico', prompt: 'Dolor torácico intenso, opresivo, con irradiación', answer: '', type: 'yesno-text', detailsLabel: 'Describa' },
+        { id: 'perdida-peso', prompt: 'Pérdida de peso no intencional significativa (>5% en 1 mes)', answer: '', type: 'yesno' },
+        { id: 'sincopes', prompt: 'Pérdida de conciencia, síncope o lipotimia', answer: '', type: 'yesno' },
+        { id: 'convulsiones', prompt: 'Convulsiones', answer: '', type: 'yesno' },
+        { id: 'nota-personalizada-rf', prompt: 'Nota personalizada', answer: '', type: 'text' }
       ]
+
+      // Merge existing answers with new question structure
+      const existingAnswersMap = new Map(
+        (existing?.redFlagsQuestions || []).map(q => [q.id, q.answer])
+      )
+      const redFlagsQuestionsWithAnswers = defaultRedFlagsQuestions.map(q => ({
+        ...q,
+        answer: existingAnswersMap.get(q.id) || q.answer
+      }))
 
       const record = upsertPatientIntake({
         age,
         gender,
         chiefComplaint: normalizedChiefComplaint,
         priorTherapiesQuestions: updatedQuestions,
-        redFlagsQuestions: existing?.redFlagsQuestions?.length ? existing.redFlagsQuestions : defaultRedFlagsQuestions
+        redFlagsQuestions: redFlagsQuestionsWithAnswers
       })
 
       request.log.debug({ key, updatedQuestions }, 'Saved prior therapies and self-treatment answers')

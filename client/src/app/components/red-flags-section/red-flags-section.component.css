@@ -30,6 +30,43 @@
   resize: vertical;
 }
 
+.question__yesno {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.radio-group {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.radio-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-weight: normal;
+}
+
+.radio-label input[type="radio"] {
+  width: 1.125rem;
+  height: 1.125rem;
+  cursor: pointer;
+}
+
+.question__details {
+  margin-left: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.details-label {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
 .actions {
   margin-top: 0.75rem;
 }

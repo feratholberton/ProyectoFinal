@@ -22,6 +22,8 @@ export interface SymptomOnsetQuestion {
   id: string;
   prompt: string;
   answer: string;
+  type?: 'text' | 'yesno' | 'yesno-text' | 'yesno-number';
+  detailsLabel?: string;
 }
 
 const patientIntakeStore = new Map<string, PatientIntakeRecord>();

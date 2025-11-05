@@ -187,8 +187,7 @@ const redFlagsRoute: FastifyPluginAsync = async (fastify) => {
       const baseQuestions: SymptomOnsetQuestion[] = existing?.redFlagsQuestions ?? []
       const answersById = new Map(answers.map((a) => [a.id, (a.answer ?? '').trim()]))
       const updatedQuestions = baseQuestions.map((q) => ({
-        id: q.id,
-        prompt: q.prompt,
+        ...q,
         answer: answersById.get(q.id) ?? q.answer ?? ''
       }))
 

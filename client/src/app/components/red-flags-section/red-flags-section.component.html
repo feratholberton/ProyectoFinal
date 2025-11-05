@@ -5,14 +5,157 @@
     @for (q of questions(); track q.id) {
       <div class="question">
         <label class="question__label" [for]="q.id">{{ q.prompt }}</label>
-        <textarea
-          class="question__input"
-          rows="2"
-          [id]="q.id"
-          #answerInput
-          [value]="q.answer || ''"
-          (input)="onInputChange(q, answerInput.value)"
-        ></textarea>
+        
+        @if (q.id === 'convulsiones') {
+          <!-- Yes/No radio buttons for Convulsiones -->
+          <div class="question__yesno">
+            <div class="radio-group">
+              <label class="radio-label">
+                <input
+                  type="radio"
+                  name="convulsiones"
+                  value="Sí"
+                  [checked]="q.answer === 'Sí'"
+                  (change)="onInputChange(q, 'Sí')"
+                />
+                Sí
+              </label>
+              <label class="radio-label">
+                <input
+                  type="radio"
+                  name="convulsiones"
+                  value="No"
+                  [checked]="q.answer === 'No'"
+                  (change)="onInputChange(q, 'No')"
+                />
+                No
+              </label>
+            </div>
+          </div>
+        } @else if (q.id === 'perdida-peso') {
+          <!-- Yes/No radio buttons for Pérdida de peso -->
+          <div class="question__yesno">
+            <div class="radio-group">
+              <label class="radio-label">
+                <input
+                  type="radio"
+                  name="perdida-peso"
+                  value="Sí"
+                  [checked]="q.answer === 'Sí'"
+                  (change)="onInputChange(q, 'Sí')"
+                />
+                Sí
+              </label>
+              <label class="radio-label">
+                <input
+                  type="radio"
+                  name="perdida-peso"
+                  value="No"
+                  [checked]="q.answer === 'No'"
+                  (change)="onInputChange(q, 'No')"
+                />
+                No
+              </label>
+            </div>
+          </div>
+        } @else if (q.id === 'sincopes') {
+          <!-- Yes/No radio buttons for Pérdida de conciencia, síncope o lipotimia -->
+          <div class="question__yesno">
+            <div class="radio-group">
+              <label class="radio-label">
+                <input
+                  type="radio"
+                  name="sincopes"
+                  value="Sí"
+                  [checked]="q.answer === 'Sí'"
+                  (change)="onInputChange(q, 'Sí')"
+                />
+                Sí
+              </label>
+              <label class="radio-label">
+                <input
+                  type="radio"
+                  name="sincopes"
+                  value="No"
+                  [checked]="q.answer === 'No'"
+                  (change)="onInputChange(q, 'No')"
+                />
+                No
+              </label>
+            </div>
+          </div>
+        } @else if (q.type === 'text' || !q.type) {
+          <!-- Standard text area for open-ended questions -->
+          <textarea
+            class="question__input"
+            rows="2"
+            [id]="q.id"
+            #answerInput
+            [value]="q.answer || ''"
+            (input)="onInputChange(q, answerInput.value)"
+          ></textarea>
+        }
+        
+        @if (q.type === 'yesno' || q.type === 'yesno-text' || q.type === 'yesno-number') {
+          <!-- Yes/No radio buttons -->
+          <div class="question__yesno">
+            <div class="radio-group">
+              <label class="radio-label">
+                <input
+                  type="radio"
+                  [name]="q.id + '-yesno'"
+                  [value]="'Sí'"
+                  [checked]="getYesNoValue(q.answer) === 'Sí'"
+                  (change)="onYesNoChange(q, 'Sí')"
+                />
+                Sí
+              </label>
+              <label class="radio-label">
+                <input
+                  type="radio"
+                  [name]="q.id + '-yesno'"
+                  [value]="'No'"
+                  [checked]="getYesNoValue(q.answer) === 'No'"
+                  (change)="onYesNoChange(q, 'No')"
+                />
+                No
+              </label>
+            </div>
+            
+            @if (q.type === 'yesno-text' && getYesNoValue(q.answer) === 'Sí') {
+              <!-- Additional text input for details -->
+              <div class="question__details">
+                <label class="details-label" [for]="q.id + '-details'">
+                  {{ q.detailsLabel || 'Detalles' }}:
+                </label>
+                <input
+                  type="text"
+                  class="question__input"
+                  [id]="q.id + '-details'"
+                  [value]="getDetailsValue(q.answer)"
+                  (input)="onDetailsChange(q, $any($event.target).value)"
+                />
+              </div>
+            }
+            
+            @if (q.type === 'yesno-number' && getYesNoValue(q.answer) === 'Sí') {
+              <!-- Additional number input for numeric details -->
+              <div class="question__details">
+                <label class="details-label" [for]="q.id + '-details'">
+                  {{ q.detailsLabel || 'Valor' }}:
+                </label>
+                <input
+                  type="number"
+                  step="0.1"
+                  class="question__input"
+                  [id]="q.id + '-details'"
+                  [value]="getDetailsValue(q.answer)"
+                  (input)="onDetailsChange(q, $any($event.target).value)"
+                />
+              </div>
+            }
+          </div>
+        }
       </div>
     }
   </div>
