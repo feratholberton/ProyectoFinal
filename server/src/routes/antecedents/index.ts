@@ -87,14 +87,15 @@ const antecedentsRoute: FastifyPluginAsync = async (fastify) => {
       }
     },
     async (request) => {
-      if (!fastify.genAIClient) {
-        throw fastify.httpErrors.serviceUnavailable('Google GenAI client is not configured');
-      }
-
       const { age, gender, chiefComplaint, selectedAntecedents } = request.body;
 
       const normalizedChiefComplaint = normalizeChiefComplaint(chiefComplaint);
       const normalizedAntecedentList = normalizeAntecedents(selectedAntecedents);
+
+      const chat = fastify.getOrCreateChatSession(fastify, { age, gender, chiefComplaint });
+      if (!chat) {
+        throw fastify.httpErrors.serviceUnavailable('Google GenAI client is not configured');
+      }
 
       const chosenModel = fastify.genAIDefaultModel;
       const prompt = [
@@ -112,12 +113,9 @@ const antecedentsRoute: FastifyPluginAsync = async (fastify) => {
       ].join('\n');
 
       try {
-        const response = await fastify.genAIClient.models.generateContent({
-          model: chosenModel,
-          contents: prompt
-        });
-
-        const answer = response.text;
+        const result = await chat.sendMessage(prompt);
+        const response = result.response;
+        const answer = response.text();
         if (!answer) {
           request.log.warn({ response }, 'Google GenAI returned an empty allergy list');
           throw fastify.httpErrors.badGateway('El modelo no devolvió alergias válidas.');

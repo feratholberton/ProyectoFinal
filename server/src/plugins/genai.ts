@@ -1,5 +1,5 @@
 import fp from 'fastify-plugin'
-import { GoogleGenAI, GoogleGenAIOptions } from '@google/genai'
+import { GoogleGenerativeAI } from '@google/generative-ai'
 
 export interface GenAIPluginOptions {
   /**
@@ -16,7 +16,7 @@ export interface GenAIPluginOptions {
   apiVersion?: string;
 }
 
-const DEFAULT_MODEL = 'gemini-2.0-flash'
+const DEFAULT_MODEL = 'gemini-1.5-flash'
 const API_KEY_ENV_VARS = ['GOOGLE_API_KEY', 'GEMINI_API_KEY', 'GOOGLE_GENAI_API_KEY'] as const
 
 function resolveApiKey(opts: GenAIPluginOptions): string | undefined {
@@ -36,19 +36,11 @@ function resolveApiKey(opts: GenAIPluginOptions): string | undefined {
 
 export default fp<GenAIPluginOptions>(async (fastify, opts) => {
   const apiKey = resolveApiKey(opts)
-  let client: GoogleGenAI | null = null
+  let client: GoogleGenerativeAI | null = null
 
   if (apiKey) {
-    const clientOptions: GoogleGenAIOptions = {
-      apiKey
-    }
-
-    if (opts.apiVersion) {
-      clientOptions.apiVersion = opts.apiVersion
-    }
-
     try {
-      client = new GoogleGenAI(clientOptions)
+      client = new GoogleGenerativeAI(apiKey)
     } catch (error) {
       fastify.log.error({ err: error }, 'Failed to initialize Google GenAI client')
       client = null
@@ -68,7 +60,7 @@ export default fp<GenAIPluginOptions>(async (fastify, opts) => {
 
 declare module 'fastify' {
   interface FastifyInstance {
-    genAIClient: GoogleGenAI | null;
+    genAIClient: GoogleGenerativeAI | null;
     genAIDefaultModel: string;
   }
 }

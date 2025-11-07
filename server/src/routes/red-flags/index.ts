@@ -233,6 +233,11 @@ const redFlagsRoute: FastifyPluginAsync = async (fastify) => {
 
       const reviewSummary = lines.join('\n')
 
+      const chat = fastify.getOrCreateChatSession(fastify, { age, gender, chiefComplaint });
+      if (!chat) {
+        throw fastify.httpErrors.serviceUnavailable('Google GenAI client is not configured');
+      }
+      
       // Generate a natural language summary using the configured GenAI model
       let naturalSummary = ''
       if (!fastify.genAIClient) {
@@ -244,7 +249,6 @@ const redFlagsRoute: FastifyPluginAsync = async (fastify) => {
         fallbackLines.push(record.selectedAllergies?.length ? `Alergias: ${record.selectedAllergies.join(', ')}.` : 'No se registraron alergias conocidas.')
         naturalSummary = fallbackLines.join(' ')
       } else {
-        const chosenModel = fastify.genAIDefaultModel
         const prompt = [
           'Eres un médico clínico. A partir de la información que sigue, genera UN SOLO resumen clínico en español en lenguaje natural, respetando el ORDEN y SIN INVENTAR datos. Si falta información, escribe "(sin datos)" para ese campo. No añadas hipótesis diagnósticas nuevas ni fechas.',
           '',
@@ -255,12 +259,9 @@ const redFlagsRoute: FastifyPluginAsync = async (fastify) => {
         ].join('\n')
 
         try {
-          const response = await fastify.genAIClient.models.generateContent({
-            model: chosenModel,
-            contents: prompt
-          })
-
-          const answer = response.text
+          const result = await chat.sendMessage(prompt);
+          const response = result.response;
+          const answer = response.text();
           if (!answer) {
             request.log.warn({ response }, 'Google GenAI returned an empty summary')
             throw fastify.httpErrors.badGateway('El modelo no devolvió un resumen válido')

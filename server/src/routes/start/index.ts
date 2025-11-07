@@ -51,14 +51,14 @@ const startRoute: FastifyPluginAsync = async (fastify) => {
       }
     },
     async (request) => {
-      if (!fastify.genAIClient) {
-        throw fastify.httpErrors.serviceUnavailable('Google GenAI client is not configured')
+      const { age, gender, chiefComplaint, excludeAntecedents, selectedAntecedents } = request.body;
+      const chat = fastify.getOrCreateChatSession(fastify, { age, gender, chiefComplaint });
+      if (!chat) {
+        throw fastify.httpErrors.serviceUnavailable('Google GenAI client is not configured');
       }
-
-      const { age, gender, chiefComplaint, excludeAntecedents, selectedAntecedents } = request.body
-      const chosenModel = fastify.genAIDefaultModel
-      const normalizedChiefComplaint = normalizeChiefComplaint(chiefComplaint)
-      const normalizedSelectedAntecedents = normalizeAntecedents(selectedAntecedents)
+      const chosenModel = fastify.genAIDefaultModel;
+      const normalizedChiefComplaint = normalizeChiefComplaint(chiefComplaint);
+      const normalizedSelectedAntecedents = normalizeAntecedents(selectedAntecedents);
       const prompt = [
         '- Eres un médico clínico.',
         '- Utiliza rigor clínico y epidemiológico, con foco en el Contexto de Uruguay (T=0)',
@@ -81,27 +81,24 @@ const startRoute: FastifyPluginAsync = async (fastify) => {
         `Edad: ${age}`,
         `Género: ${gender}`,
         `Motivo de consulta: ${normalizedChiefComplaint}`
-      ].filter((line): line is string => typeof line === 'string').join('\n')
+      ].filter((line): line is string => typeof line === 'string').join('\n');
 
       try {
-        const response = await fastify.genAIClient.models.generateContent({
-          model: chosenModel,
-          contents: prompt
-        })
-
-        const answer = response.text
+        const result = await chat.sendMessage(prompt);
+        const response = result.response;
+        const answer = response.text();
         if (!answer) {
-          request.log.warn({ response }, 'Google GenAI returned an empty answer')
-          throw fastify.httpErrors.badGateway('The model did not return a usable answer')
+          request.log.warn({ response }, 'Google GenAI returned an empty answer');
+          throw fastify.httpErrors.badGateway('The model did not return a usable answer');
         }
 
         return {
           answer,
           model: chosenModel
-        }
+        };
       } catch (error) {
-        request.log.error({ err: error }, 'Failed to generate answer with Google GenAI')
-        throw fastify.httpErrors.badGateway('Unable to generate an answer at this time')
+        request.log.error({ err: error }, 'Failed to generate answer with Google GenAI');
+        throw fastify.httpErrors.badGateway('Unable to generate an answer at this time');
       }
     }
   )

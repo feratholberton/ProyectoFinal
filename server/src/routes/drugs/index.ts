@@ -320,10 +320,6 @@ const drugsRoute: FastifyPluginAsync = async (fastify) => {
       }
     },
     async (request) => {
-      if (!fastify.genAIClient) {
-        throw fastify.httpErrors.serviceUnavailable('Google GenAI client is not configured')
-      }
-
       const { age, gender, chiefComplaint, selectedAntecedents, selectedAllergies, selectedDrugs, excludeDrugs } =
         request.body
 
@@ -336,6 +332,11 @@ const drugsRoute: FastifyPluginAsync = async (fastify) => {
         selectedAllergies && selectedAllergies.length > 0 ? normalizeAllergies(selectedAllergies) : undefined
       const normalizedSelectedDrugs = normalizeDrugs(selectedDrugs)
       const normalizedExcludeDrugs = normalizeDrugs(excludeDrugs)
+
+      const chat = fastify.getOrCreateChatSession(fastify, { age, gender, chiefComplaint });
+      if (!chat) {
+        throw fastify.httpErrors.serviceUnavailable('Google GenAI client is not configured');
+      }
 
       const prompt = buildDrugPrompt({
         age,
@@ -350,12 +351,9 @@ const drugsRoute: FastifyPluginAsync = async (fastify) => {
       const chosenModel = fastify.genAIDefaultModel
 
       try {
-        const response = await fastify.genAIClient.models.generateContent({
-          model: chosenModel,
-          contents: prompt
-        })
-
-        const answer = response.text
+        const result = await chat.sendMessage(prompt);
+        const response = result.response;
+        const answer = response.text();
         if (!answer) {
           request.log.warn({ response }, 'Google GenAI returned an empty drug suggestion list')
           throw fastify.httpErrors.badGateway('El modelo no devolvió medicamentos válidos.')
