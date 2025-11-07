@@ -1,7 +1,7 @@
 import fp from 'fastify-plugin'
 import cors, { FastifyCorsOptions } from '@fastify/cors'
 
-const DEFAULT_ALLOWED_ORIGINS = ['http://localhost:4200']
+const DEFAULT_ALLOWED_ORIGINS = ['https://www.asistencial-elio.tech', 'http://localhost:4200']
 
 function parseAllowedOrigins(value: string | undefined): string[] {
   if (!value) {
