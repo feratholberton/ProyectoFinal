@@ -35,7 +35,7 @@ export function getOrCreateChatSession(
         }
     ],
     generationConfig: {
-      maxOutputTokens: 100,
+      maxOutputTokens: 1024,
     },
   });
 
